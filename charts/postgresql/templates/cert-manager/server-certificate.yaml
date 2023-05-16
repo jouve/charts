@@ -1,0 +1,42 @@
+{{- if eq .Values.certificates.mode "cert-manager" }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ template "common.names.fullname" . }}-server
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ template "common.names.fullname" . }}-server
+  secretTemplate:
+    labels:
+      cnpg.io/reload: ""
+  usages:
+    - server auth
+  dnsNames:
+    - {{ template "common.names.fullname" . }}-rw
+    - {{ template "common.names.fullname" . }}-rw.{{ include "common.names.namespace" . }}
+    - {{ template "common.names.fullname" . }}-rw.{{ include "common.names.namespace" . }}.svc
+    - {{ template "common.names.fullname" . }}-rw.{{ include "common.names.namespace" . }}.svc.{{ .Values.clusterDomain }}
+    - {{ template "common.names.fullname" . }}-r
+    - {{ template "common.names.fullname" . }}-r.{{ include "common.names.namespace" . }}
+    - {{ template "common.names.fullname" . }}-r.{{ include "common.names.namespace" . }}.svc
+    - {{ template "common.names.fullname" . }}-r.{{ include "common.names.namespace" . }}.svc.{{ .Values.clusterDomain }}
+    - {{ template "common.names.fullname" . }}-ro
+    - {{ template "common.names.fullname" . }}-ro.{{ include "common.names.namespace" . }}
+    - {{ template "common.names.fullname" . }}-ro.{{ include "common.names.namespace" . }}.svc
+    - {{ template "common.names.fullname" . }}-ro.{{ include "common.names.namespace" . }}.svc.{{ .Values.clusterDomain }}
+  issuerRef:
+    {{- with .Values.certificates.issuerRef }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- else }}
+    group: cert-manager.io
+    kind: Issuer
+    name: {{ template "common.names.fullname" . }}
+    {{- end }}
+{{- end }}

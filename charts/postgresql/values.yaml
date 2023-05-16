@@ -1,0 +1,76 @@
+clusterDomain: cluster.local
+
+## @section Global parameters
+## Please, note that this will override the parameters, including dependencies, configured to use the global value
+##
+global:
+  ## @param global.imageRegistry Global Docker image registry
+  ##
+  imageRegistry: ""
+  ## @param global.imagePullSecrets Global Docker registry secret names as an array
+  ## e.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  ## @param global.storageClass Global StorageClass for Persistent Volume(s)
+  ##
+  storageClass: ""
+
+## @param replicaCount Number of PostgreSQL replicas
+##
+replicaCount: 1
+
+backup:
+  enabled: false
+  endpointURL: ""
+  bucketName: ""
+  # ServiceAccount {{ template "common.names.fullname" . }} must be allowed to read this secret
+  # see templates/backup/role.yaml for example
+  existingSecret: ""
+  objectBucketClaim:
+    enabled: false
+    storageClassName: ""
+
+## PostgreSQL persistence configuration
+##
+persistence:
+  ## @param persistence.storageClass PVC Storage Class for PostgreSQL Primary data volume
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  storageClass: ""
+  ## @param persistence.size PVC Storage Request for PostgreSQL volume
+  ##
+  size: 8Gi
+
+networkPolicy:
+  enabled: false
+  apiServerPeer: {}
+  cnpgPeer: {}
+  objectStoragePeer: {}
+  egressRules: []
+  ingressRules: []
+
+certificates:
+  # operator-manager | cert-manager
+  mode: operator-manager
+
+  # if not defined, a selfSigned issuer will be created
+  issuerRef: {}
+
+## @section Metrics Parameters
+##
+metrics:
+  ## @param metrics.enabled Start a prometheus exporter
+  ##
+  enabled: false
+  ## Prometheus Operator PodMonitor configuration
+  ##
+  podMonitor:
+    ## @param metrics.serviceMonitor.enabled Create PodMonitor Resource for scraping metrics using Prometheus Operator
+    ##
+    enabled: false

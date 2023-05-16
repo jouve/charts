@@ -1,0 +1,78 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: {{ include "common.capabilities.networkPolicy.apiVersion" . }}
+kind: NetworkPolicy
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/cluster: {{ template "common.names.fullname" . }}
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              {{ template "common.names.fullname" . }}-client: "true"
+        - podSelector:
+            matchLabels:
+              cnpg.io/cluster: {{ template "common.names.fullname" . }}
+      ports:
+        - port: postgresql
+    {{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
+    - {{- with .Values.networkPolicy.prometheusPeer }}
+      from:
+        - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
+      {{- end }}
+      ports:
+        - port: metrics
+    {{- end }}
+    - {{- with .Values.networkPolicy.cnpgPeer }}
+      from:
+        - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
+      {{- end }}
+      ports:
+        - port: status
+    {{- with .Values.networkPolicy.ingressRules }}
+    {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+    {{- end }}
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              cnpg.io/cluster: {{ template "common.names.fullname" . }}
+      ports:
+        - port: postgresql
+    - {{- with .Values.networkPolicy.apiServerPeer }}
+      to:
+        - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
+      {{- end }}
+      ports:
+        - port: 6443
+    - {{- with .Values.networkPolicy.cnpgPeer }}
+      to:
+        - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
+      {{- end }}
+      ports:
+        - port: webhook-server
+    {{- if .Values.backup.objectBucketClaim.enabled }}
+    - {{- with .Values.networkPolicy.objectStoragePeer }}
+      to:
+        - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
+      {{- end }}
+      ports:
+        - port: 8080
+    {{- end }}
+    {{- with .Values.networkPolicy.egressRules }}
+    {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+    {{- end }}
+  policyTypes:
+    - Ingress
+    - Egress
+{{- end }}

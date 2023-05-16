@@ -1,0 +1,40 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  instances: {{ .Values.replicaCount }}
+  storage:
+    size: {{ .Values.persistence.size }}
+  {{- if eq .Values.certificates.mode "cert-manager" }}
+  certificates:
+    serverTLSSecret: {{ template "common.names.fullname" . }}-server
+    serverCASecret: {{ template "common.names.fullname" . }}-server
+    clientCASecret: {{ template "common.names.fullname" . }}-replication
+    replicationTLSSecret: {{ template "common.names.fullname" . }}-replication
+  {{- end }}
+  {{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
+  monitoring:
+    enablePodMonitor: true
+  {{- end }}
+  {{- if .Values.backup.enabled }}
+  backup:
+    barmanObjectStore:
+      endpointURL: {{ .Values.backup.endpointURL }}
+      destinationPath: s3://{{ if .Values.backup.bucketName }}{{ .Values.backup.bucketName }}{{ else }}{{ include "common.names.namespace" . }}-{{ template "common.names.fullname" . }}-backup{{ end }}
+      s3Credentials:
+        accessKeyId:
+          name: {{ if .Values.backup.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.existingSecret }}{{ end }}
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKey:
+          name: {{ if .Values.backup.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.existingSecret }}{{ end }}
+          key: AWS_SECRET_ACCESS_KEY
+  {{- end }}

@@ -1,0 +1,12 @@
+apiVersion: v2
+name: postgresql
+description: The World's Most Advanced Open Source Relational Database
+type: application
+version: 0.1.0
+appVersion: "15.3"
+dependencies:
+- name: common
+  repository: oci://registry-1.docker.io/bitnamicharts
+  tags:
+  - bitnami-common
+  version: 2.x.x
