@@ -1,5 +1,5 @@
 # https://github.com/helm/chart-testing-action#example-workflow
-name: Lint Charts
+name: ct-lint
 
 # Controls when the workflow will run
 on:
