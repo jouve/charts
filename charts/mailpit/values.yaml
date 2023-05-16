@@ -1,0 +1,193 @@
+## @section Global parameters
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+##
+
+## @param global.imageRegistry Global Docker image registry
+## @param global.imagePullSecrets Global Docker registry secret names as an array
+## @param global.storageClass Global StorageClass for Persistent Volume(s)
+##
+global:
+  imageRegistry: ""
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  storageClass: ""
+
+
+## @section Parameters
+##
+
+## Bitnami image
+## ref: https://hub.docker.com/r/bitnami/image/tags/
+## @param image.registry image registry
+## @param image.repository image repository
+## @param image.tag image tag (immutable tags are recommended)
+## @param image.digest image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended)
+## @param image.pullPolicy image pull policy
+## @param image.pullSecrets image pull secrets
+## @param image.debug Enable image debug mode
+##
+image:
+  registry: docker.io
+  repository: axllent/mailpit
+  tag: v1.6.9
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+  ## Enable debug mode
+  ##
+  debug: false
+
+## @param replicaCount Number of replicas to deploy
+##
+replicaCount: 1
+
+## @param containerPorts.http HTTP container port
+## @param containerPorts.https HTTPS container port
+##
+containerPorts:
+  http: 8025
+  smtp: 1025
+
+## resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources.limits The resources limits for the containers
+## @param resources.requests The requested resources for the containers
+##
+resources:
+  limits: {}
+  requests: {}
+
+## Configure Pods Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+## @param podSecurityContext.enabled Enabled pods' Security Context
+## @param podSecurityContext.fsGroup Set pod's Security Context fsGroup
+##
+podSecurityContext:
+  enabled: true
+  fsGroup: 1001
+
+## Configure Container Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+## @param containerSecurityContext.enabled Enabled containers' Security Context
+## @param containerSecurityContext.runAsUser Set containers' Security Context runAsUser
+## @param containerSecurityContext.runAsNonRoot Set containers' Security Context runAsNonRoot
+## @param containerSecurityContext.readOnlyRootFilesystem Set containers' Security Context runAsNonRoot
+##
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1001
+  runAsGroup: 1001
+  runAsNonRoot: true
+  readOnlyRootFilesystem: true
+
+## @param args Override default container args (useful when using custom images)
+##
+args: []
+
+## @param extraEnvVars Array with extra environment variables to add to nodes
+## e.g:
+## extraEnvVars:
+##   - name: FOO
+##     value: "bar"
+##
+extraEnvVars: []
+
+# https://github.com/axllent/mailpit/wiki/Basic-authentication
+# https://github.com/axllent/mailpit/wiki/HTTPS
+mailpit:
+  ui:
+    # @param mailpit.ui.authFile Adding basic authentication to web UI
+    authFile:
+      enabled: false
+      htpasswd: ""
+    tls:
+      enabled: false
+      secretName: ""
+  smtp:
+    # @param mailpit.smtp.authFile Adding SMTP authentication
+    authFile:
+      enabled: false
+      htpasswd: ""
+    tls:
+      enabled: false
+      secretName: ""
+
+
+## @section Traffic Exposure Parameters
+##
+
+## service parameters
+##
+service:
+  http:
+    ## @param service.http.type service type
+    ##
+    type: ClusterIP
+  smtp:
+    ## @param service.smtp.type service type
+    ##
+    type: ClusterIP
+
+
+## ingress parameters
+## ref: http://kubernetes.io/docs/user-guide/ingress/
+##
+ingress:
+  ## @param ingress.enabled Enable ingress record generation for %%MAIN_CONTAINER_NAME%%
+  ##
+  enabled: false
+  ## @param ingress.hostname Default host for the ingress record
+  ##
+  hostname: hostname.local
+  ## @param ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
+  ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
+  ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
+  ##
+  ingressClassName: ""
+  ## @param ingress.path Default path for the ingress record
+  ## NOTE: You may need to set this to '/*' in order to use this with ALB ingress controllers
+  ##
+  path: /
+  ## @param ingress.annotations Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
+  ## Use this parameter to set the required annotations for cert-manager, see
+  ## ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
+  ## e.g:
+  ## annotations:
+  ##   kubernetes.io/ingress.class: nginx
+  ##   cert-manager.io/cluster-issuer: cluster-issuer-name
+  ##
+  annotations: {}
+  ## @param ingress.tls Enable TLS configuration for the host defined at `ingress.hostname` parameter
+  ## TLS certificates will be retrieved from a TLS secret
+  ## You can:
+  ##   - Rely on cert-manager to create it by setting the corresponding annotations
+  ##
+  tls: false
+
+
+## @section Persistence Parameters
+##
+
+## Enable persistence using Persistent Volume Claims
+## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+persistence:
+  ## @param persistence.enabled Enable persistence using Persistent Volume Claims
+  ##
+  enabled: false

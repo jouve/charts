@@ -1,0 +1,43 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: {{ include "common.capabilities.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if or .Values.commonAnnotations .Values.ingress.annotations }}
+  annotations:
+    {{- with .Values.commonAnnotations }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+    {{- with .Values.ingress.annotations }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  {{- if and .Values.ingress.ingressClassName (eq "true" (include "common.ingress.supportsIngressClassname" .)) }}
+  ingressClassName: {{ .Values.ingress.ingressClassName | quote }}
+  {{- end }}
+  rules:
+    {{- if .Values.ingress.hostname }}
+    - host: {{ .Values.ingress.hostname }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.path }}
+            {{- if eq "true" (include "common.ingress.supportsPathType" .) }}
+            pathType: ImplementationSpecific
+            {{- end }}
+            backend: {{- include "common.ingress.backend" (dict "serviceName" (printf "%s-http" (include "common.names.fullname" .)) "servicePort" "http" "context" $)  | nindent 14 }}
+    {{- end }}
+  {{- if or (and .Values.ingress.tls (include "common.ingress.certManagerRequest" ( dict "annotations" .Values.ingress.annotations ))) }}
+  tls:
+    {{- if and .Values.ingress.tls (include "common.ingress.certManagerRequest" ( dict "annotations" .Values.ingress.annotations )) }}
+    - hosts:
+        - {{ .Values.ingress.hostname | quote }}
+      secretName: {{ template "common.names.fullname" . }}-tls
+    {{- end }}
+  {{- end }}
+{{- end }}

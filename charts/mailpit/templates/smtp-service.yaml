@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "common.names.fullname" . }}-smtp
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if or .Values.commonAnnotations .Values.service.smtp.annotations }}
+  annotations:
+    {{- with .Values.commonAnnotations }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+    {{- with .Values.service.smtp.annotations }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.smtp.type }}
+  ports:
+    - name: smtp
+      port: 25
+      {{- if and (or (eq .Values.service.smtp.type "NodePort") (eq .Values.service.smtp.type "LoadBalancer")) (not (empty .Values.service.smtp.nodePorts.http)) }}
+      nodePort: {{ .Values.service.smtp.nodePorts.http }}
+      {{- end }}
+      targetPort: smtp
+  selector: {{- include "common.labels.matchLabels" . | nindent 4 }}
