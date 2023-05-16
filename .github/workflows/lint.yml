@@ -1,4 +1,4 @@
-name: ct-lint
+name: lint
 
 # Controls when the workflow will run
 on:
