@@ -3,6 +3,26 @@ entries:
   mailpit:
   - apiVersion: v2
     appVersion: 1.6.9
+    created: "2023-05-17T22:05:35.387311139Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: 55e74a39304c2d4a4b3bc300a42989b33130caaf067cda3d591a606113f0565f
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/mailpit-0.1.2/mailpit-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.6.9
     created: "2023-05-17T20:41:36.701881867Z"
     dependencies:
     - name: common
@@ -22,6 +42,28 @@ entries:
     - https://github.com/jouve/charts/releases/download/mailpit-0.1.1/mailpit-0.1.1.tgz
     version: 0.1.1
   postgresql:
+  - apiVersion: v2
+    appVersion: "15.3"
+    created: "2023-05-17T22:05:35.601793271Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Deploy postgresql using cloudnative-pg operator
+    digest: ba9f3a2b9faac317dc612e54199ab1ca1d80abf5329c913175b447cf57596d82
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: postgresql
+    sources:
+    - https://github.com/jouve/charts
+    - https://cloudnative-pg.io/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/postgresql-0.1.1/postgresql-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: "15.3"
     created: "2023-05-17T20:41:36.901656325Z"
@@ -44,4 +86,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/postgresql-0.1.0/postgresql-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-17T20:41:36.901660924Z"
+generated: "2023-05-17T22:05:35.60180667Z"
