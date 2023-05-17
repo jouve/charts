@@ -1,0 +1,9 @@
+apiVersion: v2
+name: raw
+version: 0.1.0
+dependencies:
+- name: common
+  repository: oci://registry-1.docker.io/bitnamicharts
+  tags:
+  - bitnami-common
+  version: 2.x.x
