@@ -1,0 +1,47 @@
+apiVersion: v1
+entries:
+  mailpit:
+  - apiVersion: v2
+    appVersion: 1.6.9
+    created: "2023-05-17T20:41:36.701881867Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: 2e1f6fb7322ea972c95e13e5872ec4c306b103abb1ba3cd88a7c41f6e27e769b
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/mailpit-0.1.1/mailpit-0.1.1.tgz
+    version: 0.1.1
+  postgresql:
+  - apiVersion: v2
+    appVersion: "15.3"
+    created: "2023-05-17T20:41:36.901656325Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Deploy postgresql using cloudnative-pg operator
+    digest: dbf6041570e967b864af216e478edb41536e1d72a9e66384f8ad99fb09f98c17
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: postgresql
+    sources:
+    - https://github.com/jouve/charts
+    - https://cloudnative-pg.io/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/postgresql-0.1.0/postgresql-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-05-17T20:41:36.901660924Z"
