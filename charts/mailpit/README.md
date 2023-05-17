@@ -1,5 +1,11 @@
 # mailpit
 
+## usage
+
+```console
+helm repo add jouve https://jouve.github.io/charts/
+```
+
 ## Parameters
 
 ### Global parameters

@@ -1,3 +1,5 @@
+## @param clusterDomain Kubernetes cluster domain name
+##
 clusterDomain: cluster.local
 
 ## @section Global parameters
@@ -21,6 +23,13 @@ global:
 ##
 replicaCount: 1
 
+# https://cloudnative-pg.io/documentation/current/backup_recovery/
+## @param backup.enabled Enable backup
+## @param backup.endpointURL Endpoint to be used to upload data to the cloud
+## @param backup.bucketName Name of the bucket
+## @param backup.existingSecret Name of the secret containing the credentials
+## @param backup.objectBucketClaim.enabled Create the bucket from an ObjectBucketClaim
+## @param backup.objectBucketClaim.storageClassName StorageClass for the ObjectBucketClaim
 backup:
   enabled: false
   endpointURL: ""
@@ -47,6 +56,12 @@ persistence:
   ##
   size: 8Gi
 
+## @param networkPolicy.enabled Enable network policies
+## @param networkPolicy.apiServerPeer networkPolicyPeer of the apiserver
+## @param networkPolicy.cnpgPeer networkPolicyPeer of the operator
+## @param networkPolicy.objectStoragePeer networkPolicyPeer of the object storage (see backup)
+## @param networkPolicy.egressRules additional egress rules
+## @param networkPolicy.ingressRules additional ingress rules
 networkPolicy:
   enabled: false
   apiServerPeer: {}
@@ -55,6 +70,8 @@ networkPolicy:
   egressRules: []
   ingressRules: []
 
+## @param certificates.mode manage certificates by the operator or cert-manager
+## @param certificates.issuerRef cert-manager issuer for certificates. selfSigned issuer is created if empty
 certificates:
   # operator-manager | cert-manager
   mode: operator-manager
@@ -71,6 +88,6 @@ metrics:
   ## Prometheus Operator PodMonitor configuration
   ##
   podMonitor:
-    ## @param metrics.serviceMonitor.enabled Create PodMonitor Resource for scraping metrics using Prometheus Operator
+    ## @param metrics.podMonitor.enabled Create PodMonitor Resource for scraping metrics using Prometheus Operator
     ##
     enabled: false

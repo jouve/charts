@@ -2,7 +2,7 @@ apiVersion: v2
 name: postgresql
 description: Deploy postgresql using cloudnative-pg operator
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: "15.3"
 sources:
 - https://github.com/jouve/charts
