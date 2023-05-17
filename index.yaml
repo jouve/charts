@@ -86,4 +86,18 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/postgresql-0.1.0/postgresql-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-17T22:05:35.60180667Z"
+  raw:
+  - apiVersion: v2
+    created: "2023-05-17T22:32:48.61601067Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    digest: 99ed145ea8e843432d5f772a79c0f1a2387ffcf088e23a8b2444aea8bb2726f8
+    name: raw
+    urls:
+    - https://github.com/jouve/charts/releases/download/raw-0.1.0/raw-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-05-17T22:32:48.61602107Z"
