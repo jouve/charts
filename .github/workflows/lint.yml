@@ -82,7 +82,6 @@ jobs:
 
   # https://github.com/aquasecurity/trivy-action#scan-ci-pipeline-w-trivy-config
   trivy:
-    name: Build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code

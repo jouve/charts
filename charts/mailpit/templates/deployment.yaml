@@ -12,6 +12,12 @@ metadata:
   {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  {{- if and .Values.persistence.enabled (eq (index .Values.persistence.accessModes 0) "ReadWriteOnce") }}
+  strategy:
+    type: Recreate
+  {{- else if .Values.updateStrategy }}
+  strategy: {{- toYaml .Values.updateStrategy | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
   template:
@@ -124,9 +130,8 @@ spec:
         {{- end }}
         - name: data
           {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ default (include "common.names.fullname" .) .Values.persistence.existingClaim }}
           {{- else }}
-          emptyDir:
+          emptyDir: {}
           {{- end }}
-        {{- with .Values.extraVolumes }}
-        {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
-        {{- end }}

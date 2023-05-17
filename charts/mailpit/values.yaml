@@ -53,12 +53,21 @@ image:
   ##
   debug: false
 
+## @param updateStrategy.type statefulset strategy type
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
+##
+updateStrategy:
+  ## StrategyType
+  ## Can be set to RollingUpdate or OnDelete
+  ##
+  type: RollingUpdate
+
 ## @param replicaCount Number of replicas to deploy
 ##
 replicaCount: 1
 
 ## @param containerPorts.http HTTP container port
-## @param containerPorts.https HTTPS container port
+## @param containerPorts.smtp HTTPS container port
 ##
 containerPorts:
   http: 8025
@@ -86,6 +95,7 @@ podSecurityContext:
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
 ## @param containerSecurityContext.enabled Enabled containers' Security Context
 ## @param containerSecurityContext.runAsUser Set containers' Security Context runAsUser
+## @param containerSecurityContext.runAsGroup Set containers' Security Context runAsGroup
 ## @param containerSecurityContext.runAsNonRoot Set containers' Security Context runAsNonRoot
 ## @param containerSecurityContext.readOnlyRootFilesystem Set containers' Security Context runAsNonRoot
 ##
@@ -112,18 +122,24 @@ extraEnvVars: []
 # https://github.com/axllent/mailpit/wiki/HTTPS
 mailpit:
   ui:
-    # @param mailpit.ui.authFile Adding basic authentication to web UI
+    ## @param mailpit.ui.authFile.enabled Adding basic authentication to web UI
+    ## @param mailpit.ui.authFile.htpasswd htpasswd content
     authFile:
       enabled: false
       htpasswd: ""
+    ## @param mailpit.ui.tls.enabled Enable tls for web UI
+    ## @param mailpit.ui.tls.secretName tls secret for web UI
     tls:
       enabled: false
       secretName: ""
   smtp:
-    # @param mailpit.smtp.authFile Adding SMTP authentication
+    ## @param mailpit.smtp.authFile.enabled Adding SMTP authentication
+    ## @param mailpit.smtp.authFile.htpasswd htpasswd content
     authFile:
       enabled: false
       htpasswd: ""
+    ## @param mailpit.smtp.tls.enabled Enable tls for SMTP
+    ## @param mailpit.smtp.tls.secretName tls secret for SMTP
     tls:
       enabled: false
       secretName: ""
@@ -191,3 +207,38 @@ persistence:
   ## @param persistence.enabled Enable persistence using Persistent Volume Claims
   ##
   enabled: false
+  ## @param persistence.storageClass Storage class of backing PVC
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  storageClass: ""
+  ## @param persistence.annotations Persistent Volume Claim annotations
+  ##
+  annotations: {}
+  ## @param persistence.labels Persistent Volume Claim labels
+  ##
+  labels: {}
+  ## @param persistence.accessModes Persistent Volume Access Modes
+  ##
+  accessModes:
+    - ReadWriteOnce
+  ## @param persistence.size Size of data volume
+  ##
+  size: 8Gi
+  ## @param persistence.existingClaim The name of an existing PVC to use for persistence
+  ##
+  existingClaim: ""
+  ## @param persistence.selector Selector to match an existing Persistent Volume for WordPress data PVC
+  ## If set, the PVC can't have a PV dynamically provisioned for it
+  ## E.g.
+  ## selector:
+  ##   matchLabels:
+  ##     app: my-app
+  ##
+  selector: {}
+  ## @param persistence.dataSource Custom PVC data source
+  ##
+  dataSource: {}
