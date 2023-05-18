@@ -25,6 +25,8 @@ spec:
   monitoring:
     enablePodMonitor: true
   {{- end }}
+  affinity:
+    podAntiAffinityType: {{ .Values.affinity.podAntiAffinityType }}
   {{- if .Values.backup.enabled }}
   backup:
     barmanObjectStore:
@@ -37,4 +39,5 @@ spec:
         secretAccessKey:
           name: {{ if .Values.backup.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.existingSecret }}{{ end }}
           key: AWS_SECRET_ACCESS_KEY
+    retentionPolicy: {{ .Values.backup.retentionPolicy | quote }}
   {{- end }}

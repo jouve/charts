@@ -23,6 +23,12 @@ global:
 ##
 replicaCount: 1
 
+affinity:
+  ## @param affinity.podAntiAffinityType Allowed values are: "preferred" or "required".
+  ## ref: https://cloudnative-pg.io/documentation/1.16/api_reference/#AffinityConfiguration
+  ##
+  podAntiAffinityType: required
+
 # https://cloudnative-pg.io/documentation/current/backup_recovery/
 ## @param backup.enabled Enable backup
 ## @param backup.endpointURL Endpoint to be used to upload data to the cloud
@@ -30,6 +36,9 @@ replicaCount: 1
 ## @param backup.existingSecret Name of the secret containing the credentials
 ## @param backup.objectBucketClaim.enabled Create the bucket from an ObjectBucketClaim
 ## @param backup.objectBucketClaim.storageClassName StorageClass for the ObjectBucketClaim
+## @param backup.scheduled.enabled Enabled creation of a scheduled backup
+## @param backup.scheduled.schedule Schedule of the scheduled backup
+## @param backup.retentionPolicy Retention for backups
 backup:
   enabled: false
   endpointURL: ""
@@ -40,6 +49,10 @@ backup:
   objectBucketClaim:
     enabled: false
     storageClassName: ""
+  scheduled:
+    enabled: false
+    schedule: 0 0 0 * * *
+  retentionPolicy: 7d
 
 ## PostgreSQL persistence configuration
 ##
