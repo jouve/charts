@@ -1,5 +1,19 @@
 apiVersion: v1
 entries:
+  extra:
+  - apiVersion: v2
+    created: "2023-05-18T14:40:57.389132179Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    digest: 91f4ff3d3a1544d48a0c472cb41a8b72c0e7646afc0e132761a5460735cd9b50
+    name: extra
+    urls:
+    - https://github.com/jouve/charts/releases/download/extra-0.1.0/extra-0.1.0.tgz
+    version: 0.1.0
   mailpit:
   - apiVersion: v2
     appVersion: 1.6.9
@@ -122,4 +136,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/raw-0.1.0/raw-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-18T10:54:17.640519913Z"
+generated: "2023-05-18T14:40:57.38920408Z"
