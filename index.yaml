@@ -17,6 +17,26 @@ entries:
   mailpit:
   - apiVersion: v2
     appVersion: 1.6.10
+    created: "2023-05-20T15:37:59.887907448Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: eddf580068eecb3e6edefcc4a974673a0c5c873bb81f9229570f3e74e93c0bf2
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/mailpit-0.1.4/mailpit-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 1.6.10
     created: "2023-05-20T15:07:33.078607519Z"
     dependencies:
     - name: common
@@ -142,4 +162,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/postgresql-0.1.0/postgresql-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-20T15:07:33.078623219Z"
+generated: "2023-05-20T15:37:59.887927448Z"
