@@ -30,16 +30,19 @@ spec:
       annotations: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
       {{- end }}
     spec:
-      {{- if .Values.podSecurityContext.enabled }}
-      securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
-      {{- end }}
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1001
       containers:
         - name: mailpit
           image: {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
-          {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 1001
+            runAsGroup: 1001
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
           args:
           - --db-file
           - /var/lib/mailpit/mailpit.db
@@ -83,10 +86,10 @@ spec:
           resources: {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
-            {{- range $name, $containerPort := .Values.containerPorts }}
-            - name: {{ $name }}
-              containerPort: {{ $containerPort }}
-            {{- end }}
+            - name: http
+              containerPort: 8025
+            - name: smtp
+              containerPort: 1025
           volumeMounts:
           - name: data
             mountPath: /var/lib/mailpit

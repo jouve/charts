@@ -66,13 +66,6 @@ updateStrategy:
 ##
 replicaCount: 1
 
-## @param containerPorts.http HTTP container port
-## @param containerPorts.smtp HTTPS container port
-##
-containerPorts:
-  http: 8025
-  smtp: 1025
-
 ## resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ## @param resources.limits The resources limits for the containers
@@ -81,30 +74,6 @@ containerPorts:
 resources:
   limits: {}
   requests: {}
-
-## Configure Pods Security Context
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
-## @param podSecurityContext.enabled Enabled pods' Security Context
-## @param podSecurityContext.fsGroup Set pod's Security Context fsGroup
-##
-podSecurityContext:
-  enabled: true
-  fsGroup: 1001
-
-## Configure Container Security Context
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
-## @param containerSecurityContext.enabled Enabled containers' Security Context
-## @param containerSecurityContext.runAsUser Set containers' Security Context runAsUser
-## @param containerSecurityContext.runAsGroup Set containers' Security Context runAsGroup
-## @param containerSecurityContext.runAsNonRoot Set containers' Security Context runAsNonRoot
-## @param containerSecurityContext.readOnlyRootFilesystem Set containers' Security Context runAsNonRoot
-##
-containerSecurityContext:
-  enabled: true
-  runAsUser: 1001
-  runAsGroup: 1001
-  runAsNonRoot: true
-  readOnlyRootFilesystem: true
 
 ## @param args Override default container args (useful when using custom images)
 ##
