@@ -76,6 +76,13 @@ spec:
           {{- if .Values.image.debug }}
           - --verbose
           {{- end }}
+          {{- if .Values.mailpit.relay.enabled }}
+          - --smtp-relay-config
+          - /etc/mailpit/smtp_relay.yaml
+          {{- if .Values.mailpit.relay.relayAll }}
+          - --smtp-relay-all
+          {{- end }}
+          {{- end }}
           {{- with .Values.args }}
           {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
           {{- end }}
@@ -93,7 +100,7 @@ spec:
           volumeMounts:
           - name: data
             mountPath: /var/lib/mailpit
-          {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.tls.secretName .Values.mailpit.smtp.tls.secretName }}
+          {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.tls.secretName .Values.mailpit.smtp.tls.secretName .Values.mailpit.relay.enabled }}
           - name: etc
             mountPath: /etc/mailpit
           {{- end }}
@@ -104,7 +111,7 @@ spec:
         {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
         {{- end }}
       volumes:
-        {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.tls.secretName .Values.mailpit.smtp.tls.secretName }}
+        {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.tls.secretName .Values.mailpit.smtp.tls.secretName .Values.mailpit.relay.enabled }}
         - name: etc
           projected:
             sources:
@@ -129,6 +136,10 @@ spec:
                 path: smtp.crt
               - key: tls.key
                 path: smtp.key
+            {{- end }}
+            {{- if .Values.mailpit.relay.enabled }}
+            - secret:
+                name: {{ template "common.names.fullname" . }}-relay
             {{- end }}
         {{- end }}
         - name: data

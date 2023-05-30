@@ -1,0 +1,20 @@
+{{- if .Values.mailpit.relay.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "common.names.fullname" . }}-relay
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+type: Opaque
+{{- with .Values.mailpit.relay.config }}
+stringData:
+  smtp_relay.yaml: |
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+{{- end }}
