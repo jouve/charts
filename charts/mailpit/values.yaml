@@ -34,7 +34,7 @@ global:
 image:
   registry: docker.io
   repository: axllent/mailpit
-  tag: v1.6.10
+  tag: v1.6.13
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -115,7 +115,7 @@ mailpit:
   relay:
     ## @param mailpit.relay.enabled enable SMTP Relay configuration
     ## @param mailpit.relay.config Mailpit SMTP relay configuration
-    ## @param.mailpit.relay.relayAll Relay all messages to relay
+    ## @param mailpit.relay.relayAll Relay all messages to relay
     enabled: false
     config: {}
     relayAll: false

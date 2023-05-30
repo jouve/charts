@@ -4,6 +4,7 @@
 
 ```console
 helm repo add jouve https://jouve.github.io/charts/
+helm install mailpit jouve/mailpit
 ```
 
 ## Parameters
@@ -18,50 +19,41 @@ helm repo add jouve https://jouve.github.io/charts/
 
 ### Parameters
 
-| Name                                              | Description                                                                                                                                | Value             |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
-| `image.registry`                                  | image registry                                                                                                                             | `docker.io`       |
-| `image.repository`                                | image repository                                                                                                                           | `axllent/mailpit` |
-| `image.tag`                                       | image tag (immutable tags are recommended)                                                                                                 | `v1.6.10`         |
-| `image.digest`                                    | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`              |
-| `image.pullPolicy`                                | image pull policy                                                                                                                          | `IfNotPresent`    |
-| `image.pullSecrets`                               | image pull secrets                                                                                                                         | `[]`              |
-| `image.debug`                                     | Enable image debug mode                                                                                                                    | `false`           |
-| `updateStrategy.type`                             | statefulset strategy type                                                                                                                  | `RollingUpdate`   |
-| `replicaCount`                                    | Number of replicas to deploy                                                                                                               | `1`               |
-| `containerPorts.http`                             | HTTP container port                                                                                                                        | `8025`            |
-| `containerPorts.smtp`                             | HTTPS container port                                                                                                                       | `1025`            |
-| `resources.limits`                                | The resources limits for the containers                                                                                                    | `{}`              |
-| `resources.requests`                              | The requested resources for the containers                                                                                                 | `{}`              |
-| `podSecurityContext.enabled`                      | Enabled pods' Security Context                                                                                                             | `true`            |
-| `podSecurityContext.fsGroup`                      | Set pod's Security Context fsGroup                                                                                                         | `1001`            |
-| `containerSecurityContext.enabled`                | Enabled containers' Security Context                                                                                                       | `true`            |
-| `containerSecurityContext.runAsUser`              | Set containers' Security Context runAsUser                                                                                                 | `1001`            |
-| `containerSecurityContext.runAsGroup`             | Set containers' Security Context runAsGroup                                                                                                | `1001`            |
-| `containerSecurityContext.runAsNonRoot`           | Set containers' Security Context runAsNonRoot                                                                                              | `true`            |
-| `containerSecurityContext.readOnlyRootFilesystem` | Set containers' Security Context runAsNonRoot                                                                                              | `true`            |
-| `args`                                            | Override default container args (useful when using custom images)                                                                          | `[]`              |
-| `extraEnvVars`                                    | Array with extra environment variables to add to nodes                                                                                     | `[]`              |
-| `mailpit.ui.authFile.enabled`                     | Adding basic authentication to web UI                                                                                                      | `false`           |
-| `mailpit.ui.authFile.htpasswd`                    | htpasswd content                                                                                                                           | `""`              |
-| `mailpit.ui.tls.enabled`                          | Enable tls for web UI                                                                                                                      | `false`           |
-| `mailpit.ui.tls.secretName`                       | tls secret for web UI                                                                                                                      | `""`              |
-| `mailpit.smtp.authFile.enabled`                   | Adding SMTP authentication                                                                                                                 | `false`           |
-| `mailpit.smtp.authFile.htpasswd`                  | htpasswd content                                                                                                                           | `""`              |
-| `mailpit.smtp.tls.enabled`                        | Enable tls for SMTP                                                                                                                        | `false`           |
-| `mailpit.smtp.tls.secretName`                     | tls secret for SMTP                                                                                                                        | `""`              |
-| `mailpit.relay.enabled`                           | Enable STMP relay configuration                                                                                                            | `false`           |
-| `mailpit.relay.config`                            | Mailpit Relay Configuration object, `smtpRelayConfigStruct struct`                                                                         | `{}`              |
-| `mailpit.relay.relayAll`                          | Automatically relay all emails                                                                                                             | `false`           |
+| Name                             | Description                                                                                                                                | Value             |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `image.registry`                 | image registry                                                                                                                             | `docker.io`       |
+| `image.repository`               | image repository                                                                                                                           | `axllent/mailpit` |
+| `image.tag`                      | image tag (immutable tags are recommended)                                                                                                 | `v1.6.13`         |
+| `image.digest`                   | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`              |
+| `image.pullPolicy`               | image pull policy                                                                                                                          | `IfNotPresent`    |
+| `image.pullSecrets`              | image pull secrets                                                                                                                         | `[]`              |
+| `image.debug`                    | Enable image debug mode                                                                                                                    | `false`           |
+| `updateStrategy.type`            | statefulset strategy type                                                                                                                  | `RollingUpdate`   |
+| `replicaCount`                   | Number of replicas to deploy                                                                                                               | `1`               |
+| `resources.limits`               | The resources limits for the containers                                                                                                    | `{}`              |
+| `resources.requests`             | The requested resources for the containers                                                                                                 | `{}`              |
+| `args`                           | Override default container args (useful when using custom images)                                                                          | `[]`              |
+| `extraEnvVars`                   | Array with extra environment variables to add to nodes                                                                                     | `[]`              |
+| `mailpit.ui.authFile.enabled`    | Adding basic authentication to web UI                                                                                                      | `false`           |
+| `mailpit.ui.authFile.htpasswd`   | htpasswd content                                                                                                                           | `""`              |
+| `mailpit.ui.tls.enabled`         | Enable tls for web UI                                                                                                                      | `false`           |
+| `mailpit.ui.tls.secretName`      | tls secret for web UI                                                                                                                      | `""`              |
+| `mailpit.smtp.authFile.enabled`  | Adding SMTP authentication                                                                                                                 | `false`           |
+| `mailpit.smtp.authFile.htpasswd` | htpasswd content                                                                                                                           | `""`              |
+| `mailpit.smtp.tls.enabled`       | Enable tls for SMTP                                                                                                                        | `false`           |
+| `mailpit.smtp.tls.secretName`    | tls secret for SMTP                                                                                                                        | `""`              |
+| `mailpit.relay.enabled`          | enable SMTP Relay configuration                                                                                                            | `false`           |
+| `mailpit.relay.config`           | Mailpit SMTP relay configuration                                                                                                           | `{}`              |
+| `mailpit.relay.relayAll`         | Relay all messages to relay                                                                                                                | `false`           |
 
 ### Traffic Exposure Parameters
 
 | Name                       | Description                                                                                                                      | Value            |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | `service.http.type`        | service type                                                                                                                     | `ClusterIP`      |
-| `service.http.nodePort`    | port to bind to in case of LoadBalancer or NodePort type                                                                         | `""`             | 
+| `service.http.nodePort`    | nodeport bind for HTTP service                                                                                                   | `nil`            |
 | `service.smtp.type`        | service type                                                                                                                     | `ClusterIP`      |
-| `service.smtp.nodePort`    | port to bind to in case of LoadBalancer or NodePort type                                                                         | `""`             | 
+| `service.smtp.nodePort`    | nodeport bind for STMP service                                                                                                   | `nil`            |
 | `ingress.enabled`          | Enable ingress record generation for %%MAIN_CONTAINER_NAME%%                                                                     | `false`          |
 | `ingress.hostname`         | Default host for the ingress record                                                                                              | `hostname.local` |
 | `ingress.ingressClassName` | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                                    | `""`             |
