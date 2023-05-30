@@ -130,7 +130,7 @@ service:
     ## @param service.http.type service type
     ## @param service.http.nodePort nodeport bind for HTTP service
     ##
-    type: NodePort
+    type: ClusterIP
     nodePort:
   smtp:
     ## @param service.smtp.type service type
