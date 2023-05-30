@@ -22,7 +22,7 @@ helm repo add jouve https://jouve.github.io/charts/
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `image.registry`                                  | image registry                                                                                                                             | `docker.io`       |
 | `image.repository`                                | image repository                                                                                                                           | `axllent/mailpit` |
-| `image.tag`                                       | image tag (immutable tags are recommended)                                                                                                 | `v1.6.10`          |
+| `image.tag`                                       | image tag (immutable tags are recommended)                                                                                                 | `v1.6.10`         |
 | `image.digest`                                    | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`              |
 | `image.pullPolicy`                                | image pull policy                                                                                                                          | `IfNotPresent`    |
 | `image.pullSecrets`                               | image pull secrets                                                                                                                         | `[]`              |
@@ -50,13 +50,18 @@ helm repo add jouve https://jouve.github.io/charts/
 | `mailpit.smtp.authFile.htpasswd`                  | htpasswd content                                                                                                                           | `""`              |
 | `mailpit.smtp.tls.enabled`                        | Enable tls for SMTP                                                                                                                        | `false`           |
 | `mailpit.smtp.tls.secretName`                     | tls secret for SMTP                                                                                                                        | `""`              |
+| `mailpit.relay.enabled`                           | Enable STMP relay configuration                                                                                                            | `false`           |
+| `mailpit.relay.config`                            | Mailpit Relay Configuration object, `smtpRelayConfigStruct struct`                                                                         | `{}`              |
+| `mailpit.relay.relayAll`                          | Automatically relay all emails                                                                                                             | `false`           |
 
 ### Traffic Exposure Parameters
 
 | Name                       | Description                                                                                                                      | Value            |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | `service.http.type`        | service type                                                                                                                     | `ClusterIP`      |
+| `service.http.nodePort`    | port to bind to in case of LoadBalancer or NodePort type                                                                         | `""`             | 
 | `service.smtp.type`        | service type                                                                                                                     | `ClusterIP`      |
+| `service.smtp.nodePort`    | port to bind to in case of LoadBalancer or NodePort type                                                                         | `""`             | 
 | `ingress.enabled`          | Enable ingress record generation for %%MAIN_CONTAINER_NAME%%                                                                     | `false`          |
 | `ingress.hostname`         | Default host for the ingress record                                                                                              | `hostname.local` |
 | `ingress.ingressClassName` | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                                    | `""`             |

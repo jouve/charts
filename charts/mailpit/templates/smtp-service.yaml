@@ -21,8 +21,8 @@ spec:
   ports:
     - name: smtp
       port: 25
-      {{- if and (or (eq .Values.service.smtp.type "NodePort") (eq .Values.service.smtp.type "LoadBalancer")) (not (empty .Values.service.smtp.nodePorts.http)) }}
-      nodePort: {{ .Values.service.smtp.nodePorts.http }}
+      {{- if and (or (eq .Values.service.smtp.type "NodePort") (eq .Values.service.smtp.type "LoadBalancer")) (not (empty .Values.service.smtp.nodePort)) }}
+      nodePort: {{ .Values.service.smtp.nodePort }}
       {{- end }}
       targetPort: smtp
   selector: {{- include "common.labels.matchLabels" . | nindent 4 }}

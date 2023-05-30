@@ -112,7 +112,13 @@ mailpit:
     tls:
       enabled: false
       secretName: ""
-
+  relay:
+    ## @param mailpit.relay.enabled enable SMTP Relay configuration
+    ## @param mailpit.relay.config Mailpit SMTP relay configuration
+    ## @param.mailpit.relay.relayAll Relay all messages to relay
+    enabled: false
+    config: {}
+    relayAll: false
 
 ## @section Traffic Exposure Parameters
 ##
@@ -122,12 +128,16 @@ mailpit:
 service:
   http:
     ## @param service.http.type service type
+    ## @param service.http.nodePort nodeport bind for HTTP service
     ##
     type: ClusterIP
+    nodePort:
   smtp:
     ## @param service.smtp.type service type
+    ## @param service.smtp.nodePort nodeport bind for STMP service
     ##
     type: ClusterIP
+    nodePort:
 
 
 ## ingress parameters

@@ -21,8 +21,8 @@ spec:
   ports:
     - name: http
       port: 80
-      {{- if and (or (eq .Values.service.http.type "NodePort") (eq .Values.service.http.type "LoadBalancer")) (not (empty .Values.service.http.nodePorts.http)) }}
-      nodePort: {{ .Values.service.http.nodePorts.http }}
+      {{- if and (or (eq .Values.service.http.type "NodePort") (eq .Values.service.http.type "LoadBalancer")) (not (empty .Values.service.http.nodePort)) }}
+      nodePort: {{ .Values.service.http.nodePort }}
       {{- end }}
       targetPort: http
   selector: {{- include "common.labels.matchLabels" . | nindent 4 }}
