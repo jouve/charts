@@ -6,10 +6,9 @@ skip-check:
 - CKV_K8S_12  # Memory requests should be set
 - CKV_K8S_13  # Memory limits should be set
 - CKV_K8S_15  # Image Pull Policy should be Always
-- CKV_K8S_21  # The default namespace should not be used
 - CKV_K8S_28  # Minimize the admission of containers with the NET_RAW capability
 - CKV_K8S_31  # Ensure that the seccomp profile is set to docker/default or runtime/default
 - CKV_K8S_37  # Minimize the admission of containers with capabilities assigned
 - CKV_K8S_40  # Containers should run as a high UID to avoid host conflict
 - CKV_K8S_43  # Image should use digest
-- CKV2_GHA_1  # Ensure top-level permissions are not set to write-all
+- CKV_K8S_21  # The default namespace should not be used
