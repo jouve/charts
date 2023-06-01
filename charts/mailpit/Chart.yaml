@@ -2,15 +2,15 @@ apiVersion: v2
 name: mailpit
 description: An email and SMTP testing tool with API for developers
 type: application
-version: 0.2.1
+version: 0.2.2
 appVersion: 1.6.13
-sources:
-- https://github.com/jouve/charts
-- https://github.com/axllent/mailpit
 dependencies:
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 2.x.x
+sources:
+- https://github.com/jouve/charts
+- https://github.com/axllent/mailpit
 maintainers:
 - name: jouve
   url: https://github.com/jouve

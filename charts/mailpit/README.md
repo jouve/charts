@@ -17,7 +17,7 @@ helm install mailpit jouve/mailpit
 | `global.imagePullSecrets` | Global Docker registry secret names as an array | `[]`  |
 | `global.storageClass`     | Global StorageClass for Persistent Volume(s)    | `""`  |
 
-### Parameters
+### Common
 
 | Name                             | Description                                                                                                                                | Value             |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |

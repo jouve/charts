@@ -18,7 +18,7 @@ global:
   storageClass: ""
 
 
-## @section Parameters
+## @section Common
 ##
 
 ## Bitnami image

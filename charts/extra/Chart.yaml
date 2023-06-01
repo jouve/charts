@@ -1,9 +1,15 @@
 apiVersion: v2
 name: extra
-version: 0.1.0
+description: Deploy a list of Kubernetes resources as a release
+type: application
+version: 0.1.1
 dependencies:
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
-  tags:
-  - bitnami-common
   version: 2.x.x
+sources:
+- https://github.com/jouve/charts
+- https://github.com/bitnami/charts
+maintainers:
+- name: jouve
+  url: https://github.com/jouve

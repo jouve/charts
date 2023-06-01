@@ -1,0 +1,4 @@
+## @section Common parameters
+
+## @param apiVersion HNC apiVersion
+apiVersion: hnc.x-k8s.io/v1alpha2
