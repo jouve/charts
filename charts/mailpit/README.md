@@ -30,8 +30,10 @@ helm install mailpit jouve/mailpit
 | `image.debug`                    | Enable image debug mode                                                                                                                    | `false`           |
 | `updateStrategy.type`            | statefulset strategy type                                                                                                                  | `RollingUpdate`   |
 | `replicaCount`                   | Number of replicas to deploy                                                                                                               | `1`               |
-| `resources.limits`               | The resources limits for the containers                                                                                                    | `{}`              |
-| `resources.requests`             | The requested resources for the containers                                                                                                 | `{}`              |
+| `resources.limits.cpu`           | The resources limits for the containers                                                                                                    | `100m`            |
+| `resources.limits.memory`        | The resources limits for the containers                                                                                                    | `64Mi`            |
+| `resources.requests.cpu`         | The requested resources for the containers                                                                                                 | `10m`             |
+| `resources.requests.memory`      | The requested resources for the containers                                                                                                 | `8Mi`             |
 | `args`                           | Override default container args (useful when using custom images)                                                                          | `[]`              |
 | `extraEnvVars`                   | Array with extra environment variables to add to nodes                                                                                     | `[]`              |
 | `mailpit.ui.authFile.enabled`    | Adding basic authentication to web UI                                                                                                      | `false`           |

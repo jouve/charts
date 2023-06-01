@@ -68,12 +68,18 @@ replicaCount: 1
 
 ## resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-## @param resources.limits The resources limits for the containers
-## @param resources.requests The requested resources for the containers
+## @param resources.limits.cpu The resources limits for the containers
+## @param resources.limits.memory The resources limits for the containers
+## @param resources.requests.cpu The requested resources for the containers
+## @param resources.requests.memory The requested resources for the containers
 ##
 resources:
-  limits: {}
-  requests: {}
+  limits:
+    cpu: 100m
+    memory: 64Mi
+  requests:
+    cpu: 5m
+    memory: 4Mi
 
 ## @param args Override default container args (useful when using custom images)
 ##
