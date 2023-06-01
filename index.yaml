@@ -2,6 +2,25 @@ apiVersion: v1
 entries:
   extra:
   - apiVersion: v2
+    created: "2023-06-01T20:18:03.810568338Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy a list of Kubernetes resources as a release
+    digest: 75cb8c56d7a1a76fbc4357085a4056f7e2e58b209d0657e71e0323fcf6c8d9d1
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: extra
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/bitnami/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/extra-0.1.1/extra-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2023-05-18T14:40:57.389132179Z"
     dependencies:
     - name: common
@@ -15,6 +34,26 @@ entries:
     - https://github.com/jouve/charts/releases/download/extra-0.1.0/extra-0.1.0.tgz
     version: 0.1.0
   mailpit:
+  - apiVersion: v2
+    appVersion: 1.6.13
+    created: "2023-06-01T20:18:03.9595894Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: c3fd6c6300b500a4ce13dc1849aeec90baa06ae8793985a7b48216a070f4e491
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/mailpit-0.2.2/mailpit-0.2.2.tgz
+    version: 0.2.2
   - apiVersion: v2
     appVersion: 1.6.13
     created: "2023-05-30T19:31:31.722944998Z"
@@ -138,6 +177,26 @@ entries:
   postgresql:
   - apiVersion: v2
     appVersion: "15.3"
+    created: "2023-06-01T20:18:04.10299146Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy postgresql using cloudnative-pg operator
+    digest: 052678a1772c6e7afbf41469e4b0bd866d3ef45f3a2a8c3068659854891b0067
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: postgresql
+    sources:
+    - https://github.com/jouve/charts
+    - https://cloudnative-pg.io/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/postgresql-0.1.3/postgresql-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: "15.3"
     created: "2023-05-18T10:54:17.640493512Z"
     dependencies:
     - name: common
@@ -202,4 +261,24 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/postgresql-0.1.0/postgresql-0.1.0.tgz
     version: 0.1.0
-generated: "2023-05-30T19:31:31.722971199Z"
+  subnamespace:
+  - apiVersion: v2
+    created: "2023-06-01T20:18:04.258043825Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: SubnamespaceAnchor is the Schema for the subnamespace API
+    digest: 4431b3671af0de29a7e6d6017e2ef4c11de476b419878bbb2d3c6ada9c613a97
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: subnamespace
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-06-01T20:18:04.258085925Z"
