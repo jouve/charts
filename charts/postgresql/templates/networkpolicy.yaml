@@ -19,26 +19,33 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              {{ template "common.names.fullname" . }}-client: "true"
+              cnpg.io/cluster: {{ template "common.names.fullname" . }}
         - podSelector:
             matchLabels:
-              cnpg.io/cluster: {{ template "common.names.fullname" . }}
+              {{ template "common.names.fullname" . }}-client: "true"
       ports:
-        - port: postgresql
+        - protocol: TCP
+          port: postgresql
     {{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
-    - {{- with .Values.networkPolicy.prometheusPeer }}
-      from:
+    - from:
+        {{- with .Values.networkPolicy.prometheusPeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
-      {{- end }}
+        {{- else }}
+        - {}
+        {{- end }}
       ports:
-        - port: metrics
+        - protocol: TCP
+          port: metrics
     {{- end }}
-    - {{- with .Values.networkPolicy.cnpgPeer }}
-      from:
+    - from:
+        {{- with .Values.networkPolicy.cnpgPeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
-      {{- end }}
+        {{- else }}
+        - {}
+        {{- end }}
       ports:
-        - port: status
+        - protocol: TCP
+          port: status
     {{- with .Values.networkPolicy.ingressRules }}
     {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
     {{- end }}
@@ -48,26 +55,36 @@ spec:
             matchLabels:
               cnpg.io/cluster: {{ template "common.names.fullname" . }}
       ports:
-        - port: postgresql
-    - {{- with .Values.networkPolicy.apiServerPeer }}
-      to:
+        - protocol: TCP
+          port: postgresql
+    - to:
+        {{- with .Values.networkPolicy.apiServerPeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
-      {{- end }}
+        {{- else }}
+        - {}
+        {{- end }}
       ports:
-        - port: 6443
-    - {{- with .Values.networkPolicy.cnpgPeer }}
-      to:
+        - protocol: TCP
+          port: 6443
+    - to:
+        {{- with .Values.networkPolicy.cnpgPeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
-      {{- end }}
+        {{- else }}
+        - {}
+        {{- end }}
       ports:
-        - port: webhook-server
-    {{- if .Values.backup.objectBucketClaim.enabled }}
-    - {{- with .Values.networkPolicy.objectStoragePeer }}
-      to:
+        - protocol: TCP
+          port: webhook-server
+    {{- if .Values.backup.s3.objectBucketClaim.enabled }}
+    - to:
+        {{- with .Values.networkPolicy.objectStoragePeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
-      {{- end }}
+        {{- else }}
+        - {}
+        {{- end }}
       ports:
-        - port: 8080
+        - protocol: TCP
+          port: 8080
     {{- end }}
     {{- with .Values.networkPolicy.egressRules }}
     {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}

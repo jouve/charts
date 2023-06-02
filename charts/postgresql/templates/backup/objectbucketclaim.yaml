@@ -1,4 +1,4 @@
-{{- if .Values.backup.objectBucketClaim.enabled }}
+{{- if and .Values.backup.enabled .Values.backup.s3.enabled .Values.backup.s3.objectBucketClaim.enabled }}
 apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
 metadata:
@@ -13,5 +13,5 @@ metadata:
   {{- end }}
 spec:
   bucketName: {{ if .Values.backup.bucketName }}{{ tpl .Values.backup.bucketName $ }}{{ else }}{{ include "common.names.namespace" . }}-{{ template "common.names.fullname" . }}-backup{{ end }}
-  storageClassName: {{ .Values.backup.objectBucketClaim.storageClassName }}
+  storageClassName: {{ .Values.backup.s3.objectBucketClaim.storageClassName }}
 {{- end }}

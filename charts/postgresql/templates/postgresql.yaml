@@ -4,16 +4,22 @@ metadata:
   name: {{ template "common.names.fullname" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" . | nindent 4 }}
-    {{- if .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
     {{- end }}
-  {{- if .Values.commonAnnotations }}
-  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
 spec:
   instances: {{ .Values.replicaCount }}
   storage:
     size: {{ .Values.persistence.size }}
+    {{- with include "common.storage.class" (dict "persistence" .Values.persistence "global" .Values.global) }}
+    storageClass: {{ index (. | fromYaml) "storageClassName" }}
+    {{- end }}
+  {{- with .Values.bootstrap }}
+  bootstrap: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
   {{- if eq .Values.certificates.mode "cert-manager" }}
   certificates:
     serverTLSSecret: {{ template "common.names.fullname" . }}-server
@@ -21,23 +27,30 @@ spec:
     clientCASecret: {{ template "common.names.fullname" . }}-replication
     replicationTLSSecret: {{ template "common.names.fullname" . }}-replication
   {{- end }}
+  affinity:
+    podAntiAffinityType: {{ .Values.affinity.podAntiAffinityType }}
   {{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
   monitoring:
     enablePodMonitor: true
   {{- end }}
-  affinity:
-    podAntiAffinityType: {{ .Values.affinity.podAntiAffinityType }}
   {{- if .Values.backup.enabled }}
   backup:
     barmanObjectStore:
+      {{- if .Values.backup.s3.enabled }}
       endpointURL: {{ .Values.backup.endpointURL }}
-      destinationPath: s3://{{ if .Values.backup.bucketName }}{{ .Values.backup.bucketName }}{{ else }}{{ include "common.names.namespace" . }}-{{ template "common.names.fullname" . }}-backup{{ end }}
+      {{- with .Values.backup.endpointCASecret }}
+      endpointCA:
+        name: {{ . }}
+        key: ca.crt
+      {{- end }}
+      destinationPath: s3://{{ with .Values.backup.s3.bucketName }}{{ . }}{{ else }}{{ include "common.names.namespace" . }}-{{ template "common.names.fullname" . }}-backup{{ end }}/
       s3Credentials:
         accessKeyId:
-          name: {{ if .Values.backup.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.existingSecret }}{{ end }}
+          name: {{ if .Values.backup.s3.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.s3.existingSecret }}{{ end }}
           key: AWS_ACCESS_KEY_ID
         secretAccessKey:
-          name: {{ if .Values.backup.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.existingSecret }}{{ end }}
+          name: {{ if .Values.backup.s3.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.s3.existingSecret }}{{ end }}
           key: AWS_SECRET_ACCESS_KEY
+      {{- end }}
     retentionPolicy: {{ .Values.backup.retentionPolicy | quote }}
   {{- end }}

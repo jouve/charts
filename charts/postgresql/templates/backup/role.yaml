@@ -1,4 +1,4 @@
-{{- if .Values.backup.objectBucketClaim.enabled }}
+{{- if and .Values.backup.enabled .Values.backup.s3.enabled }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -19,5 +19,5 @@ rules:
     verbs:
       - get
     resourceNames:
-      - {{ template "common.names.fullname" . }}-backup
+      - {{ if .Values.backup.s3.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.s3.existingSecret }}{{ end }}
 {{- end }}

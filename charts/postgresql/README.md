@@ -10,32 +10,34 @@ helm repo add jouve https://jouve.github.io/charts/
 
 ### Global parameters
 
-| Name                                        | Description                                                                 | Value              |
-| ------------------------------------------- | --------------------------------------------------------------------------- | ------------------ |
-| `global.imageRegistry`                      | Global Docker image registry                                                | `""`               |
-| `global.imagePullSecrets`                   | Global Docker registry secret names as an array                             | `[]`               |
-| `global.storageClass`                       | Global StorageClass for Persistent Volume(s)                                | `""`               |
-| `replicaCount`                              | Number of PostgreSQL replicas                                               | `1`                |
-| `affinity.podAntiAffinityType`              | Allowed values are: "preferred" or "required".                              | `required`         |
-| `backup.enabled`                            | Enable backup                                                               | `false`            |
-| `backup.endpointURL`                        | Endpoint to be used to upload data to the cloud                             | `""`               |
-| `backup.bucketName`                         | Name of the bucket                                                          | `""`               |
-| `backup.existingSecret`                     | Name of the secret containing the credentials                               | `""`               |
-| `backup.objectBucketClaim.enabled`          | Create the bucket from an ObjectBucketClaim                                 | `false`            |
-| `backup.objectBucketClaim.storageClassName` | StorageClass for the ObjectBucketClaim                                      | `""`               |
-| `backup.scheduled.enabled`                  | Enabled creation of a scheduled backup                                      | `false`            |
-| `backup.scheduled.schedule`                 | Schedule of the scheduled backup                                            | `0 0 0 * * *`      |
-| `backup.retentionPolicy`                    | Retention for backups                                                       | `7d`               |
-| `persistence.storageClass`                  | PVC Storage Class for PostgreSQL Primary data volume                        | `""`               |
-| `persistence.size`                          | PVC Storage Request for PostgreSQL volume                                   | `8Gi`              |
-| `networkPolicy.enabled`                     | Enable network policies                                                     | `false`            |
-| `networkPolicy.apiServerPeer`               | networkPolicyPeer of the apiserver                                          | `{}`               |
-| `networkPolicy.cnpgPeer`                    | networkPolicyPeer of the operator                                           | `{}`               |
-| `networkPolicy.objectStoragePeer`           | networkPolicyPeer of the object storage (see backup)                        | `{}`               |
-| `networkPolicy.egressRules`                 | additional egress rules                                                     | `[]`               |
-| `networkPolicy.ingressRules`                | additional ingress rules                                                    | `[]`               |
-| `certificates.mode`                         | manage certificates by the operator or cert-manager                         | `operator-manager` |
-| `certificates.issuerRef`                    | cert-manager issuer for certificates. selfSigned issuer is created if empty | `{}`               |
+| Name                                           | Description                                                                 | Value              |
+| ---------------------------------------------- | --------------------------------------------------------------------------- | ------------------ |
+| `global.imageRegistry`                         | Global Docker image registry                                                | `""`               |
+| `global.imagePullSecrets`                      | Global Docker registry secret names as an array                             | `[]`               |
+| `global.storageClass`                          | Global StorageClass for Persistent Volume(s)                                | `""`               |
+| `replicaCount`                                 | Number of PostgreSQL replicas                                               | `1`                |
+| `affinity.podAntiAffinityType`                 | Allowed values are: "preferred" or "required".                              | `required`         |
+| `backup.enabled`                               | Enable backup                                                               | `false`            |
+| `backup.endpointURL`                           | Endpoint to be used to upload data to the cloud                             | `""`               |
+| `backup.endpointCASecret`                      | Secret containing ca for the endpoint                                       | `""`               |
+| `backup.s3.enabled`                            | Use s3 for backup storage                                                   | `true`             |
+| `backup.s3.bucketName`                         | Name of the bucket                                                          | `""`               |
+| `backup.s3.existingSecret`                     | Name of the secret containing the credentials                               | `""`               |
+| `backup.s3.objectBucketClaim.enabled`          | Create the bucket from an ObjectBucketClaim                                 | `false`            |
+| `backup.s3.objectBucketClaim.storageClassName` | StorageClass for the ObjectBucketClaim                                      | `""`               |
+| `backup.scheduled.enabled`                     | Enabled creation of a scheduled backup                                      | `false`            |
+| `backup.scheduled.schedule`                    | Schedule of the scheduled backup                                            | `0 0 0 * * *`      |
+| `backup.retentionPolicy`                       | Retention for backups                                                       | `7d`               |
+| `persistence.storageClass`                     | PVC Storage Class for PostgreSQL Primary data volume                        | `""`               |
+| `persistence.size`                             | PVC Storage Request for PostgreSQL volume                                   | `8Gi`              |
+| `networkPolicy.enabled`                        | Enable network policies                                                     | `false`            |
+| `networkPolicy.apiServerPeer`                  | networkPolicyPeer of the apiserver                                          | `{}`               |
+| `networkPolicy.cnpgPeer`                       | networkPolicyPeer of the operator                                           | `{}`               |
+| `networkPolicy.objectStoragePeer`              | networkPolicyPeer of the object storage (see backup)                        | `{}`               |
+| `networkPolicy.egressRules`                    | additional egress rules                                                     | `[]`               |
+| `networkPolicy.ingressRules`                   | additional ingress rules                                                    | `[]`               |
+| `certificates.mode`                            | manage certificates by the operator or cert-manager                         | `operator-manager` |
+| `certificates.issuerRef`                       | cert-manager issuer for certificates. selfSigned issuer is created if empty | `{}`               |
 
 ### Metrics Parameters
 
