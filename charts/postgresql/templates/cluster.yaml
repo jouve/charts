@@ -11,6 +11,7 @@ metadata:
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
 spec:
+  imageName: {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
   instances: {{ .Values.replicaCount }}
   storage:
     size: {{ .Values.persistence.size }}
