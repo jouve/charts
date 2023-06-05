@@ -32,23 +32,28 @@ affinity:
 # https://cloudnative-pg.io/documentation/current/backup_recovery/
 ## @param backup.enabled Enable backup
 ## @param backup.endpointURL Endpoint to be used to upload data to the cloud
-## @param backup.bucketName Name of the bucket
-## @param backup.existingSecret Name of the secret containing the credentials
-## @param backup.objectBucketClaim.enabled Create the bucket from an ObjectBucketClaim
-## @param backup.objectBucketClaim.storageClassName StorageClass for the ObjectBucketClaim
+## @param backup.endpointCASecret Secret containing ca for the endpoint
+## @param backup.s3.enabled Use s3 for backup storage
+## @param backup.s3.bucketName Name of the bucket
+## @param backup.s3.existingSecret Name of the secret containing the credentials
+## @param backup.s3.objectBucketClaim.enabled Create the bucket from an ObjectBucketClaim
+## @param backup.s3.objectBucketClaim.storageClassName StorageClass for the ObjectBucketClaim
 ## @param backup.scheduled.enabled Enabled creation of a scheduled backup
 ## @param backup.scheduled.schedule Schedule of the scheduled backup
 ## @param backup.retentionPolicy Retention for backups
 backup:
   enabled: false
   endpointURL: ""
-  bucketName: ""
-  # ServiceAccount {{ template "common.names.fullname" . }} must be allowed to read this secret
-  # see templates/backup/role.yaml for example
-  existingSecret: ""
-  objectBucketClaim:
-    enabled: false
-    storageClassName: ""
+  endpointCASecret: ""
+  s3:
+    enabled: true
+    bucketName: ""
+    # ServiceAccount {{ template "common.names.fullname" . }} must be allowed to read this secret
+    # see templates/backup/role.yaml for example
+    existingSecret: ""
+    objectBucketClaim:
+      enabled: false
+      storageClassName: ""
   scheduled:
     enabled: false
     schedule: 0 0 0 * * *

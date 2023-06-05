@@ -1,4 +1,4 @@
-{{- if .Values.backup.objectBucketClaim.enabled }}
+{{- if and .Values.backup.enabled .Values.backup.s3.enabled }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -15,6 +15,7 @@ subjects:
   - kind: ServiceAccount
     name: {{ template "common.names.fullname" . }}
 roleRef:
+  apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: {{ template "common.names.fullname" . }}-backup
 {{- end }}

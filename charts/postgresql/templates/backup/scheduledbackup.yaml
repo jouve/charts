@@ -1,4 +1,4 @@
-{{- if .Values.backup.scheduled.enabled }}
+{{- if and .Values.backup.enabled .Values.backup.scheduled.enabled }}
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
