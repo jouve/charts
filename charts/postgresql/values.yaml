@@ -78,6 +78,7 @@ persistence:
 ## @param networkPolicy.apiServerPeer networkPolicyPeer of the apiserver
 ## @param networkPolicy.cnpgPeer networkPolicyPeer of the operator
 ## @param networkPolicy.objectStoragePeer networkPolicyPeer of the object storage (see backup)
+## @param networkPolicy.scrapePeer networkPolicyPeer of the metrics scrape
 ## @param networkPolicy.egressRules additional egress rules
 ## @param networkPolicy.ingressRules additional ingress rules
 networkPolicy:
@@ -85,6 +86,7 @@ networkPolicy:
   apiServerPeer: {}
   cnpgPeer: {}
   objectStoragePeer: {}
+  scrapePeer: {}
   egressRules: []
   ingressRules: []
 
