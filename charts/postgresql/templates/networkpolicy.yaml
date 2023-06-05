@@ -20,18 +20,15 @@ spec:
         - podSelector:
             matchLabels:
               cnpg.io/cluster: {{ template "common.names.fullname" . }}
-        - podSelector:
-            matchLabels:
-              {{ template "common.names.fullname" . }}-client: "true"
       ports:
         - protocol: TCP
           port: postgresql
     {{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
     - from:
-        {{- with .Values.networkPolicy.prometheusPeer }}
+        {{- with .Values.networkPolicy.scrapePeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
-        - {}
+        - namespaceSelector: {}
         {{- end }}
       ports:
         - protocol: TCP
@@ -41,7 +38,7 @@ spec:
         {{- with .Values.networkPolicy.cnpgPeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
-        - {}
+        - namespaceSelector: {}
         {{- end }}
       ports:
         - protocol: TCP
@@ -61,7 +58,8 @@ spec:
         {{- with .Values.networkPolicy.apiServerPeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
-        - {}
+        - ipBlock:
+            cidr: 0.0.0.0/0
         {{- end }}
       ports:
         - protocol: TCP
@@ -70,7 +68,7 @@ spec:
         {{- with .Values.networkPolicy.cnpgPeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
-        - {}
+        - namespaceSelector: {}
         {{- end }}
       ports:
         - protocol: TCP
@@ -80,7 +78,7 @@ spec:
         {{- with .Values.networkPolicy.objectStoragePeer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
-        - {}
+        - namespaceSelector: {}
         {{- end }}
       ports:
         - protocol: TCP
