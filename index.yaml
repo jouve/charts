@@ -197,6 +197,26 @@ entries:
   postgresql:
   - apiVersion: v2
     appVersion: "15.3"
+    created: "2023-06-05T09:28:53.588963826Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy postgresql using cloudnative-pg operator
+    digest: 25081eeb89950cb3b92dc288d34664e9428d090f1a662e369aab2aaeabb47171
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: postgresql
+    sources:
+    - https://github.com/jouve/charts
+    - https://cloudnative-pg.io/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/postgresql-0.2.1/postgresql-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: "15.3"
     created: "2023-06-05T08:27:44.797768495Z"
     dependencies:
     - name: common
@@ -321,4 +341,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-06-05T08:27:44.797803898Z"
+generated: "2023-06-05T09:28:53.589017327Z"
