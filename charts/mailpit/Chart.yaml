@@ -2,8 +2,8 @@ apiVersion: v2
 name: mailpit
 description: An email and SMTP testing tool with API for developers
 type: application
-version: 0.2.3
-appVersion: 1.6.13
+version: 0.2.4
+appVersion: 1.6.16
 dependencies:
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
