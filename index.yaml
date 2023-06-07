@@ -33,7 +33,53 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/extra-0.1.0/extra-0.1.0.tgz
     version: 0.1.0
+  hnc:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: v1.1.0-rc2
+    created: "2023-06-07T21:50:31.392199305Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Hierarchical Namespace Controller (HNC). Policies and delegated creation
+      to Kubernetes namespaces.
+    digest: d8a1ddccc9afb2ed8bbcd282bfc641a1667ad558ff41be50fede67c1bcf09e64
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: hnc
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/hnc-0.1.0/hnc-0.1.0.tgz
+    version: 0.1.0
   mailpit:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: 1.6.17
+    created: "2023-06-07T21:50:31.538397303Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: c5e289ed306eae6d88f20796796f7996e3ae30223981741f0324a6560d3cf380
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/mailpit-0.2.5/mailpit-0.2.5.tgz
+    version: 0.2.5
   - apiVersion: v2
     appVersion: 1.6.16
     created: "2023-06-05T22:19:04.546953895Z"
@@ -215,6 +261,36 @@ entries:
     - https://github.com/jouve/charts/releases/download/mailpit-0.1.1/mailpit-0.1.1.tgz
     version: 0.1.1
   postgresql:
+  - annotations:
+      artifacthub.io/images: |
+        - name: postgresql
+          image: ghcr.io/cloudnative-pg/postgresql:15.3-4
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
+    apiVersion: v2
+    appVersion: "15.3"
+    created: "2023-06-07T21:50:31.676369993Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy postgresql using cloudnative-pg operator
+    digest: cb1c594e52e6859998f00d02ccf35ccdde031612aca141a0a8d7708aa55cc03c
+    keywords:
+    - database
+    - postgresql
+    - cloudnative-pg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: postgresql
+    sources:
+    - https://github.com/jouve/charts
+    - https://cloudnative-pg.io/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/postgresql-0.3.1/postgresql-0.3.1.tgz
+    version: 0.3.1
   - apiVersion: v2
     appVersion: "15.3"
     created: "2023-06-05T22:18:48.854675988Z"
@@ -362,6 +438,27 @@ entries:
     - https://github.com/jouve/charts/releases/download/postgresql-0.1.0/postgresql-0.1.0.tgz
     version: 0.1.0
   subnamespace:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    created: "2023-06-07T21:50:31.791206798Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: SubnamespaceAnchor is the Schema for the subnamespace API
+    digest: f2ec8d8c21a636f3ebd1d6b49e546a02a809f12c2e67c60c38a1e10c6f51b201
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: subnamespace
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/subnamespace-0.1.1/subnamespace-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     created: "2023-06-01T20:18:04.258043825Z"
     dependencies:
@@ -381,4 +478,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-06-05T22:19:04.546996895Z"
+generated: "2023-06-07T21:50:31.7913215Z"
