@@ -1,0 +1,19 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ template "common.names.fullname" . }}-admin
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+rules:
+  - apiGroups:
+      - hnc.x-k8s.io
+    resources:
+      - '*'
+    verbs:
+      - '*'

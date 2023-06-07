@@ -1,0 +1,80 @@
+apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
+kind: ClusterRole
+metadata:
+  name: {{ include "common.names.fullname" . }}-manager
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - resourcequotas
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - hnc.x-k8s.io
+    resources:
+      - hierarchicalresourcequotas
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - hnc.x-k8s.io
+    resources:
+      - hierarchicalresourcequotas/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - hnc.x-k8s.io
+    resources:
+      - hierarchies
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - hnc.x-k8s.io
+    resources:
+      - hierarchies/status
+    verbs:
+      - get
+      - patch
+      - update

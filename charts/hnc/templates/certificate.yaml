@@ -1,0 +1,29 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ template "common.names.fullname" . }}-webhook-server-cert
+  usages:
+    - server auth
+  dnsNames:
+    - {{ template "common.names.fullname" . }}-webhook
+    - {{ template "common.names.fullname" . }}-webhook.{{ include "common.names.namespace" . }}
+    - {{ template "common.names.fullname" . }}-webhook.{{ include "common.names.namespace" . }}.svc
+    - {{ template "common.names.fullname" . }}-webhook.{{ include "common.names.namespace" . }}.svc.{{ .Values.clusterDomain }}
+  issuerRef:
+    {{- with .Values.issuerRef }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- else }}
+    group: cert-manager.io
+    kind: Issuer
+    name: {{ template "common.names.fullname" . }}
+    {{- end }}

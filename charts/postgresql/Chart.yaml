@@ -2,7 +2,11 @@ apiVersion: v2
 name: postgresql
 description: Deploy postgresql using cloudnative-pg operator
 type: application
-version: 0.3.0
+keywords:
+- database
+- postgresql
+- cloudnative-pg
+version: 0.3.1
 appVersion: "15.3"
 dependencies:
 - name: common
@@ -14,3 +18,9 @@ sources:
 maintainers:
 - name: jouve
   url: https://github.com/jouve
+annotations:
+  artifacthub.io/images: |
+    - name: postgresql
+      image: ghcr.io/cloudnative-pg/postgresql:15.3-4
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
