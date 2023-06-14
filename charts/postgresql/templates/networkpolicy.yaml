@@ -38,7 +38,10 @@ spec:
         {{- with .Values.networkPolicy.cnpg.peer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
-        - namespaceSelector: {}
+        - namespaceSelector:
+            kubernetes.io/metadata.name: cnpg-system
+          podSelector:
+            app.kubernetes.io/name: cloudnative-pg
         {{- end }}
       ports:
         - protocol: TCP
@@ -65,21 +68,29 @@ spec:
         {{- with .Values.networkPolicy.cnpg.peer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
-        - namespaceSelector: {}
+        - namespaceSelector:
+            kubernetes.io/metadata.name: cnpg-system
+          podSelector:
+            app.kubernetes.io/name: cloudnative-pg
         {{- end }}
       ports:
         - protocol: TCP
           port: webhook-server
-    {{- if .Values.backup.s3.objectBucketClaim.enabled }}
-    - to:
-        {{- with .Values.networkPolicy.backup.peer }}
+    {{- if .Values.backup.enabled }}
+    - {{- with .Values.networkPolicy.backup.peer }}
+      to:
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
-        {{- else }}
-        - namespaceSelector: {}
-        {{- end }}
+      {{- end }}
       ports:
         - protocol: TCP
-          port: {{ .Values.networkPolicy.backup.peer }}
+          {{- $url := urlParse .Values.backup.endpointURL }}
+          {{- $port := 0 }}
+          {{- if contains ":" $url.host }}
+          {{- $port = splitList ":" $url.host | last }}
+          {{- else }}
+          {{- $port = eq $url.scheme "https" | ternary 443 80 }}
+          {{- end }}
+          port: {{ $port }}
     {{- end }}
     {{- with .Values.networkPolicy.egressRules }}
     {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
