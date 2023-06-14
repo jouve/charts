@@ -104,8 +104,7 @@ persistence:
 ## @param networkPolicy.apiserver.peer networkPolicyPeer of the apiserver
 ## @param networkPolicy.apiserver.port port of the apiserver
 ## @param networkPolicy.backup.peer networkPolicyPeer of the object storage (see backup)
-## @param networkPolicy.backup.port port of the object storage (see backup)
-## @param networkPolicy.cnpg.peer networkPolicyPeer of the operator
+## @param networkPolicy.cnpg.peer networkPolicyPeer of the operator, matches https://cloudnative-pg.io/documentation/1.20/installation_upgrade/ if not defined
 ## @param networkPolicy.metrics.peer networkPolicyPeer of the metrics scrape
 ## @param networkPolicy.egressRules additional egress rules
 ## @param networkPolicy.ingressRules additional ingress rules
@@ -116,7 +115,6 @@ networkPolicy:
     port: 6443
   backup:
     peer: {}
-    port: 8080
   cnpg:
     peer: {}
   metrics:
