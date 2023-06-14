@@ -22,7 +22,7 @@ spec:
               cnpg.io/cluster: {{ template "common.names.fullname" . }}
       ports:
         - protocol: TCP
-          port: postgresql
+          port: 5432
     {{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
     - from:
         {{- with .Values.networkPolicy.metrics.peer }}
@@ -32,7 +32,7 @@ spec:
         {{- end }}
       ports:
         - protocol: TCP
-          port: metrics
+          port: 9187
     {{- end }}
     - from:
         {{- with .Values.networkPolicy.cnpg.peer }}
@@ -47,7 +47,7 @@ spec:
         {{- end }}
       ports:
         - protocol: TCP
-          port: status
+          port: 8000
     {{- with .Values.networkPolicy.ingressRules }}
     {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
     {{- end }}
@@ -58,7 +58,7 @@ spec:
               cnpg.io/cluster: {{ template "common.names.fullname" . }}
       ports:
         - protocol: TCP
-          port: postgresql
+          port: 5432
     - {{- with .Values.networkPolicy.apiserver.peer }}
       to:
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
