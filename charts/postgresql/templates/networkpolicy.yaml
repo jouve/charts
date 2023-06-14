@@ -79,7 +79,7 @@ spec:
         {{- end }}
       ports:
         - protocol: TCP
-          port: webhook-server
+          port: 9443
     {{- if .Values.backup.enabled }}
     - {{- with .Values.networkPolicy.backup.peer }}
       to:
