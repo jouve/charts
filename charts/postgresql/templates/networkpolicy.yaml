@@ -39,9 +39,11 @@ spec:
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
         - namespaceSelector:
-            kubernetes.io/metadata.name: cnpg-system
+            matchLabels:
+              kubernetes.io/metadata.name: cnpg-system
           podSelector:
-            app.kubernetes.io/name: cloudnative-pg
+            matchLabels:
+              app.kubernetes.io/name: cloudnative-pg
         {{- end }}
       ports:
         - protocol: TCP
@@ -69,9 +71,11 @@ spec:
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
         - namespaceSelector:
-            kubernetes.io/metadata.name: cnpg-system
+            matchLabels:
+              kubernetes.io/metadata.name: cnpg-system
           podSelector:
-            app.kubernetes.io/name: cloudnative-pg
+            matchLabels:
+              app.kubernetes.io/name: cloudnative-pg
         {{- end }}
       ports:
         - protocol: TCP
