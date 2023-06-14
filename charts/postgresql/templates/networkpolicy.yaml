@@ -25,7 +25,7 @@ spec:
           port: postgresql
     {{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
     - from:
-        {{- with .Values.networkPolicy.scrapePeer }}
+        {{- with .Values.networkPolicy.metrics.peer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
         - namespaceSelector: {}
@@ -35,7 +35,7 @@ spec:
           port: metrics
     {{- end }}
     - from:
-        {{- with .Values.networkPolicy.cnpgPeer }}
+        {{- with .Values.networkPolicy.cnpg.peer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
         - namespaceSelector: {}
@@ -54,18 +54,15 @@ spec:
       ports:
         - protocol: TCP
           port: postgresql
-    - to:
-        {{- with .Values.networkPolicy.apiServerPeer }}
+    - {{- with .Values.networkPolicy.apiserver.peer }}
+      to:
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
-        {{- else }}
-        - ipBlock:
-            cidr: 0.0.0.0/0
-        {{- end }}
+      {{- end }}
       ports:
         - protocol: TCP
-          port: 6443
+          port: {{ .Values.networkPolicy.apiserver.port }}
     - to:
-        {{- with .Values.networkPolicy.cnpgPeer }}
+        {{- with .Values.networkPolicy.cnpg.peer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
         - namespaceSelector: {}
@@ -75,14 +72,14 @@ spec:
           port: webhook-server
     {{- if .Values.backup.s3.objectBucketClaim.enabled }}
     - to:
-        {{- with .Values.networkPolicy.objectStoragePeer }}
+        {{- with .Values.networkPolicy.backup.peer }}
         - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
         {{- else }}
         - namespaceSelector: {}
         {{- end }}
       ports:
         - protocol: TCP
-          port: 8080
+          port: {{ .Values.networkPolicy.backup.peer }}
     {{- end }}
     {{- with .Values.networkPolicy.egressRules }}
     {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
