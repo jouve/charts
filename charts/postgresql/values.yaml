@@ -29,7 +29,6 @@ affinity:
   ##
   podAntiAffinityType: required
 
-
 ## @param image.registry image registry
 ## @param image.repository image repository
 ## @param image.tag image tag (immutable tags are recommended)
@@ -102,18 +101,26 @@ persistence:
   size: 8Gi
 
 ## @param networkPolicy.enabled Enable network policies
-## @param networkPolicy.apiServerPeer networkPolicyPeer of the apiserver
-## @param networkPolicy.cnpgPeer networkPolicyPeer of the operator
-## @param networkPolicy.objectStoragePeer networkPolicyPeer of the object storage (see backup)
-## @param networkPolicy.scrapePeer networkPolicyPeer of the metrics scrape
+## @param networkPolicy.apiserver.peer networkPolicyPeer of the apiserver
+## @param networkPolicy.apiserver.port port of the apiserver
+## @param networkPolicy.backup.peer networkPolicyPeer of the object storage (see backup)
+## @param networkPolicy.backup.port port of the object storage (see backup)
+## @param networkPolicy.cnpg.peer networkPolicyPeer of the operator
+## @param networkPolicy.metrics.peer networkPolicyPeer of the metrics scrape
 ## @param networkPolicy.egressRules additional egress rules
 ## @param networkPolicy.ingressRules additional ingress rules
 networkPolicy:
   enabled: false
-  apiServerPeer: {}
-  cnpgPeer: {}
-  objectStoragePeer: {}
-  scrapePeer: {}
+  apiserver:
+    peer: {}
+    port: 6443
+  backup:
+    peer: {}
+    port: 8080
+  cnpg:
+    peer: {}
+  metrics:
+    peer: {}
   egressRules: []
   ingressRules: []
 
