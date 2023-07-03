@@ -59,6 +59,29 @@ entries:
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
+    appVersion: v1.1.0
+    created: "2023-07-03T23:23:07.492187653Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Hierarchical Namespace Controller (HNC). Policies and delegated creation
+      to Kubernetes namespaces.
+    digest: 1385f7f7e78e74d01ce6677987bd09a700cdd10e5db56abaad1d5b9becd748f8
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: hnc
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/hnc-0.2.0/hnc-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
     appVersion: v1.1.0-rc2
     created: "2023-06-07T21:50:31.392199305Z"
     dependencies:
@@ -716,4 +739,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-06-30T17:33:15.437518005Z"
+generated: "2023-07-03T23:23:07.492356757Z"
