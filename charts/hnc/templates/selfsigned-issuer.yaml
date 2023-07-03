@@ -1,7 +1,8 @@
-apiVersion: {{ template "common.capabilities.rbac.apiVersion" . }}
-kind: RoleBinding
+{{- if and .Values.certManager.enabled (not .Values.issuerRef) }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
 metadata:
-  name: {{ template "common.names.fullname" . }}-leader-election-rolebinding
+  name: {{ template "common.names.fullname" . }}-selfsigned-issuer
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     {{- with .Values.commonLabels }}
@@ -10,11 +11,6 @@ metadata:
   {{- with .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: {{ template "common.names.fullname" . }}-leader-election-role
-subjects:
-  - kind: ServiceAccount
-    name: default
-    namespace: {{ include "common.names.namespace" . | quote }}
+spec:
+  selfSigned: {}
+{{- end }}

@@ -4,24 +4,27 @@
 
 clusterDomain: cluster.local
 
-controllerManager:
-  replicaCount: 1
-
-webhook:
-  replicaCount: 1
-
 # Allowed values: standalone or replication
-architecture: replication
+architecture: standalone
+
+# only when architecture == replication
+webhookServer:
+  replicaCount: 3
+
+excludedNamespaces: []
 
 hrq:
-  enabled: true
+  enabled: false
+
+certManager:
+  enabled: false
 
 image:
   registry: gcr.io
   repository: k8s-staging-multitenancy/hnc-manager
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1.1.0-rc2
+  tag: v1.1.0
 
 imagePullSecrets: []
 nameOverride: ""
@@ -97,6 +100,6 @@ affinity: {}
 issuerRef: {}
 
 metrics:
-  enabled: false
+  enabled: true
   serviceMonitor:
     enabled: false

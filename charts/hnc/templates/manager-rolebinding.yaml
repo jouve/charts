@@ -1,7 +1,7 @@
-apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
+apiVersion: {{ template "common.capabilities.rbac.apiVersion" . }}
 kind: ClusterRoleBinding
 metadata:
-  name: {{ template "common.names.fullname" . }}-manager
+  name: {{ template "common.names.fullname" . }}-manager-rolebinding
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     {{- with .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
@@ -12,7 +12,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ template "common.names.fullname" . }}-manager
+  name: {{ template "common.names.fullname" . }}-manager-role
 subjects:
   - kind: ServiceAccount
     name: default

@@ -1,11 +1,11 @@
-{{- if eq .Values.architecture "standalone" }}
-apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+{{- if eq .Values.architecture "replication" }}
+apiVersion: {{ template "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
-  name: {{ template "common.names.fullname" . }}
+  name: {{ template "common.names.fullname" . }}-controller-manager
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" . | nindent 4 }}
-    app.kubernetes.io/component: webhook
+    control-plane: controller-manager
     {{- with .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
     {{- end }}
@@ -16,53 +16,66 @@ spec:
   replicas: 1
   selector:
     matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
-      app.kubernetes.io/component: webhook
+      control-plane: controller-manager
   template:
     metadata:
       labels: {{- include "common.labels.standard" . | nindent 8 }}
-        app.kubernetes.io/component: webhook
+        control-plane: controller-manager
         {{- with .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
         {{- end }}
-      {{- with .Values.podAnnotations }}
-      annotations: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
+      {{- if or .Values.podAnnotations (and .Values.metrics.enabled (not .Values.metrics.serviceMonitor.enabled)) }}
+      annotations:
+        {{- with .Values.podAnnotations }}
+        {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
+        {{- end }}
+        {{- if and .Values.metrics.enabled (not .Values.metrics.serviceMonitor.enabled) }}
+        prometheus.io/scrape: "true"
+        {{- end }}
       {{- end }}
     spec:
       containers:
-        - name: manager
-          image: {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
-          args:
-            - --namespace={{ include "common.names.namespace" . }}
+        - args:
             - --webhook-server-port=9443
-            - --enable-stackdriver=false
+            - --metrics-addr=:8080
             - --max-reconciles=10
             - --apiserver-qps-throttle=50
-            - --excluded-namespace={{ include "common.names.namespace" . }}
-            - --excluded-namespace=default
-            - --excluded-namespace=kube-node-lease
-            - --excluded-namespace=kube-public
             - --excluded-namespace=kube-system
+            - --excluded-namespace=kube-public
+            - --excluded-namespace={{ template "common.names.namespace" . }}
+            - --excluded-namespace=kube-node-lease
+            {{- range .Values.excludedNamespaces }}
+            - --excluded-namespace={{ . }}
+            {{- end }}
+            - --nopropagation-label=cattle.io/creator=norman
+            {{- if not .Values.certManager.enabled }}
+            - --enable-internal-cert-management
+            - --cert-restart-on-secret-refresh
+            {{- end }}
+            - --no-webhooks
             {{- if .Values.hrq.enabled }}
             - --enable-hrq
             {{- end }}
           command:
             - /manager
+          image: {{ template "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
           livenessProbe:
             failureThreshold: 1
             httpGet:
               path: /healthz
               port: 8081
             periodSeconds: 10
+          name: manager
           ports:
-          - containerPort: 9443
-            name: webhook-server
-            protocol: TCP
-          - containerPort: 8080
-            name: metrics
-            protocol: TCP
-          - containerPort: 8081
-            name: healthz
-            protocol: TCP
+            - containerPort: 9443
+              name: webhook-server
+              protocol: TCP
+            - containerPort: 8080
+              name: metrics
+              protocol: TCP
+            - containerPort: 8081
+              name: healthz
+              protocol: TCP
           readinessProbe:
             httpGet:
               path: /readyz
@@ -79,7 +92,7 @@ spec:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
-              - ALL
+                - ALL
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             seccompProfile:
@@ -91,15 +104,15 @@ spec:
               port: 8081
             periodSeconds: 5
           volumeMounts:
-          - mountPath: /tmp/k8s-webhook-server/serving-certs
-            name: cert
-            readOnly: true
-        securityContext:
-          fsGroup: 2000
-          runAsNonRoot: true
-          runAsUser: 1000
-        terminationGracePeriodSeconds: 10
-        volumes:
+            - mountPath: /tmp/k8s-webhook-server/serving-certs
+              name: cert
+              readOnly: true
+      securityContext:
+        fsGroup: 2000
+        runAsNonRoot: true
+        runAsUser: 1000
+      terminationGracePeriodSeconds: 10
+      volumes:
         - name: cert
           secret:
             defaultMode: 420

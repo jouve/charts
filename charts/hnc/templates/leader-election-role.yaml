@@ -1,7 +1,7 @@
-apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
+apiVersion: {{ template "common.capabilities.rbac.apiVersion" . }}
 kind: Role
 metadata:
-  name: {{ include "common.names.fullname" . }}-leader-election
+  name: {{ template "common.names.fullname" . }}-leader-election-role
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     {{- with .Values.commonLabels }}

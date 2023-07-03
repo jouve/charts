@@ -1,0 +1,30 @@
+{{- if .Values.certManager.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ template "common.names.fullname" . }}-serving-cert
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- with .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  commonName: {{ template "common.names.fullname" . }}-webhook-service.{{ template "common.names.namespace" . }}.svc
+  dnsNames:
+    - {{ template "common.names.fullname" . }}-webhook-service.{{ template "common.names.namespace" . }}.svc.{{ .Values.clusterDomain }}
+    - {{ template "common.names.fullname" . }}-webhook-service.{{ template "common.names.namespace" . }}.svc
+    - {{ template "common.names.fullname" . }}-webhook-service.{{ template "common.names.namespace" . }}
+    - {{ template "common.names.fullname" . }}-webhook-service
+  issuerRef:
+    {{- with .Values.issuerRef }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- else }}
+    group: cert-manager.io
+    kind: Issuer
+    name: {{ template "common.names.fullname" . }}-selfsigned-issuer
+    {{- end }}
+  secretName: {{ template "common.names.fullname" . }}-webhook-server-cert
+{{- end }}

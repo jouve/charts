@@ -1,22 +1,26 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: {{ template "common.names.fullname" . }}
+  name: {{ template "common.names.fullname" . }}-validating-webhook-configuration
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     {{- with .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
     {{- end }}
+  {{- if or .Values.commonAnnotations .Values.certManager.enabled }}
   annotations:
-    cert-manager.io/inject-ca-from: {{ include "common.names.namespace" . }}/{{ template "common.names.fullname" . }}
     {{- with .Values.commonAnnotations }}
     {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
     {{- end }}
+    {{- if .Values.certManager.enabled }}
+    cert-manager.io/inject-ca-from: {{ template "common.names.namespace" . }}/{{ template "common.names.fullname" . }}-serving-cert
+    {{- end }}
+  {{- end }}
 webhooks:
   - admissionReviewVersions:
       - v1
     clientConfig:
       service:
-        name: {{ template "common.names.fullname" . }}-webhook
+        name: {{ template "common.names.fullname" . }}-webhook-service
         namespace: {{ include "common.names.namespace" . | quote }}
         path: /validate-hnc-x-k8s-io-v1alpha2-subnamespaceanchors
     failurePolicy: Fail
@@ -37,7 +41,7 @@ webhooks:
       - v1
     clientConfig:
       service:
-        name: {{ template "common.names.fullname" . }}-webhook
+        name: {{ template "common.names.fullname" . }}-webhook-service
         namespace: {{ include "common.names.namespace" . | quote }}
         path: /validate-hnc-x-k8s-io-v1alpha2-hierarchyconfigurations
     failurePolicy: Fail
@@ -57,7 +61,7 @@ webhooks:
       - v1
     clientConfig:
       service:
-        name: {{ template "common.names.fullname" . }}-webhook
+        name: {{ template "common.names.fullname" . }}-webhook-service
         namespace: {{ include "common.names.namespace" . | quote }}
         path: /validate-objects
     failurePolicy: Fail
@@ -83,7 +87,7 @@ webhooks:
       - v1
     clientConfig:
       service:
-        name: {{ template "common.names.fullname" . }}-webhook
+        name: {{ template "common.names.fullname" . }}-webhook-service
         namespace: {{ include "common.names.namespace" . | quote }}
         path: /validate-hnc-x-k8s-io-v1alpha2-hncconfigurations
     failurePolicy: Fail
@@ -104,7 +108,7 @@ webhooks:
       - v1
     clientConfig:
       service:
-        name: {{ template "common.names.fullname" . }}-webhook
+        name: {{ template "common.names.fullname" . }}-webhook-service
         namespace: {{ include "common.names.namespace" . | quote }}
         path: /validate-v1-namespace
     failurePolicy: Fail
@@ -123,44 +127,44 @@ webhooks:
     sideEffects: None
 {{- if .Values.hrq.enabled }}
   - admissionReviewVersions:
-    - v1
-    - v1beta1
+      - v1
+      - v1beta1
     clientConfig:
       service:
-        name: {{ template "common.names.fullname" . }}-webhook
+        name: {{ template "common.names.fullname" . }}-webhook-service
         namespace: {{ include "common.names.namespace" . | quote }}
         path: /validate-hnc-x-k8s-io-v1alpha2-hrq
     failurePolicy: Fail
     name: hrq.hnc.x-k8s.io
     rules:
-    - apiGroups:
-      - hnc.x-k8s.io
-      apiVersions:
-      - v1alpha2
-      operations:
-      - CREATE
-      - UPDATE
-      resources:
-      - hierarchicalresourcequotas
+      - apiGroups:
+          - hnc.x-k8s.io
+        apiVersions:
+          - v1alpha2
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - hierarchicalresourcequotas
     sideEffects: None
   - admissionReviewVersions:
-    - v1
-    - v1beta1
+      - v1
+      - v1beta1
     clientConfig:
       service:
-        name: {{ template "common.names.fullname" . }}-webhook
+        name: {{ template "common.names.fullname" . }}-webhook-service
         namespace: {{ include "common.names.namespace" . | quote }}
         path: /validate-hnc-x-k8s-io-v1alpha2-resourcequotasstatus
     failurePolicy: Ignore
     name: resourcesquotasstatus.hnc.x-k8s.io
     rules:
-    - apiGroups:
-      - ""
-      apiVersions:
-      - v1
-      operations:
-      - UPDATE
-      resources:
-      - resourcequotas/status
+      - apiGroups:
+          - ""
+        apiVersions:
+          - v1
+        operations:
+          - UPDATE
+        resources:
+          - resourcequotas/status
     sideEffects: None
 {{- end }}

@@ -1,7 +1,7 @@
-apiVersion: rbac.authorization.k8s.io/v1
+apiVersion: {{ template "common.capabilities.rbac.apiVersion" . }}
 kind: ClusterRole
 metadata:
-  name: {{ template "common.names.fullname" . }}-admin
+  name: {{ template "common.names.fullname" . }}-admin-role
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
     {{- with .Values.commonLabels }}

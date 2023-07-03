@@ -1,8 +1,8 @@
-{{- if not .Values.issuerRef }}
-apiVersion: cert-manager.io/v1
-kind: Issuer
+{{- if not .Values.certManager.enabled }}
+apiVersion: v1
+kind: Secret
 metadata:
-  name: {{ template "common.names.fullname" . }}
+  name: {{ template "common.names.fullname" . }}-webhook-server-cert
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     {{- with .Values.commonLabels }}
@@ -11,6 +11,4 @@ metadata:
   {{- with .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
-spec:
-  selfSigned: {}
 {{- end }}

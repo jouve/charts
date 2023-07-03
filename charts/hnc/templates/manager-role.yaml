@@ -1,7 +1,7 @@
-apiVersion: {{ include "common.capabilities.rbac.apiVersion" . }}
+apiVersion: {{ template "common.capabilities.rbac.apiVersion" . }}
 kind: ClusterRole
 metadata:
-  name: {{ include "common.names.fullname" . }}-manager
+  name: {{ template "common.names.fullname" . }}-manager-role
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     {{- with .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}

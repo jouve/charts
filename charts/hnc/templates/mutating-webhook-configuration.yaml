@@ -1,22 +1,26 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: {{ template "common.names.fullname" . }}
+  name: {{ template "common.names.fullname" . }}-mutating-webhook-configuration
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     {{- with .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
     {{- end }}
+  {{- if or .Values.commonAnnotations .Values.certManager.enabled }}
   annotations:
-    cert-manager.io/inject-ca-from: {{ include "common.names.namespace" . }}/{{ template "common.names.fullname" . }}
     {{- with .Values.commonAnnotations }}
     {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
     {{- end }}
+    {{- if .Values.certManager.enabled }}
+    cert-manager.io/inject-ca-from: {{ template "common.names.namespace" . }}/{{ template "common.names.fullname" . }}-serving-cert
+    {{- end }}
+  {{- end }}
 webhooks:
   - admissionReviewVersions:
       - v1
     clientConfig:
       service:
-        name: {{ template "common.names.fullname" . }}-webhook
+        name: {{ template "common.names.fullname" . }}-webhook-service
         namespace: {{ include "common.names.namespace" . | quote }}
         path: /mutate-namespace
     failurePolicy: Ignore
