@@ -20,7 +20,7 @@ helm install mailpit jouve/mailpit
 ### Common
 
 | Name                             | Description                                                                                                                                | Value             |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
+|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 | `image.registry`                 | image registry                                                                                                                             | `docker.io`       |
 | `image.repository`               | image repository                                                                                                                           | `axllent/mailpit` |
 | `image.tag`                      | image tag (immutable tags are recommended)                                                                                                 | `v1.6.13`         |
@@ -34,6 +34,7 @@ helm install mailpit jouve/mailpit
 | `resources.limits.memory`        | The resources limits for the containers                                                                                                    | `64Mi`            |
 | `resources.requests.cpu`         | The requested resources for the containers                                                                                                 | `10m`             |
 | `resources.requests.memory`      | The requested resources for the containers                                                                                                 | `8Mi`             |
+| `affinity`                       | Constrain pod to run on particular node(s)                                                                                                 |                   |
 | `args`                           | Override default container args (useful when using custom images)                                                                          | `[]`              |
 | `extraEnvVars`                   | Array with extra environment variables to add to nodes                                                                                     | `[]`              |
 | `mailpit.ui.authFile.enabled`    | Adding basic authentication to web UI                                                                                                      | `false`           |
