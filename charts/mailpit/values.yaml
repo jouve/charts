@@ -34,7 +34,7 @@ global:
 image:
   registry: docker.io
   repository: axllent/mailpit
-  tag: v1.7.0
+  tag: v1.7.1
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -84,7 +84,7 @@ resources:
 ## @param affinity Pod affinity
 ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
 ##
-affinity:
+affinity: {}
 
 ## @param args Override default container args (useful when using custom images)
 ##

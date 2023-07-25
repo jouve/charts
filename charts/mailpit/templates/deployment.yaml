@@ -33,6 +33,9 @@ spec:
       automountServiceAccountToken: false
       securityContext:
         fsGroup: 1001
+      {{- with .Values.affinity }}
+      affinity: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
+      {{- end }}
       containers:
         - name: mailpit
           image: {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
@@ -149,6 +152,3 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
-      {{- with .Values.affinity }}
-      affinity: {{- toYaml . | nindent 8 }}
-      {{- end }}
