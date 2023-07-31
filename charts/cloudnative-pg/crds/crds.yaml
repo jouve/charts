@@ -1,11 +1,8 @@
-{{- if .Values.crds.create }}
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-    helm.sh/resource-policy: keep
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: backups.postgresql.cnpg.io
 spec:
   group: postgresql.cnpg.io
@@ -311,9 +308,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-    helm.sh/resource-policy: keep
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: clusters.postgresql.cnpg.io
 spec:
   group: postgresql.cnpg.io
@@ -1807,8 +1802,9 @@ spec:
                               available backup in chronological order.
                             type: string
                           exclusive:
-                            description: Set the target to be exclusive (defaults
-                              to true)
+                            description: Set the target to be exclusive. If omitted,
+                              defaults to false, so that in Postgres, `recovery_target_inclusive`
+                              will be true
                             type: boolean
                           targetImmediate:
                             description: End recovery as soon as a consistent state
@@ -2812,6 +2808,12 @@ spec:
                 enum:
                 - unsupervised
                 - supervised
+                type: string
+              priorityClassName:
+                description: Name of the priority class which will be used in every
+                  generated Pod, if the PriorityClass specified does not exist, the
+                  pod will not be able to schedule.  Please refer to https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass
+                  for more information
                 type: string
               projectedVolumeTemplate:
                 description: Template to be used to define projected volumes, projected
@@ -4068,6 +4070,15 @@ spec:
                       type: object
                     description: Instances contains the pod topology of the instances
                     type: object
+                  nodesUsed:
+                    description: NodesUsed represents the count of distinct nodes
+                      accommodating the instances. A value of '1' suggests that all
+                      instances are hosted on a single node, implying the absence
+                      of High Availability (HA). Ideally, this value should be the
+                      same as the number of instances in the Postgres HA cluster,
+                      implying shared nothing architecture on the compute side.
+                    format: int32
+                    type: integer
                   successfullyExtracted:
                     description: SuccessfullyExtracted indicates if the topology data
                       was extract. It is useful to enact fallback behaviors in synchronous
@@ -4097,9 +4108,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-    helm.sh/resource-policy: keep
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: poolers.postgresql.cnpg.io
 spec:
   group: postgresql.cnpg.io
@@ -11690,9 +11699,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-    helm.sh/resource-policy: keep
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: scheduledbackups.postgresql.cnpg.io
 spec:
   group: postgresql.cnpg.io
@@ -11804,4 +11811,3 @@ spec:
     storage: true
     subresources:
       status: {}
-{{- end }}
