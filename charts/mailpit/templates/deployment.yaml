@@ -49,10 +49,8 @@ spec:
           args:
           - --db-file
           - /var/lib/mailpit/mailpit.db
-          {{- if .Values.ingress.enabled }}
           - --webroot
-          - {{ .Values.ingress.path }}
-          {{- end }}
+          - {{ .Values.mailpit.webroot }}
           {{- if .Values.mailpit.ui.authFile.enabled }}
           - --ui-auth-file
           - /etc/mailpit/ui.htpasswd

@@ -101,6 +101,8 @@ extraEnvVars: []
 # https://github.com/axllent/mailpit/wiki/Basic-authentication
 # https://github.com/axllent/mailpit/wiki/HTTPS
 mailpit:
+  ## @param mailpit.webroot Set the webroot for web UI & API
+  webroot: /
   ui:
     ## @param mailpit.ui.authFile.enabled Adding basic authentication to web UI
     ## @param mailpit.ui.authFile.htpasswd htpasswd content

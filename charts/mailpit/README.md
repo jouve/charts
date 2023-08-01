@@ -37,6 +37,7 @@ helm install mailpit jouve/mailpit
 | `affinity`                       | Pod affinity                                                                                                                               | `{}`              |
 | `args`                           | Override default container args (useful when using custom images)                                                                          | `[]`              |
 | `extraEnvVars`                   | Array with extra environment variables to add to nodes                                                                                     | `[]`              |
+| `mailpit.webroot`                | Set the webroot for web UI & API                                                                                                           | `/`               |
 | `mailpit.ui.authFile.enabled`    | Adding basic authentication to web UI                                                                                                      | `false`           |
 | `mailpit.ui.authFile.htpasswd`   | htpasswd content                                                                                                                           | `""`              |
 | `mailpit.ui.tls.enabled`         | Enable tls for web UI                                                                                                                      | `false`           |
