@@ -23,7 +23,7 @@ helm install mailpit jouve/mailpit
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `image.registry`                 | image registry                                                                                                                             | `docker.io`       |
 | `image.repository`               | image repository                                                                                                                           | `axllent/mailpit` |
-| `image.tag`                      | image tag (immutable tags are recommended)                                                                                                 | `v1.7.1`          |
+| `image.tag`                      | image tag (immutable tags are recommended)                                                                                                 | `v1.8.0`          |
 | `image.digest`                   | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`              |
 | `image.pullPolicy`               | image pull policy                                                                                                                          | `IfNotPresent`    |
 | `image.pullSecrets`              | image pull secrets                                                                                                                         | `[]`              |
@@ -51,18 +51,21 @@ helm install mailpit jouve/mailpit
 
 ### Traffic Exposure Parameters
 
-| Name                       | Description                                                                                                                      | Value            |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| `service.http.type`        | service type                                                                                                                     | `ClusterIP`      |
-| `service.http.nodePort`    | nodeport bind for HTTP service                                                                                                   | `nil`            |
-| `service.smtp.type`        | service type                                                                                                                     | `ClusterIP`      |
-| `service.smtp.nodePort`    | nodeport bind for STMP service                                                                                                   | `nil`            |
-| `ingress.enabled`          | Enable ingress record generation for %%MAIN_CONTAINER_NAME%%                                                                     | `false`          |
-| `ingress.hostname`         | Default host for the ingress record                                                                                              | `hostname.local` |
-| `ingress.ingressClassName` | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                                    | `""`             |
-| `ingress.path`             | Default path for the ingress record                                                                                              | `/`              |
-| `ingress.annotations`      | Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations. | `{}`             |
-| `ingress.tls`              | Enable TLS configuration for the host defined at `ingress.hostname` parameter                                                    | `false`          |
+| Name                       | Description                                                                                                                      | Value                    |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| `service.http.type`        | service type                                                                                                                     | `ClusterIP`              |
+| `service.http.nodePort`    | nodeport bind for HTTP service                                                                                                   | `nil`                    |
+| `service.smtp.type`        | service type                                                                                                                     | `ClusterIP`              |
+| `service.smtp.nodePort`    | nodeport bind for STMP service                                                                                                   | `nil`                    |
+| `ingress.enabled`          | Enable ingress record generation for %%MAIN_CONTAINER_NAME%%                                                                     | `false`                  |
+| `ingress.annotations`      | Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations. | `{}`                     |
+| `ingress.ingressClassName` | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                                    | `""`                     |
+| `ingress.hostname`         | Default host for the ingress record                                                                                              | `hostname.local`         |
+| `ingress.path`             | Default path for the ingress record                                                                                              | `/`                      |
+| `ingress.pathType`         | Ingress path type                                                                                                                | `ImplementationSpecific` |
+| `ingress.extraHosts`       | The list of additional hostnames to be covered with this ingress record.                                                         | `[]`                     |
+| `ingress.tls`              | Enable TLS configuration for the host defined at `ingress.hostname` parameter                                                    | `false`                  |
+| `ingress.extraTls`         | The tls configuration for additional hostnames to be covered with this ingress record.                                           | `[]`                     |
 
 ### Persistence Parameters
 
