@@ -26,8 +26,14 @@ spec:
         {{- with .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
         {{- end }}
-      {{- with .Values.podAnnotations }}
-      annotations: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
+      {{- if or .Values.podAnnotations (include "mailpit.hasSecret" .) }}
+      annotations:
+        {{- with .Values.podAnnotations }}
+        {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
+        {{- end }}
+        {{- if include "mailpit.hasSecret" . }}
+        checksum/secret: {{ include (printf "%s/secret.yaml" .Template.BasePath) . | fromYaml | dig "stringData" dict | toYaml | sha256sum }}
+        {{- end }}
       {{- end }}
     spec:
       automountServiceAccountToken: false
@@ -116,9 +122,23 @@ spec:
         - name: etc
           projected:
             sources:
-            {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.authFile.enabled }}
+            {{- if include "mailpit.hasSecret" . }}
             - secret:
                 name: {{ template "common.names.fullname" . }}
+            {{- end }}
+            {{- if and .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.authFile.existingSecret }}
+            - secret:
+                name: {{ include "common.secrets.name" (dict "existingSecret" .Values.mailpit.ui.authFile.existingSecret "context" .) }}
+              items:
+              - key: {{ include "common.secrets.key" (dict "existingSecret" .Values.mailpit.ui.authFile.existingSecret "key" "ui.htpasswd") }}
+                path: ui.htpasswd
+            {{- end }}
+            {{- if and .Values.mailpit.smtp.authFile.enabled .Values.mailpit.smtp.authFile.existingSecret }}
+            - secret:
+                name: {{ include "common.secrets.name" (dict "existingSecret" .Values.mailpit.smtp.authFile.existingSecret "context" .) }}
+              items:
+              - key: {{ include "common.secrets.key" (dict "existingSecret" .Values.mailpit.smtp.authFile.existingSecret "key" "smtp.htpasswd") }}
+                path: smtp.htpasswd
             {{- end }}
             {{- if .Values.mailpit.ui.tls.enabled }}
             - secret:
@@ -137,10 +157,6 @@ spec:
                 path: smtp.crt
               - key: tls.key
                 path: smtp.key
-            {{- end }}
-            {{- if .Values.mailpit.relay.enabled }}
-            - secret:
-                name: {{ template "common.names.fullname" . }}-relay
             {{- end }}
         {{- end }}
         - name: data

@@ -19,36 +19,38 @@ helm install mailpit jouve/mailpit
 
 ### Common
 
-| Name                             | Description                                                                                                                                | Value             |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
-| `image.registry`                 | image registry                                                                                                                             | `docker.io`       |
-| `image.repository`               | image repository                                                                                                                           | `axllent/mailpit` |
-| `image.tag`                      | image tag (immutable tags are recommended)                                                                                                 | `v1.8.0`          |
-| `image.digest`                   | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`              |
-| `image.pullPolicy`               | image pull policy                                                                                                                          | `IfNotPresent`    |
-| `image.pullSecrets`              | image pull secrets                                                                                                                         | `[]`              |
-| `image.debug`                    | Enable image debug mode                                                                                                                    | `false`           |
-| `updateStrategy.type`            | statefulset strategy type                                                                                                                  | `RollingUpdate`   |
-| `replicaCount`                   | Number of replicas to deploy                                                                                                               | `1`               |
-| `resources.limits.cpu`           | The resources limits for the containers                                                                                                    | `100m`            |
-| `resources.limits.memory`        | The resources limits for the containers                                                                                                    | `64Mi`            |
-| `resources.requests.cpu`         | The requested resources for the containers                                                                                                 | `5m`              |
-| `resources.requests.memory`      | The requested resources for the containers                                                                                                 | `4Mi`             |
-| `affinity`                       | Pod affinity                                                                                                                               | `{}`              |
-| `args`                           | Override default container args (useful when using custom images)                                                                          | `[]`              |
-| `extraEnvVars`                   | Array with extra environment variables to add to nodes                                                                                     | `[]`              |
-| `mailpit.webroot`                | Set the webroot for web UI & API                                                                                                           | `/`               |
-| `mailpit.ui.authFile.enabled`    | Adding basic authentication to web UI                                                                                                      | `false`           |
-| `mailpit.ui.authFile.htpasswd`   | htpasswd content                                                                                                                           | `""`              |
-| `mailpit.ui.tls.enabled`         | Enable tls for web UI                                                                                                                      | `false`           |
-| `mailpit.ui.tls.secretName`      | tls secret for web UI                                                                                                                      | `""`              |
-| `mailpit.smtp.authFile.enabled`  | Adding SMTP authentication                                                                                                                 | `false`           |
-| `mailpit.smtp.authFile.htpasswd` | htpasswd content                                                                                                                           | `""`              |
-| `mailpit.smtp.tls.enabled`       | Enable tls for SMTP                                                                                                                        | `false`           |
-| `mailpit.smtp.tls.secretName`    | tls secret for SMTP                                                                                                                        | `""`              |
-| `mailpit.relay.enabled`          | enable SMTP Relay configuration                                                                                                            | `false`           |
-| `mailpit.relay.config`           | Mailpit SMTP relay configuration                                                                                                           | `{}`              |
-| `mailpit.relay.relayAll`         | Relay all messages to relay                                                                                                                | `false`           |
+| Name                                   | Description                                                                                                                                | Value             |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `image.registry`                       | image registry                                                                                                                             | `docker.io`       |
+| `image.repository`                     | image repository                                                                                                                           | `axllent/mailpit` |
+| `image.tag`                            | image tag (immutable tags are recommended)                                                                                                 | `v1.8.0`          |
+| `image.digest`                         | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`              |
+| `image.pullPolicy`                     | image pull policy                                                                                                                          | `IfNotPresent`    |
+| `image.pullSecrets`                    | image pull secrets                                                                                                                         | `[]`              |
+| `image.debug`                          | Enable image debug mode                                                                                                                    | `false`           |
+| `updateStrategy.type`                  | statefulset strategy type                                                                                                                  | `RollingUpdate`   |
+| `replicaCount`                         | Number of replicas to deploy                                                                                                               | `1`               |
+| `resources.limits.cpu`                 | The resources limits for the containers                                                                                                    | `100m`            |
+| `resources.limits.memory`              | The resources limits for the containers                                                                                                    | `64Mi`            |
+| `resources.requests.cpu`               | The requested resources for the containers                                                                                                 | `5m`              |
+| `resources.requests.memory`            | The requested resources for the containers                                                                                                 | `4Mi`             |
+| `affinity`                             | Pod affinity                                                                                                                               | `{}`              |
+| `args`                                 | Override default container args (useful when using custom images)                                                                          | `[]`              |
+| `extraEnvVars`                         | Array with extra environment variables to add to nodes                                                                                     | `[]`              |
+| `mailpit.webroot`                      | Set the webroot for web UI & API                                                                                                           | `/`               |
+| `mailpit.ui.authFile.enabled`          | Adding basic authentication to web UI                                                                                                      | `false`           |
+| `mailpit.ui.authFile.htpasswd`         | htpasswd content                                                                                                                           | `""`              |
+| `mailpit.ui.authFile.existingSecret`   | Secret containing htpasswd content                                                                                                         | `{}`              |
+| `mailpit.ui.tls.enabled`               | Enable tls for web UI                                                                                                                      | `false`           |
+| `mailpit.ui.tls.secretName`            | tls secret for web UI                                                                                                                      | `""`              |
+| `mailpit.smtp.authFile.enabled`        | Adding SMTP authentication                                                                                                                 | `false`           |
+| `mailpit.smtp.authFile.htpasswd`       | htpasswd content                                                                                                                           | `""`              |
+| `mailpit.smtp.authFile.existingSecret` | Secret containing htpasswd content                                                                                                         | `{}`              |
+| `mailpit.smtp.tls.enabled`             | Enable tls for SMTP                                                                                                                        | `false`           |
+| `mailpit.smtp.tls.secretName`          | tls secret for SMTP                                                                                                                        | `""`              |
+| `mailpit.relay.enabled`                | enable SMTP Relay configuration                                                                                                            | `false`           |
+| `mailpit.relay.config`                 | Mailpit SMTP relay configuration                                                                                                           | `{}`              |
+| `mailpit.relay.relayAll`               | Relay all messages to relay                                                                                                                | `false`           |
 
 ### Traffic Exposure Parameters
 
@@ -81,3 +83,18 @@ helm install mailpit jouve/mailpit
 | `persistence.existingClaim` | The name of an existing PVC to use for persistence                     | `""`                |
 | `persistence.selector`      | Selector to match an existing Persistent Volume for WordPress data PVC | `{}`                |
 | `persistence.dataSource`    | Custom PVC data source                                                 | `{}`                |
+
+## tips
+
+### Existing Secrets
+
+Existing Secrets are using [bitnami/common](https://github.com/bitnami/charts/tree/main/bitnami/common#existingsecret) scheme.
+
+```yaml
+mailpit:
+  ui:
+    authFile:
+      enabled: true
+      existingSecret:
+        name: my-secret
+```

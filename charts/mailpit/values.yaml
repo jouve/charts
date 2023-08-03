@@ -106,9 +106,11 @@ mailpit:
   ui:
     ## @param mailpit.ui.authFile.enabled Adding basic authentication to web UI
     ## @param mailpit.ui.authFile.htpasswd htpasswd content
+    ## @param mailpit.ui.authFile.existingSecret Secret containing htpasswd content
     authFile:
       enabled: false
       htpasswd: ""
+      existingSecret: {}
     ## @param mailpit.ui.tls.enabled Enable tls for web UI
     ## @param mailpit.ui.tls.secretName tls secret for web UI
     tls:
@@ -117,9 +119,11 @@ mailpit:
   smtp:
     ## @param mailpit.smtp.authFile.enabled Adding SMTP authentication
     ## @param mailpit.smtp.authFile.htpasswd htpasswd content
+    ## @param mailpit.smtp.authFile.existingSecret Secret containing htpasswd content
     authFile:
       enabled: false
       htpasswd: ""
+      existingSecret: {}
     ## @param mailpit.smtp.tls.enabled Enable tls for SMTP
     ## @param mailpit.smtp.tls.secretName tls secret for SMTP
     tls:
