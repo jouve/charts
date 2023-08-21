@@ -45,6 +45,25 @@ entries:
     version: 0.18.1
   extra:
   - apiVersion: v2
+    created: "2023-08-21T09:23:33.347330312Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy a list of Kubernetes resources as a release
+    digest: 75cb8c56d7a1a76fbc4357085a4056f7e2e58b209d0657e71e0323fcf6c8d9d1
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: extra
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/bitnami/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/extra-0.1.2/extra-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     created: "2023-06-01T20:18:03.810568338Z"
     dependencies:
     - name: common
@@ -77,6 +96,29 @@ entries:
     - https://github.com/jouve/charts/releases/download/extra-0.1.0/extra-0.1.0.tgz
     version: 0.1.0
   hnc:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: v1.1.0
+    created: "2023-08-21T09:23:33.347330312Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Hierarchical Namespace Controller (HNC). Policies and delegated creation
+      to Kubernetes namespaces.
+    digest: 1385f7f7e78e74d01ce6677987bd09a700cdd10e5db56abaad1d5b9becd748f8
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: hnc
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/hnc-0.2.1/hnc-0.2.1.tgz
+    version: 0.2.1
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
@@ -511,6 +553,36 @@ entries:
         - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
     apiVersion: v2
     appVersion: "15.3"
+    created: "2023-08-21T09:23:33.347330312Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy postgresql using cloudnative-pg operator
+    digest: 31273833b3d068fb11ad85466da2756316b2c9a1466601b2b0b0740cc9c788d5
+    keywords:
+    - database
+    - postgresql
+    - cloudnative-pg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: postgresql
+    sources:
+    - https://github.com/jouve/charts
+    - https://cloudnative-pg.io/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/postgresql-0.4.5/postgresql-0.4.5.tgz
+    version: 0.4.5
+  - annotations:
+      artifacthub.io/images: |
+        - name: postgresql
+          image: ghcr.io/cloudnative-pg/postgresql:15.3-4
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
+    apiVersion: v2
+    appVersion: "15.3"
     created: "2023-06-14T16:36:56.807308416Z"
     dependencies:
     - name: common
@@ -830,6 +902,27 @@ entries:
     - https://github.com/jouve/charts/releases/download/postgresql-0.1.0/postgresql-0.1.0.tgz
     version: 0.1.0
   subnamespace:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    created: "2023-08-21T09:23:33.347330312Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: SubnamespaceAnchor is the Schema for the subnamespace API
+    digest: f2ec8d8c21a636f3ebd1d6b49e546a02a809f12c2e67c60c38a1e10c6f51b201
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: subnamespace
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/subnamespace-0.1.2/subnamespace-0.1.2.tgz
+    version: 0.1.2
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
