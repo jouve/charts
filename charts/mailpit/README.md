@@ -23,7 +23,7 @@ helm install mailpit jouve/mailpit
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `image.registry`                       | image registry                                                                                                                             | `docker.io`       |
 | `image.repository`                     | image repository                                                                                                                           | `axllent/mailpit` |
-| `image.tag`                            | image tag (immutable tags are recommended)                                                                                                 | `v1.8.0`          |
+| `image.tag`                            | image tag (immutable tags are recommended)                                                                                                 | `v1.8.2`          |
 | `image.digest`                         | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`              |
 | `image.pullPolicy`                     | image pull policy                                                                                                                          | `IfNotPresent`    |
 | `image.pullSecrets`                    | image pull secrets                                                                                                                         | `[]`              |
