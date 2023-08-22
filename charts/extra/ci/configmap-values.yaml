@@ -10,4 +10,4 @@ extraDeploy:
         annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
         {{- end }}
       data:
-        foo: bar
+        toto: tutu
