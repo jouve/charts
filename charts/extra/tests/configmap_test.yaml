@@ -1,0 +1,19 @@
+suite: test configmap
+templates:
+  - extra-list.yaml
+tests:
+  - it: should create a ConfigMap
+    values:
+      - ../ci/configmap-values.yaml
+    asserts:
+      - containsDocument:
+          apiVersion: v1
+          kind: ConfigMap
+      - isSubset:
+          path: metadata.labels
+          content:
+            app.kubernetes.io/name: extra
+            app.kubernetes.io/instance: RELEASE-NAME
+      - equal:
+          path: data.foo
+          value: bar
