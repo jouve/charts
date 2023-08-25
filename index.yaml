@@ -45,6 +45,25 @@ entries:
     version: 0.18.1
   extra:
   - apiVersion: v2
+    created: "2023-08-25T10:40:28.923564751Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy a list of Kubernetes resources as a release
+    digest: ba75326313a847ed7f950fb7041b0b131f6e564222301ce5e492dc0f335821ac
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: extra
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/bitnami/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/extra-0.1.3/extra-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
     created: "2023-08-21T09:23:33.347330312Z"
     dependencies:
     - name: common
@@ -985,4 +1004,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-22T12:18:49.85222784Z"
+generated: "2023-08-25T10:40:28.923900956Z"
