@@ -3,10 +3,7 @@ kind: Deployment
 metadata:
   name: {{ template "common.names.fullname" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
-    {{- with .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
   {{- with .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
@@ -18,14 +15,12 @@ spec:
   {{- else if .Values.updateStrategy }}
   strategy: {{- toYaml .Values.updateStrategy | nindent 4 }}
   {{- end }}
+  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.podLabels .Values.commonLabels ) "context" . ) | fromYaml }}
   selector:
-    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
+    matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}
   template:
     metadata:
-      labels: {{- include "common.labels.standard" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
-        {{- end }}
+      labels: {{- include "common.labels.standard" ( dict "customLabels" $podLabels "context" $ ) | nindent 8 }}
       {{- if or .Values.podAnnotations (include "mailpit.hasSecret" .) }}
       annotations:
         {{- with .Values.podAnnotations }}
@@ -118,7 +113,7 @@ spec:
         {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
         {{- end }}
       volumes:
-        {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.secretName .Values.mailpit.smtp.tls.secretName .Values.mailpit.relay.enabled }}
+        {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.enabled .Values.mailpit.smtp.tls.enabled .Values.mailpit.relay.enabled }}
         - name: etc
           projected:
             sources:
@@ -142,7 +137,7 @@ spec:
             {{- end }}
             {{- if .Values.mailpit.ui.tls.enabled }}
             - secret:
-                name: {{ .Values.mailpit.ui.tls.secretName }}
+                name: {{ .Values.mailpit.ui.tls.secretName | required "mailpit.ui.tls.secretName required when tls is enabled" }}
                 items:
                 - key: tls.crt
                   path: ui.crt
@@ -151,7 +146,7 @@ spec:
             {{- end }}
             {{- if .Values.mailpit.smtp.tls.enabled }}
             - secret:
-                name: {{ .Values.mailpit.smtp.tls.secretName }}
+                name: {{ .Values.mailpit.smtp.tls.secretName | required "mailpit.smtp.tls.secretName required when tls is enabled" }}
                 items:
                 - key: tls.crt
                   path: smtp.crt
