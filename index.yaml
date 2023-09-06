@@ -3,6 +3,27 @@ entries:
   cloudnative-pg:
   - apiVersion: v2
     appVersion: 1.20.2
+    created: "2023-09-06T20:16:58.845549911Z"
+    description: CloudNativePG Helm Chart
+    digest: fd0e1093ecba4f84f6b6bfe0e7643f9f009df5c7025a0e4327a7b449b49df4ae
+    home: https://cloudnative-pg.io
+    icon: https://raw.githubusercontent.com/cloudnative-pg/artwork/main/cloudnativepg-logo.svg
+    keywords:
+    - postgresql
+    - postgres
+    - database
+    maintainers:
+    - email: p.scorsolini@gmail.com
+      name: phisco
+    name: cloudnative-pg
+    sources:
+    - https://github.com/cloudnative-pg/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/cloudnative-pg-0.18.3/cloudnative-pg-0.18.3.tgz
+    version: 0.18.3
+  - apiVersion: v2
+    appVersion: 1.20.2
     created: "2023-07-31T18:59:37.377498485Z"
     description: CloudNativePG Helm Chart
     digest: 3564ebbf4ac970a366a4592077f6adc0205174192b95c36f3c2a75aa309e77b9
@@ -43,6 +64,35 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/cloudnative-pg-0.18.1/cloudnative-pg-0.18.1.tgz
     version: 0.18.1
+  coredns:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: Upgrade CoreDNS to 1.11.1
+    apiVersion: v2
+    appVersion: 1.11.1
+    created: "2023-09-06T20:16:59.06852695Z"
+    description: CoreDNS is a DNS server that chains plugins and provides Kubernetes
+      DNS Services
+    digest: 30993eed344c143a5b6bf0221f95ee65e0977f23068a8948da58c036c83ce31c
+    home: https://coredns.io
+    icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
+    keywords:
+    - coredns
+    - dns
+    - kubedns
+    maintainers:
+    - name: mrueg
+    - name: haad
+    - name: hagaibarel
+    - name: shubham-cmyk
+    name: coredns
+    sources:
+    - https://github.com/coredns/coredns
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/coredns-1.26.1/coredns-1.26.1.tgz
+    version: 1.26.1
   extra:
   - apiVersion: v2
     created: "2023-08-25T10:40:28.923564751Z"
@@ -1004,4 +1054,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-25T10:40:28.923900956Z"
+generated: "2023-09-06T20:16:59.068811071Z"
