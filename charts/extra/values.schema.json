@@ -1,0 +1,12 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "extraDeploy": {
+            "type": "array",
+            "description": "Array of extra objects to deploy with the release",
+            "default": [],
+            "items": {}
+        }
+    }
+}
