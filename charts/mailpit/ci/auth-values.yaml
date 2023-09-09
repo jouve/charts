@@ -1,0 +1,9 @@
+mailpit:
+  ui:
+    authFile:
+      enabled: true
+      htpasswd: toto
+  smtp:
+    authFile:
+      enabled: true
+      htpasswd: tutu

@@ -57,9 +57,9 @@ helm install mailpit jouve/mailpit
 | Name                       | Description                                                                                                                      | Value                    |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
 | `service.http.type`        | service type                                                                                                                     | `ClusterIP`              |
-| `service.http.nodePort`    | nodeport bind for HTTP service                                                                                                   | `nil`                    |
+| `service.http.nodePort`    | nodeport bind for HTTP service                                                                                                   | `0`                      |
 | `service.smtp.type`        | service type                                                                                                                     | `ClusterIP`              |
-| `service.smtp.nodePort`    | nodeport bind for STMP service                                                                                                   | `nil`                    |
+| `service.smtp.nodePort`    | nodeport bind for STMP service                                                                                                   | `0`                      |
 | `ingress.enabled`          | Enable ingress record generation for %%MAIN_CONTAINER_NAME%%                                                                     | `false`                  |
 | `ingress.annotations`      | Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations. | `{}`                     |
 | `ingress.ingressClassName` | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                                    | `""`                     |

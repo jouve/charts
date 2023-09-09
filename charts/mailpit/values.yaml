@@ -148,13 +148,13 @@ service:
     ## @param service.http.nodePort nodeport bind for HTTP service
     ##
     type: ClusterIP
-    nodePort:
+    nodePort: 0
   smtp:
     ## @param service.smtp.type service type
     ## @param service.smtp.nodePort nodeport bind for STMP service
     ##
     type: ClusterIP
-    nodePort:
+    nodePort: 0
 
 
 ## ingress parameters
