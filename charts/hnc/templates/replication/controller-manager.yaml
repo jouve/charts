@@ -4,26 +4,21 @@ kind: Deployment
 metadata:
   name: {{ template "common.names.fullname" . }}-controller-manager
   namespace: {{ include "common.names.namespace" . | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
     control-plane: controller-manager
-    {{- with .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
   {{- with .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
 spec:
   replicas: 1
+  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.podLabels .Values.commonLabels ) "context" . ) | fromYaml }}
   selector:
-    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
+    matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}
       control-plane: controller-manager
   template:
     metadata:
-      labels: {{- include "common.labels.standard" . | nindent 8 }}
+      labels: {{- include "common.labels.standard" ( dict "customLabels" $podLabels "context" $ ) | nindent 8 }}
         control-plane: controller-manager
-        {{- with .Values.podLabels }}
-        {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
-        {{- end }}
       {{- if or .Values.podAnnotations (and .Values.metrics.enabled (not .Values.metrics.serviceMonitor.enabled)) }}
       annotations:
         {{- with .Values.podAnnotations }}
