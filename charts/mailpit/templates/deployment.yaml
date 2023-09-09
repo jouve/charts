@@ -129,34 +129,34 @@ spec:
             {{- if and .Values.mailpit.ui.authFile.enabled .Values.mailpit.ui.authFile.existingSecret }}
             - secret:
                 name: {{ include "common.secrets.name" (dict "existingSecret" .Values.mailpit.ui.authFile.existingSecret "context" .) }}
-              items:
-              - key: {{ include "common.secrets.key" (dict "existingSecret" .Values.mailpit.ui.authFile.existingSecret "key" "ui.htpasswd") }}
-                path: ui.htpasswd
+                items:
+                - key: {{ include "common.secrets.key" (dict "existingSecret" .Values.mailpit.ui.authFile.existingSecret "key" "ui.htpasswd") }}
+                  path: ui.htpasswd
             {{- end }}
             {{- if and .Values.mailpit.smtp.authFile.enabled .Values.mailpit.smtp.authFile.existingSecret }}
             - secret:
                 name: {{ include "common.secrets.name" (dict "existingSecret" .Values.mailpit.smtp.authFile.existingSecret "context" .) }}
-              items:
-              - key: {{ include "common.secrets.key" (dict "existingSecret" .Values.mailpit.smtp.authFile.existingSecret "key" "smtp.htpasswd") }}
-                path: smtp.htpasswd
+                items:
+                - key: {{ include "common.secrets.key" (dict "existingSecret" .Values.mailpit.smtp.authFile.existingSecret "key" "smtp.htpasswd") }}
+                  path: smtp.htpasswd
             {{- end }}
             {{- if .Values.mailpit.ui.tls.enabled }}
             - secret:
                 name: {{ .Values.mailpit.ui.tls.secretName }}
-              items:
-              - key: tls.crt
-                path: ui.crt
-              - key: tls.key
-                path: ui.key
+                items:
+                - key: tls.crt
+                  path: ui.crt
+                - key: tls.key
+                  path: ui.key
             {{- end }}
             {{- if .Values.mailpit.smtp.tls.enabled }}
             - secret:
                 name: {{ .Values.mailpit.smtp.tls.secretName }}
-              items:
-              - key: tls.crt
-                path: smtp.crt
-              - key: tls.key
-                path: smtp.key
+                items:
+                - key: tls.crt
+                  path: smtp.crt
+                - key: tls.key
+                  path: smtp.key
             {{- end }}
         {{- end }}
         - name: data
