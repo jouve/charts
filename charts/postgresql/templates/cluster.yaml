@@ -3,10 +3,7 @@ kind: Cluster
 metadata:
   name: {{ template "common.names.fullname" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
-    {{- with .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
   {{- with .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
@@ -38,7 +35,7 @@ spec:
   backup:
     barmanObjectStore:
       {{- if .Values.backup.s3.enabled }}
-      endpointURL: {{ .Values.backup.endpointURL }}
+      endpointURL: {{ .Values.backup.endpointURL | required "backup.endpointURL required when backup.s3 is enabled" }}
       {{- with .Values.backup.endpointCASecret }}
       endpointCA:
         name: {{ . }}
@@ -47,10 +44,10 @@ spec:
       destinationPath: s3://{{ with .Values.backup.s3.bucketName }}{{ . }}{{ else }}{{ include "common.names.namespace" . }}-{{ template "common.names.fullname" . }}-backup{{ end }}/
       s3Credentials:
         accessKeyId:
-          name: {{ if .Values.backup.s3.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.s3.existingSecret }}{{ end }}
+          name: {{ if .Values.backup.s3.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.s3.existingSecret | required "backup.s3.existingSecret required when backup.s3.bucketName and backup.s3.objectBucketClaim is not enabled" }}{{ end }}
           key: AWS_ACCESS_KEY_ID
         secretAccessKey:
-          name: {{ if .Values.backup.s3.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.s3.existingSecret }}{{ end }}
+          name: {{ if .Values.backup.s3.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.s3.existingSecret | required "backup.s3.existingSecret required when backup.s3.bucketName and backup.s3.objectBucketClaim is not enabled" }}{{ end }}
           key: AWS_SECRET_ACCESS_KEY
       {{- end }}
     retentionPolicy: {{ .Values.backup.retentionPolicy | quote }}
