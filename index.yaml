@@ -1091,6 +1091,27 @@ entries:
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
+    created: "2023-09-10T13:10:34.300098974Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: SubnamespaceAnchor is the Schema for the subnamespace API
+    digest: 6bb00c096e5534099fb200ac46cc90d30e51a7cd8376b752411269ece0ea20c4
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: subnamespace
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/subnamespace-0.2.0/subnamespace-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
     created: "2023-08-21T09:23:33.347330312Z"
     dependencies:
     - name: common
@@ -1149,4 +1170,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-10T13:07:43.760931498Z"
+generated: "2023-09-10T13:10:34.300184774Z"
