@@ -3,10 +3,7 @@ kind: Role
 metadata:
   name: {{ template "common.names.fullname" . }}-leader-election-role
   namespace: {{ include "common.names.namespace" . | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
-    {{- with .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
   {{- with .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}

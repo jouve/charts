@@ -4,25 +4,14 @@ kind: ServiceMonitor
 metadata:
   name: {{ template "common.names.fullname" . }}
   namespace: {{ default (include "common.names.namespace" .) .Values.metrics.serviceMonitor.namespace | quote }}
-    {{- with .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
-    {{- with .Values.metrics.serviceMonitor.labels }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
-  {{- if or .Values.commonAnnotations .Values.metrics.serviceMonitor.annotations }}
-  annotations:
-    {{- with .Values.commonAnnotations }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
-    {{- with .Values.metrics.serviceMonitor.annotations }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+  {{- with include "common.tplvalues.merge" ( dict "values" (list .Values.metrics.serviceMonitor.annotations .Values.commonAnnotations) "context" . ) | fromYaml }}
+  annotations: {{- . | toYaml | nindent 4 }}
   {{- end }}
 spec:
   jobLabel: {{ .Values.metrics.serviceMonitor.jobLabel | quote }}
   selector:
-    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
+    matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 6 }}
       app.kubernetes.io/component: metrics
       {{- with .Values.metrics.serviceMonitor.selector }}
       {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 6 }}

@@ -4,12 +4,9 @@ kind: Service
 metadata:
   name: {{ template "common.names.fullname" . }}-controller-manager-metrics-service
   namespace: {{ include "common.names.namespace" . | quote }}
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
     control-plane: controller-manager
     app.kubernetes.io/component: metrics
-    {{- with .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
   {{- if or .Values.commonAnnotations .Values.service.annotations (and .Values.metrics.enabled (not .Values.metrics.serviceMonitor.enabled)) }}
   annotations:
     {{- with .Values.commonAnnotations }}
@@ -29,5 +26,6 @@ spec:
     - name: metrics
       port: 8080
       targetPort: metrics
-  selector: {{- include "common.labels.matchLabels" . | nindent 4 }}
+  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.podLabels .Values.commonLabels ) "context" . ) | fromYaml }}
+  selector: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 4 }}
 {{- end }}

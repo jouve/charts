@@ -2,11 +2,8 @@ apiVersion: {{ template "common.capabilities.rbac.apiVersion" . }}
 kind: ClusterRole
 metadata:
   name: {{ template "common.names.fullname" . }}-admin-role
-  labels: {{- include "common.labels.standard" . | nindent 4 }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
-    {{- with .Values.commonLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
-    {{- end }}
   {{- with .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
