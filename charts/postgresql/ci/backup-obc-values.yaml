@@ -1,0 +1,6 @@
+backup:
+  enabled: true
+  endpointURL: https://my.s3.local
+  s3:
+    objectBucketClaim:
+      enabled: true

@@ -1,13 +1,14 @@
 apiVersion: v2
 name: postgresql
 description: Deploy postgresql using cloudnative-pg operator
+icon: https://raw.githubusercontent.com/cloudnative-pg/artwork/main/cloudnativepg-logo.svg
 type: application
 keywords:
 - database
 - postgresql
 - cloudnative-pg
-version: 0.4.5
-appVersion: "15.3"
+version: 0.5.0
+appVersion: "15.4"
 dependencies:
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
@@ -21,6 +22,6 @@ maintainers:
 annotations:
   artifacthub.io/images: |
     - name: postgresql
-      image: ghcr.io/cloudnative-pg/postgresql:15.3-4
+      image: ghcr.io/cloudnative-pg/postgresql:15.4-8
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
