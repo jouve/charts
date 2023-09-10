@@ -30,6 +30,14 @@ spec:
         {{- end }}
       {{- end }}
     spec:
+      {{- with .Values.affinity }}
+      affinity: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
+      {{- else }}
+      affinity:
+        podAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAffinityPreset "customLabels" $podLabels "context" $) | nindent 10 }}
+        podAntiAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAntiAffinityPreset "customLabels" $podLabels "context" $) | nindent 10 }}
+        nodeAffinity: {{- include "common.affinities.nodes" (dict "type" .Values.nodeAffinityPreset.type "key" .Values.nodeAffinityPreset.key "values" .Values.nodeAffinityPreset.values) | nindent 10 }}
+      {{- end }}
       containers:
         - args:
             - --webhook-server-port=9443
@@ -47,6 +55,12 @@ spec:
             - --webhooks-only
             {{- if .Values.hrq.enabled }}
             - --enable-hrq
+            {{- end }}
+            {{- range .Values.managedNamespaceLabels }}
+            - --managed-namespace-label={{ . }}
+            {{- end }}
+            {{- range .Values.managedNamespaceAnnotations }}
+            - --managed-namespace-annotation={{ . }}
             {{- end }}
           command:
             - /manager
@@ -73,13 +87,7 @@ spec:
               path: /readyz
               port: 8081
             periodSeconds: 5
-          resources:
-            limits:
-              cpu: 100m
-              memory: 300Mi
-            requests:
-              cpu: 100m
-              memory: 150Mi
+          resources: {{- include "common.tplvalues.render" (dict "value" .Values.resources "context" .) | nindent 12 }}
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
