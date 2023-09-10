@@ -51,6 +51,12 @@ spec:
             {{- if .Values.hrq.enabled }}
             - --enable-hrq
             {{- end }}
+            {{- range .Values.managedNamespaceLabels }}
+            - --managed-namespace-label={{ . }}
+            {{- end }}
+            {{- range .Values.managedNamespaceAnnotations }}
+            - --managed-namespace-annotation={{ . }}
+            {{- end }}
           command:
             - /manager
           image: {{ template "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
@@ -76,13 +82,7 @@ spec:
               path: /readyz
               port: 8081
             periodSeconds: 5
-          resources:
-            limits:
-              cpu: 100m
-              memory: 300Mi
-            requests:
-              cpu: 100m
-              memory: 150Mi
+          resources: {{- include "common.tplvalues.render" (dict "value" .Values.resources "context" .) | nindent 12 }}
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

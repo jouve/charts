@@ -1,80 +1,178 @@
-# Default values for hnc.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+## @section Global parameters
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+##
 
+## @param global.imageRegistry Global Docker image registry
+## @param global.imagePullSecrets Global Docker registry secret names as an array
+## @param global.storageClass Global StorageClass for Persistent Volume(s)
+##
+global:
+  imageRegistry: ""
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  storageClass: ""
+
+## @section Common parameters
+##
+
+## @param kubeVersion Override Kubernetes version
+##
+kubeVersion: ""
+## @param nameOverride String to partially override common.names.name
+##
+nameOverride: ""
+## @param fullnameOverride String to fully override common.names.fullname
+##
+fullnameOverride: ""
+## @param namespaceOverride String to fully override common.names.namespace
+##
+namespaceOverride: ""
+## @param commonLabels Labels to add to all deployed objects
+##
+commonLabels: {}
+## @param commonAnnotations Annotations to add to all deployed objects
+##
+commonAnnotations: {}
+## @param clusterDomain Kubernetes cluster domain name
+##
 clusterDomain: cluster.local
 
-# Allowed values: standalone or replication
+## @section HNC parameters
+
+## @param architecture Allowed values: standalone or replication
 architecture: standalone
 
-# only when architecture == replication
+## @param webhookServer.replicaCount Number of replicas to deploy when architecture == replication
 webhookServer:
   replicaCount: 3
 
+## @param excludedNamespaces Addition excluded namespaces
 excludedNamespaces: []
 
+## @param hrq.enabled Enable Hierarchical Resource Quota
 hrq:
   enabled: false
 
+## @param managedNamespaceLabels Managed namespace labels
+managedNamespaceLabels: []
+
+## @param managedNamespaceAnnotations Managed Namespace Annotations
+managedNamespaceAnnotations: []
+
+## @param certManager.enabled Use Cert-Manager for webhook certs
+## @param certManager.issuerRef Cert-Manager issuer to use for webhook certs (self signed cert used if not specified)
 certManager:
   enabled: false
+  issuerRef: {}
 
+## @param image.registry image registry
+## @param image.repository image repository
+## @param image.tag image tag (immutable tags are recommended)
+## @param image.digest image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended)
+## @param image.pullPolicy image pull policy
+## @param image.pullSecrets image pull secrets
 image:
   registry: gcr.io
   repository: k8s-staging-multitenancy/hnc-manager
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
   tag: v1.1.0
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+## resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources.limits [object] The resources limits for the containers
+## @param resources.requests [object] The requested resources for the containers
+resources:
+  limits:
+    cpu: 100m
+    memory: 300Mi
+  requests:
+    cpu: 100m
+    memory: 150Mi
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-
+## @param podLabels Extra labels for pods
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+##
+podLabels: {}
+## @param podAnnotations Annotations for pods
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+##
 podAnnotations: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-service: {}
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
+## @param podAffinityPreset Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+##
+podAffinityPreset: ""
+## @param podAntiAffinityPreset Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+##
+podAntiAffinityPreset: soft
+## Node affinity preset
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
+##
+nodeAffinityPreset:
+  ## @param nodeAffinityPreset.type Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`
+  ##
+  type: ""
+  ## @param nodeAffinityPreset.key Node label key to match. Ignored if `affinity` is set
+  ##
+  key: ""
+  ## @param nodeAffinityPreset.values Node label values to match. Ignored if `affinity` is set
+  ## E.g.
+  ## values:
+  ##   - e2e-az1
+  ##   - e2e-az2
+  ##
+  values: []
+## @param affinity Affinity for pods assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+## NOTE: `podAffinityPreset`, `podAntiAffinityPreset`, and `nodeAffinityPreset` will be ignored when it's set
+##
+affinity: {}
+## @param nodeSelector Node labels for pods assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
 nodeSelector: {}
 
-tolerations: []
+## @section Traffic Exposure Parameters
+##
 
-affinity: {}
+## service parameters
+##
+service:
+  ## @param service.annotations Additional custom annotations for service
+  ##
+  annotations: {}
 
-issuerRef: {}
-
+## Prometheus metrics
+##
 metrics:
+  ## @param metrics.enabled Enable the export of Prometheus metrics
+  ##
   enabled: true
+  ## Prometheus Operator ServiceMonitor configuration
+  ##
   serviceMonitor:
+    ## @param metrics.serviceMonitor.enabled if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)
+    ##
     enabled: false
+
+## @param extraDeploy Array of extra objects to deploy with the release
+##
+extraDeploy: []
