@@ -1,6 +1,32 @@
 apiVersion: v1
 entries:
   cloudnative-pg:
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
+    appVersion: 1.20.2
+    created: "2023-09-11T21:42:58.11124577Z"
+    description: CloudNativePG Helm Chart
+    digest: 722e95553a2ce21be7b4e8769e460e6208f57d5a41650568c1895dab0f1aea50
+    home: https://cloudnative-pg.io
+    icon: https://raw.githubusercontent.com/cloudnative-pg/artwork/main/cloudnativepg-logo.svg
+    keywords:
+    - postgresql
+    - postgres
+    - database
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    - email: p.scorsolini@gmail.com
+      name: phisco
+    name: cloudnative-pg
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/cloudnative-pg/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/cloudnative-pg-0.18.4/cloudnative-pg-0.18.4.tgz
+    version: 0.18.4
   - apiVersion: v2
     appVersion: 1.20.2
     created: "2023-09-06T20:16:58.845549911Z"
@@ -95,6 +121,26 @@ entries:
     version: 1.26.1
   extra:
   - apiVersion: v2
+    created: "2023-09-11T21:42:58.262025941Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy a list of Kubernetes resources as a release
+    digest: 420ad29eb823ab433069d7ac3a68a680e8d364044bc5ee1b3fbe56e8891a3820
+    icon: https://raw.githubusercontent.com/KDE/breeze-icons/master/icons/actions/16/list-add.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: extra
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/bitnami/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/extra-0.2.1/extra-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
     created: "2023-09-09T17:29:42.738259976Z"
     dependencies:
     - name: common
@@ -183,7 +229,51 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/extra-0.1.0/extra-0.1.0.tgz
     version: 0.1.0
+  gatekeeper-library:
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
+    appVersion: 954a063f6449d2e93ca7bd2a06a96f11213998ca
+    created: "2023-09-11T21:42:58.389930128Z"
+    description: A Helm chart for Kubernetes
+    digest: 1dff90c26d39847fdd9178aa416346c26c86f1a85810d719f26baf7942deecfb
+    icon: https://raw.githubusercontent.com/open-policy-agent/gatekeeper-library/master/website/static/img/logo.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: gatekeeper-library
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/open-policy-agent/gatekeeper-library
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/gatekeeper-library-0.1.0/gatekeeper-library-0.1.0.tgz
+    version: 0.1.0
   hnc:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: v1.1.0
+    created: "2023-09-11T21:42:58.522525873Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Hierarchical Namespace Controller (HNC). Policies and delegated creation
+      to Kubernetes namespaces.
+    digest: ae8dfa5e06d499e1fb8435193e28204398d2db6e3f5e3c376364d291c20c2bc5
+    icon: https://raw.githubusercontent.com/KDE/breeze-icons/master/icons/actions/16/view-list-tree.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: hnc
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/hnc-0.5.0/hnc-0.5.0.tgz
+    version: 0.5.0
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
@@ -1217,4 +1307,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-10T18:03:56.355310874Z"
+generated: "2023-09-11T21:42:58.522636974Z"
