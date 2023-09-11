@@ -1,0 +1,15 @@
+apiVersion: v2
+name: gatekeeper-library
+description: A Helm chart for Kubernetes
+icon: https://raw.githubusercontent.com/open-policy-agent/gatekeeper-library/master/website/static/img/logo.svg
+type: application
+version: 0.1.0
+appVersion: 954a063f6449d2e93ca7bd2a06a96f11213998ca
+sources:
+- https://github.com/jouve/charts
+- https://github.com/open-policy-agent/gatekeeper-library
+maintainers:
+- name: jouve
+  url: https://github.com/jouve
+annotations:
+  artifacthub.io/license: Apache-2.0
