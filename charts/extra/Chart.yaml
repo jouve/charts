@@ -3,7 +3,7 @@ name: extra
 description: Deploy a list of Kubernetes resources as a release
 icon: https://raw.githubusercontent.com/KDE/breeze-icons/master/icons/actions/16/list-add.svg
 type: application
-version: 0.2.1
+version: 0.2.2
 dependencies:
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
@@ -14,3 +14,5 @@ sources:
 maintainers:
 - name: jouve
   url: https://github.com/jouve
+annotations:
+  artifacthub.io/license: GPL-3.0-or-later

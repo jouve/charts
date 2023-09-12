@@ -357,8 +357,12 @@ networkPolicy:
   enabled: false
   ingress:
     dns:
-      peers: null
-    metrics:
       peers: []
+    rules: []
   egress:
+    apiServer:
+      peers: []
+      port: 6443
+    dns:
+      peers: []
     rules: []

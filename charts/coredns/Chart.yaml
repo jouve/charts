@@ -1,6 +1,6 @@
 apiVersion: v2
 name: coredns
-version: 1.27.0
+version: 1.27.1
 appVersion: 1.11.1
 home: https://coredns.io
 icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
@@ -10,15 +10,13 @@ keywords:
   - dns
   - kubedns
 sources:
+  - https://github.com/jouve/charts
   - https://github.com/coredns/coredns
 maintainers:
+  - name: jouve
+    url: https://github.com/jouve
   - name: mrueg
   - name: haad
   - name: hagaibarel
   - name: shubham-cmyk
-engine: gotpl
 type: application
-annotations:
-  artifacthub.io/changes: |
-    - kind: changed
-      description: Upgrade CoreDNS to 1.11.1

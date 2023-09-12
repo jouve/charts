@@ -19,30 +19,37 @@ spec:
       k8s-app: {{ template "coredns.k8sapplabel" . }}
       {{- end }}
       app.kubernetes.io/name: {{ template "coredns.name" . }}
-    ingress:
-      - {{- if not .Values.isClusterService }}
-        {{- $_ := eq .Values.networkPolicy.ingress.dns.peers nil | ternary "" "-" | required "required value networkPolicy.ingress.dns.peers" }}
-        from: {{ .Values.networkPolicy.ingress.dns.peers | toYaml | nindent 10 }}
-        {{- end }}
-        ports:
-          - protocol: TCP
-            port: 53
-          - protocol: UDP
-            port: 53
-      {{- with .Values.networkPolicy.ingress.metrics.peers }}
-      - from: {{ . | toYaml | nindent 10 }}
-        ports:
-          - protocol: TCP
-            port: 9153
+  ingress:
+    - {{- with .Values.networkPolicy.ingress.dns.peers }}
+      from: {{ . | toYaml | nindent 8 }}
       {{- end }}
-      {{- with .Values.networkPolicy.ingress.rules }}
-      {{- . | toYaml | nindent 8 }}
-      {{- end }}
-    {{- with .Values.networkPolicy.egress.rules }}
-    egress:
-      {{- . | toYaml | nindent 8 }}
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+    {{- with .Values.networkPolicy.ingress.rules }}
+    {{- . | toYaml | nindent 4 }}
     {{- end }}
-    policyTypes:
-      - Ingress
-      - Egress
+  egress:
+    - {{- with .Values.networkPolicy.egress.apiServer.peers }}
+      to: {{ . | toYaml | nindent 8 }}
+      {{- end }}
+      ports:
+        - protocol: TCP
+          port: {{ .Values.networkPolicy.egress.apiServer.port }}
+    - {{- with .Values.networkPolicy.egress.apiServer.peers }}
+      to: {{ . | toYaml | nindent 8 }}
+      {{- end }}
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+    {{- with .Values.networkPolicy.egress.rules }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
+  policyTypes:
+    - Ingress
+    - Egress
 {{- end }}
