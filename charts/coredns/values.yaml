@@ -70,8 +70,6 @@ serviceAccount:
 rbac:
   # If true, create & use RBAC resources
   create: true
-  # If true, create and use PodSecurityPolicy
-  pspEnable: false
   # The name of the ServiceAccount to use.
   # If not set and create is true, a name is generated using the fullname template
   # name:
@@ -354,3 +352,13 @@ deployment:
   name: ""
   ## Annotations for the coredns deployment
   annotations: {}
+
+networkPolicy:
+  enabled: false
+  ingress:
+    dns:
+      peers: null
+    metrics:
+      peers: []
+  egress:
+    rules: []

@@ -1,0 +1,9 @@
+isClusterService: false
+networkPolicy:
+  enabled: true
+  ingress:
+    dns:
+      peers:
+        - namespaceSelector:
+            matchLabels:
+              toto: tutu
