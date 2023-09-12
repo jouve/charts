@@ -91,6 +91,33 @@ entries:
     - https://github.com/jouve/charts/releases/download/cloudnative-pg-0.18.1/cloudnative-pg-0.18.1.tgz
     version: 0.18.1
   coredns:
+  - apiVersion: v2
+    appVersion: 1.11.1
+    created: "2023-09-12T23:35:27.555352822Z"
+    description: CoreDNS is a DNS server that chains plugins and provides Kubernetes
+      DNS Services
+    digest: cbc00fa6f6ae8872f1b9a19f459e45b6c97bfc8c472046127b8355e7e87bc8ec
+    home: https://coredns.io
+    icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
+    keywords:
+    - coredns
+    - dns
+    - kubedns
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    - name: mrueg
+    - name: haad
+    - name: hagaibarel
+    - name: shubham-cmyk
+    name: coredns
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/coredns/coredns
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/coredns-1.27.1/coredns-1.27.1.tgz
+    version: 1.27.1
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -148,6 +175,28 @@ entries:
     - https://github.com/jouve/charts/releases/download/coredns-1.26.1/coredns-1.26.1.tgz
     version: 1.26.1
   extra:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    created: "2023-09-12T23:35:27.758191102Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy a list of Kubernetes resources as a release
+    digest: 095e0555c9b58d37f1d7f03af64a666739469058f1a8c6152eaa6bca289b27d8
+    icon: https://raw.githubusercontent.com/KDE/breeze-icons/master/icons/actions/16/list-add.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: extra
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/bitnami/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/extra-0.2.2/extra-0.2.2.tgz
+    version: 0.2.2
   - apiVersion: v2
     created: "2023-09-11T21:42:58.262025941Z"
     dependencies:
@@ -1335,4 +1384,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-12T22:10:14.346607569Z"
+generated: "2023-09-12T23:35:27.758353406Z"
