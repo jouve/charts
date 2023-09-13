@@ -93,6 +93,37 @@ entries:
   coredns:
   - apiVersion: v2
     appVersion: 1.11.1
+    created: "2023-09-13T14:13:20.370788528Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: CoreDNS is a DNS server that chains plugins and provides Kubernetes
+      DNS Services
+    digest: 28fd3872bea3fac5e2a87e837ce57e148c565b53ed1eda4c088897e7979e1046
+    home: https://coredns.io
+    icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
+    keywords:
+    - coredns
+    - dns
+    - kubedns
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    - name: mrueg
+    - name: haad
+    - name: hagaibarel
+    - name: shubham-cmyk
+    name: coredns
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/coredns/coredns
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/coredns-1.28.4/coredns-1.28.4.tgz
+    version: 1.28.4
+  - apiVersion: v2
+    appVersion: 1.11.1
     created: "2023-09-13T13:54:32.816181995Z"
     dependencies:
     - name: common
@@ -1504,4 +1535,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-13T13:54:32.816595006Z"
+generated: "2023-09-13T14:13:20.370906127Z"
