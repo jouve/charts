@@ -22,8 +22,8 @@ data:
     {{- if .port }}:{{ .port }} {{ end -}}
     {
       {{- range .plugins }}
-        {{ .name }}{{ if .parameters }} {{ .parameters }}{{ end }}{{ if .configBlock }} {
-{{ .configBlock | indent 12 }}
+        {{ .name }}{{ with .parameters }} {{ tpl . $ }}{{ end }}{{ with .configBlock }} {
+          {{- tpl . $ | nindent 12 }}
         }{{ end }}
       {{- end }}
     }
