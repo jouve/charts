@@ -18,17 +18,17 @@ data:
     {{ $name }}{{ if $conf.parameters }} {{ $conf.parameters }}{{ end }}
     {{- end }}
     {{ range .Values.servers }}
-    {{- range $idx, $zone := .zones }}{{ if $idx }} {{ else }}{{ end }}{{ default "" $zone.scheme }}{{ default "." $zone.zone }}{{ else }}.{{ end -}}
-    {{- if .port }}:{{ .port }} {{ end -}}
-    {
+    {{- range $idx, $zone := .zones }}{{ if $idx }} {{ end }}{{ default "" $zone.scheme }}{{ default "." $zone.zone }}{{ else }}.{{ end -}}
+    {{- if .port }}:{{ .port }} {{ end }} {
       {{- range .plugins }}
-        {{ .name }}{{ with .parameters }} {{ tpl . $ }}{{ end }}{{ with .configBlock }} {
-          {{- tpl . $ | nindent 12 }}
-        }{{ end }}
+        {{ .name }}{{ with .parameters }} {{ include "common.tplvalues.render" (dict "value" . "context" $) }}{{ end }}{{ with .configBlock }} {
+          {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 10 }}
+        }
+        {{- end }}
       {{- end }}
     }
     {{ end }}
-  {{- range .Values.zoneFiles }}
-  {{ .filename }}: {{ toYaml .contents | indent 4 }}
+  {{- with .Values.zoneFiles }}
+  {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 2 -}}
   {{- end }}
 {{- end }}
