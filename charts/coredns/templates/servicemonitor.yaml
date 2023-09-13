@@ -3,9 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ template "coredns.fullname" . }}
-  {{- if .Values.prometheus.monitor.namespace }}
-  namespace: {{ .Values.prometheus.monitor.namespace }}
-  {{- end }}
+  namespace: {{ .Values.prometheus.monitor.namespace | ternary .Values.prometheus.monitor.namespace .Release.Namespace }}
   labels: {{- include "coredns.labels" . | nindent 4 }}
     {{- if .Values.prometheus.monitor.additionalLabels }}
 {{ toYaml .Values.prometheus.monitor.additionalLabels | indent 4 }}

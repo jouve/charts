@@ -21,7 +21,7 @@ spec:
       app.kubernetes.io/name: {{ template "coredns.name" . }}
   ingress:
     - {{- with .Values.networkPolicy.ingress.dns.peers }}
-      from: {{ . | toYaml | nindent 8 }}
+      from: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
       {{- end }}
       ports:
         - protocol: TCP
@@ -29,17 +29,17 @@ spec:
         - protocol: UDP
           port: 53
     {{- with .Values.networkPolicy.ingress.rules }}
-    {{- . | toYaml | nindent 4 }}
+    {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
     {{- end }}
   egress:
     - {{- with .Values.networkPolicy.egress.apiServer.peers }}
-      to: {{ . | toYaml | nindent 8 }}
+      to: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
       {{- end }}
       ports:
         - protocol: TCP
           port: {{ .Values.networkPolicy.egress.apiServer.port }}
     - {{- with .Values.networkPolicy.egress.apiServer.peers }}
-      to: {{ . | toYaml | nindent 8 }}
+      to: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
       {{- end }}
       ports:
         - protocol: TCP
@@ -47,7 +47,7 @@ spec:
         - protocol: UDP
           port: 53
     {{- with .Values.networkPolicy.egress.rules }}
-    {{- . | toYaml | nindent 4 }}
+    {{- include "common.tplvalues.render" (dict "value" . "context" $) | toYaml | nindent 4 }}
     {{- end }}
   policyTypes:
     - Ingress
