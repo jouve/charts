@@ -8,7 +8,7 @@ metadata:
     {{- if .Values.customLabels }}
     {{ toYaml .Values.customLabels | indent 4 }}
     {{- end }}
-  {{- with .Values.customAnnotations }}
+  {{- with merge .Values.networkPolicy.annotations .Values.customAnnotations }}
   annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -47,7 +47,7 @@ spec:
         - protocol: UDP
           port: 53
     {{- with .Values.networkPolicy.egress.rules }}
-    {{- include "common.tplvalues.render" (dict "value" . "context" $) | toYaml | nindent 4 }}
+    {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
     {{- end }}
   policyTypes:
     - Ingress

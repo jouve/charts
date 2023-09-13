@@ -10,13 +10,12 @@ metadata:
   name: {{ template "coredns.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels: {{- include "coredns.labels" . | nindent 4 }}
-{{- if .Values.customLabels }}
-{{ toYaml .Values.customLabels | indent 4 }}
-{{- end }}
-{{- with .Values.customAnnotations }}
-  annotations:
-{{- toYaml . | nindent 4 }}
-{{- end }}
+    {{- with .Values.customLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.customAnnotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

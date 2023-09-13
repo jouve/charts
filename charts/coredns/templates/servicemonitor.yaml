@@ -5,13 +5,12 @@ metadata:
   name: {{ template "coredns.fullname" . }}
   namespace: {{ default .Release.Namespace .Values.prometheus.monitor.namespace }}
   labels: {{- include "coredns.labels" . | nindent 4 }}
-    {{- if .Values.prometheus.monitor.additionalLabels }}
-{{ toYaml .Values.prometheus.monitor.additionalLabels | indent 4 }}
+    {{- with .Values.prometheus.monitor.additionalLabels }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
-{{- with .Values.customAnnotations }}
-  annotations:
-{{- toYaml . | nindent 4 }}
-{{- end }}
+  {{- with .Values.customAnnotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   {{- if ne .Values.prometheus.monitor.namespace .Release.Namespace }}
   namespaceSelector:

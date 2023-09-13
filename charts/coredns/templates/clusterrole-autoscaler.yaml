@@ -5,13 +5,12 @@ kind: ClusterRole
 metadata:
   name: {{ if ne .Release.Namespace "kube-system" }}{{ .Release.Namespace }}-{{ end }}{{ template "coredns.fullname" . }}-autoscaler
   labels: {{- include "coredns.labels.autoscaler" . | nindent 4 }}
-{{- if .Values.customLabels }}
-{{ toYaml .Values.customLabels | indent 4 }}
-{{- end }}
-{{- with .Values.customAnnotations }}
-  annotations:
-{{- toYaml . | nindent 4 }}
-{{- end }}
+    {{- with .Values.customLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.customAnnotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
 rules:
   - apiGroups: [""]
     resources: ["nodes"]

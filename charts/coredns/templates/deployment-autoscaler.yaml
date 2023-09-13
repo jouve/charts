@@ -6,13 +6,12 @@ metadata:
   name: {{ template "coredns.fullname" . }}-autoscaler
   namespace: {{ .Release.Namespace }}
   labels: {{- include "coredns.labels.autoscaler" . | nindent 4 }}
-{{- if .Values.customLabels }}
-{{ toYaml .Values.customLabels | indent 4 }}
-{{- end }}
-{{- with .Values.customAnnotations }}
-  annotations:
-{{- toYaml . | nindent 4 }}
-{{- end }}
+    {{- with .Values.customLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.customAnnotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   selector:
     matchLabels:

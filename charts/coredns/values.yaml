@@ -355,6 +355,7 @@ deployment:
 
 networkPolicy:
   enabled: false
+  annotations: {}
   ingress:
     dns:
       peers: []

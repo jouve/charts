@@ -7,17 +7,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels: {{- include "coredns.labels" . | nindent 4 }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- if .Values.customLabels }}
-{{ toYaml .Values.customLabels | indent 4 }}
-{{- end }}
-  {{- if or .Values.deployment.annotations .Values.customAnnotations }}
-  annotations:
-    {{- if .Values.customAnnotations }}
-    {{- toYaml .Values.customAnnotations | nindent 4 }}
+    {{- with .Values.customLabels }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
-    {{- if .Values.deployment.annotations }}
-    {{- toYaml .Values.deployment.annotations | nindent 4 }}
-    {{- end }}
+  {{- with merge .Values.deployment.annotations .Values.customAnnotations }}
+  annotations: {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   {{- if and (not .Values.autoscaler.enabled) (not .Values.hpa.enabled) }}
