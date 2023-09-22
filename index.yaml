@@ -1137,6 +1137,37 @@ entries:
   - annotations:
       artifacthub.io/images: |
         - name: postgresql
+          image: ghcr.io/cloudnative-pg/postgresql:15.4-12
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
+    apiVersion: v2
+    appVersion: "15.4"
+    created: "2023-09-22T15:32:52.08728392Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy postgresql using cloudnative-pg operator
+    digest: dff0a01e47a23674815026a1849a529eb51230675f49bfd9bf84835a44ffe1ad
+    icon: https://raw.githubusercontent.com/cloudnative-pg/artwork/main/cloudnativepg-logo.svg
+    keywords:
+    - database
+    - postgresql
+    - cloudnative-pg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: postgresql
+    sources:
+    - https://github.com/jouve/charts
+    - https://cloudnative-pg.io/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/postgresql-0.6.0/postgresql-0.6.0.tgz
+    version: 0.6.0
+  - annotations:
+      artifacthub.io/images: |
+        - name: postgresql
           image: ghcr.io/cloudnative-pg/postgresql:15.4-8
       artifacthub.io/recommendations: |
         - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
@@ -1604,4 +1635,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-22T15:29:20.4692177Z"
+generated: "2023-09-22T15:32:52.087546625Z"
