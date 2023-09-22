@@ -34,7 +34,7 @@ global:
 image:
   registry: docker.io
   repository: axllent/mailpit
-  tag: v1.8.2
+  tag: v1.9.0
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -52,6 +52,10 @@ image:
   ## Enable debug mode
   ##
   debug: false
+
+podLabels:
+  app.kubernetes.io/version: "{{ .Values.image.tag }}"
+  helm.sh/chart: "{{ .Chart.Name }}"
 
 ## @param updateStrategy.type statefulset strategy type
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies

@@ -27,7 +27,7 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
         {{- end }}
         {{- if include "mailpit.hasSecret" . }}
-        checksum/secret: {{ include (printf "%s/secret.yaml" .Template.BasePath) . | fromYaml | dig "stringData" dict | toYaml | sha256sum }}
+        checksum/secret: {{ template "common.utils.checksumTemplate" (dict "path" "/secret.yaml" "context" .) }}
         {{- end }}
       {{- end }}
     spec:
