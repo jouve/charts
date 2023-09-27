@@ -4,7 +4,7 @@ metadata:
   annotations:
     description: Requires Pods to have readiness and/or liveness probes.
     metadata.gatekeeper.sh/title: Required Probes
-    metadata.gatekeeper.sh/version: 1.0.0
+    metadata.gatekeeper.sh/version: 1.0.1
   name: k8srequiredprobes
 spec:
   crd:
@@ -26,14 +26,26 @@ spec:
               type: array
           type: object
   targets:
-    - rego: |
+    - libs:
+        - |
+          package lib.exclude_update
+
+          is_update(review) {
+              review.operation == "UPDATE"
+          }
+      rego: |
         package k8srequiredprobes
+
+        import data.lib.exclude_update.is_update
 
         probe_type_set = probe_types {
             probe_types := {type | type := input.parameters.probeTypes[_]}
         }
 
         violation[{"msg": msg}] {
+            # Probe fields are immutable.
+            not is_update(input.review)
+
             container := input.review.object.spec.containers[_]
             probe := input.parameters.probes[_]
             probe_is_missing(container, probe)

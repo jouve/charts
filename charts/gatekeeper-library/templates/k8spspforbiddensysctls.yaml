@@ -4,7 +4,7 @@ metadata:
   annotations:
     description: Controls the `sysctl` profile used by containers. Corresponds to the `allowedUnsafeSysctls` and `forbiddenSysctls` fields in a PodSecurityPolicy. When specified, any sysctl not in the `allowedSysctls` parameter is considered to be forbidden. The `forbiddenSysctls` parameter takes precedence over the `allowedSysctls` parameter. For more information, see https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/
     metadata.gatekeeper.sh/title: Forbidden Sysctls
-    metadata.gatekeeper.sh/version: 1.1.1
+    metadata.gatekeeper.sh/version: 1.1.2
   name: k8spspforbiddensysctls
 spec:
   crd:
@@ -27,11 +27,23 @@ spec:
               type: array
           type: object
   targets:
-    - rego: |
+    - libs:
+        - |
+          package lib.exclude_update
+
+          is_update(review) {
+              review.operation == "UPDATE"
+          }
+      rego: |
         package k8spspforbiddensysctls
+
+        import data.lib.exclude_update.is_update
 
         # Block if forbidden
         violation[{"msg": msg, "details": {}}] {
+            # spec.securityContext.sysctls field is immutable.
+            not is_update(input.review)
+
             sysctl := input.review.object.spec.securityContext.sysctls[_].name
             forbidden_sysctl(sysctl)
             msg := sprintf("The sysctl %v is not allowed, pod: %v. Forbidden sysctls: %v", [sysctl, input.review.object.metadata.name, input.parameters.forbiddenSysctls])
@@ -39,6 +51,7 @@ spec:
 
         # Block if not explicitly allowed
         violation[{"msg": msg, "details": {}}] {
+            not is_update(input.review)
             sysctl := input.review.object.spec.securityContext.sysctls[_].name
             not allowed_sysctl(sysctl)
             msg := sprintf("The sysctl %v is not explicitly allowed, pod: %v. Allowed sysctls: %v", [sysctl, input.review.object.metadata.name, input.parameters.allowedSysctls])

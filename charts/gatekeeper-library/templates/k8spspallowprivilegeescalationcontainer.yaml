@@ -4,7 +4,7 @@ metadata:
   annotations:
     description: Controls restricting escalation to root privileges. Corresponds to the `allowPrivilegeEscalation` field in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#privilege-escalation
     metadata.gatekeeper.sh/title: Allow Privilege Escalation in Container
-    metadata.gatekeeper.sh/version: 1.0.0
+    metadata.gatekeeper.sh/version: 1.0.1
   name: k8spspallowprivilegeescalationcontainer
 spec:
   crd:
@@ -25,6 +25,12 @@ spec:
           type: object
   targets:
     - libs:
+        - |
+          package lib.exclude_update
+
+          is_update(review) {
+              review.operation == "UPDATE"
+          }
         - |
           package lib.exempt_container
 
@@ -48,9 +54,13 @@ spec:
       rego: |
         package k8spspallowprivilegeescalationcontainer
 
+        import data.lib.exclude_update.is_update
         import data.lib.exempt_container.is_exempt
 
         violation[{"msg": msg, "details": {}}] {
+            # spec.containers.securityContext.allowPrivilegeEscalation field is immutable.
+            not is_update(input.review)
+
             c := input_containers[_]
             not is_exempt(c)
             input_allow_privilege_escalation(c)

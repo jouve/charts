@@ -4,7 +4,7 @@ metadata:
   annotations:
     description: Controls Linux capabilities on containers. Corresponds to the `allowedCapabilities` and `requiredDropCapabilities` fields in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#capabilities
     metadata.gatekeeper.sh/title: Capabilities
-    metadata.gatekeeper.sh/version: 1.0.0
+    metadata.gatekeeper.sh/version: 1.0.1
   name: k8spspcapabilities
 spec:
   crd:
@@ -36,6 +36,12 @@ spec:
   targets:
     - libs:
         - |
+          package lib.exclude_update
+
+          is_update(review) {
+              review.operation == "UPDATE"
+          }
+        - |
           package lib.exempt_container
 
           is_exempt(container) {
@@ -58,9 +64,13 @@ spec:
       rego: |
         package capabilities
 
+        import data.lib.exclude_update.is_update
         import data.lib.exempt_container.is_exempt
 
         violation[{"msg": msg}] {
+          # spec.containers.securityContext.capabilities field is immutable.
+          not is_update(input.review)
+
           container := input.review.object.spec.containers[_]
           not is_exempt(container)
           has_disallowed_capabilities(container)
@@ -68,6 +78,7 @@ spec:
         }
 
         violation[{"msg": msg}] {
+          not is_update(input.review)
           container := input.review.object.spec.containers[_]
           not is_exempt(container)
           missing_drop_capabilities(container)
@@ -77,6 +88,7 @@ spec:
 
 
         violation[{"msg": msg}] {
+          not is_update(input.review)
           container := input.review.object.spec.initContainers[_]
           not is_exempt(container)
           has_disallowed_capabilities(container)
@@ -84,6 +96,7 @@ spec:
         }
 
         violation[{"msg": msg}] {
+          not is_update(input.review)
           container := input.review.object.spec.initContainers[_]
           not is_exempt(container)
           missing_drop_capabilities(container)
@@ -93,6 +106,7 @@ spec:
 
 
         violation[{"msg": msg}] {
+          not is_update(input.review)
           container := input.review.object.spec.ephemeralContainers[_]
           not is_exempt(container)
           has_disallowed_capabilities(container)
@@ -100,6 +114,7 @@ spec:
         }
 
         violation[{"msg": msg}] {
+          not is_update(input.review)
           container := input.review.object.spec.ephemeralContainers[_]
           not is_exempt(container)
           missing_drop_capabilities(container)

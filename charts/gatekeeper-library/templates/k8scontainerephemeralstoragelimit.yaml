@@ -6,7 +6,7 @@ metadata:
       Requires containers to have an ephemeral storage limit set and constrains the limit to be within the specified maximum values.
       https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
     metadata.gatekeeper.sh/title: Container ephemeral storage limit
-    metadata.gatekeeper.sh/version: 1.0.0
+    metadata.gatekeeper.sh/version: 1.0.1
   name: k8scontainerephemeralstoragelimit
 spec:
   crd:
@@ -30,6 +30,12 @@ spec:
   targets:
     - libs:
         - |
+          package lib.exclude_update
+
+          is_update(review) {
+              review.operation == "UPDATE"
+          }
+        - |
           package lib.exempt_container
 
           is_exempt(container) {
@@ -52,6 +58,7 @@ spec:
       rego: |
         package k8scontainerephemeralstoragelimit
 
+        import data.lib.exclude_update.is_update
         import data.lib.exempt_container.is_exempt
 
         missing(obj, field) = true {
@@ -164,10 +171,14 @@ spec:
         }
 
         violation[{"msg": msg}] {
+          # spec.containers.resources.limits["ephemeral-storage"] field is immutable.
+          not is_update(input.review)
+
           general_violation[{"msg": msg, "field": "containers"}]
         }
 
         violation[{"msg": msg}] {
+          not is_update(input.review)
           general_violation[{"msg": msg, "field": "initContainers"}]
         }
 
