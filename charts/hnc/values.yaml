@@ -34,7 +34,9 @@ fullnameOverride: ""
 namespaceOverride: ""
 ## @param commonLabels Labels to add to all deployed objects
 ##
-commonLabels: {}
+commonLabels:
+  app.kubernetes.io/version: "{{ .Values.image.tag }}"
+
 ## @param commonAnnotations Annotations to add to all deployed objects
 ##
 commonAnnotations: {}
@@ -94,6 +96,7 @@ image:
   ##   - myRegistryKeySecretName
   ##
   pullSecrets: []
+
 ## resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ## @param resources.limits [object] The resources limits for the containers
@@ -106,11 +109,12 @@ resources:
     cpu: 100m
     memory: 150Mi
 
-
 ## @param podLabels Extra labels for pods
 ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 ##
-podLabels: {}
+podLabels:
+  helm.sh/chart: "{{ .Chart.Name }}"
+
 ## @param podAnnotations Annotations for pods
 ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 ##
