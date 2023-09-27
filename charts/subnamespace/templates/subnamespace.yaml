@@ -3,7 +3,10 @@ kind: SubnamespaceAnchor
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ include "common.names.namespace" . | quote }}
-  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+  labels: {{-
+    omit (include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | fromYaml) "app.kubernetes.io/version"
+    | toYaml
+    | nindent 4 }}
   {{- with .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
