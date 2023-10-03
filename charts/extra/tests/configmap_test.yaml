@@ -1,6 +1,4 @@
 suite: test configmap
-templates:
-  - extra-list.yaml
 tests:
   - it: should create a ConfigMap
     values:
@@ -15,5 +13,5 @@ tests:
             app.kubernetes.io/name: extra
             app.kubernetes.io/instance: RELEASE-NAME
       - equal:
-          path: data.foo
-          value: bar
+          path: data.toto
+          value: tutu

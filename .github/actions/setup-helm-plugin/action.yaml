@@ -1,0 +1,15 @@
+name: helm-plugin
+description: Setup helm plugin
+inputs:
+  url:
+    description: plugin url
+    required: true
+  version:
+    description: plugin version
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Download plugin
+      shell: bash
+      run: helm plugin install ${{ inputs.url }} --version ${{ inputs.version }}

@@ -1,0 +1,3 @@
+additional-commands: >
+  .ct/additional.sh {{ .Path }}{{ range .ValuesFilePathsForCI }}{{ $v := slice . (len $.Path) }}{{ if eq (index $v 0) '/' }}{{ $v = slice $v 1}}{{ end }} {{ $v }}{{ else }} values.yaml{{ end }}
+use-helmignore: true
