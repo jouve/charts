@@ -483,6 +483,25 @@ entries:
   - annotations:
       artifacthub.io/license: Apache-2.0
     apiVersion: v2
+    appVersion: bd942ad8afd316743fbe97a69c5019d349c1a5c1
+    created: "2023-10-03T20:18:05.677207214Z"
+    description: A Helm chart for Kubernetes
+    digest: edc29f690227ee8d233df9d3b995713f9ca710bbd7e93c41e51bd12f8dfd6711
+    icon: https://raw.githubusercontent.com/open-policy-agent/gatekeeper-library/master/website/static/img/logo.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: gatekeeper-library
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/open-policy-agent/gatekeeper-library
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/gatekeeper-library-0.1.1/gatekeeper-library-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
     appVersion: 954a063f6449d2e93ca7bd2a06a96f11213998ca
     created: "2023-09-11T21:42:58.389930128Z"
     description: A Helm chart for Kubernetes
@@ -665,6 +684,29 @@ entries:
     - https://github.com/jouve/charts/releases/download/hnc-0.1.0/hnc-0.1.0.tgz
     version: 0.1.0
   mailpit:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: 1.9.4
+    created: "2023-10-03T20:18:05.845877197Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: 96bb10bc1418b83822f2ed1bb6142353b03388cfc8b3d22f0b7a246241d43f64
+    icon: https://raw.githubusercontent.com/axllent/mailpit/develop/server/ui/mailpit.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/mailpit-0.7.2/mailpit-0.7.2.tgz
+    version: 0.7.2
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
@@ -1679,4 +1721,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-27T09:58:10.819365421Z"
+generated: "2023-10-03T20:18:05.846130903Z"
