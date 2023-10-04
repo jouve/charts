@@ -1,6 +1,6 @@
 apiVersion: v2
 name: coredns
-version: 1.28.5
+version: 1.29.0
 appVersion: 1.11.1
 home: https://coredns.io
 icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
@@ -24,3 +24,7 @@ dependencies:
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 2.x.x
+annotations:
+  artifacthub.io/changes: |
+    - kind: fixed
+      description: Fixed indentation for sidecar containers
