@@ -91,6 +91,41 @@ entries:
     - https://github.com/jouve/charts/releases/download/cloudnative-pg-0.18.1/cloudnative-pg-0.18.1.tgz
     version: 0.18.1
   coredns:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: Fixed indentation for sidecar containers
+    apiVersion: v2
+    appVersion: 1.11.1
+    created: "2023-10-04T19:28:22.740136682Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: CoreDNS is a DNS server that chains plugins and provides Kubernetes
+      DNS Services
+    digest: d84c05c75b40ed22ff0cd752d9b50662bc925fd939b15f68141835b880133aa9
+    home: https://coredns.io
+    icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
+    keywords:
+    - coredns
+    - dns
+    - kubedns
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    - name: mrueg
+    - name: haad
+    - name: hagaibarel
+    - name: shubham-cmyk
+    name: coredns
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/coredns/coredns
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/coredns-1.29.0/coredns-1.29.0.tgz
+    version: 1.29.0
   - apiVersion: v2
     appVersion: 1.11.1
     created: "2023-10-04T13:40:50.856146257Z"
@@ -1873,4 +1908,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-10-04T13:40:51.789289657Z"
+generated: "2023-10-04T19:28:22.74041859Z"
