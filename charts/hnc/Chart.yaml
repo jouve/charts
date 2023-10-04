@@ -3,7 +3,7 @@ name: hnc
 description: Hierarchical Namespace Controller (HNC). Policies and delegated creation to Kubernetes namespaces.
 icon: https://raw.githubusercontent.com/KDE/breeze-icons/master/icons/actions/16/view-list-tree.svg
 type: application
-version: 0.6.1
+version: 0.6.2
 appVersion: v1.1.0
 dependencies:
 - name: common
