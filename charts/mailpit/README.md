@@ -23,11 +23,13 @@ helm install mailpit jouve/mailpit
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `image.registry`                       | image registry                                                                                                                             | `docker.io`       |
 | `image.repository`                     | image repository                                                                                                                           | `axllent/mailpit` |
-| `image.tag`                            | image tag (immutable tags are recommended)                                                                                                 | `v1.8.2`          |
+| `image.tag`                            | image tag (immutable tags are recommended)                                                                                                 | `v1.9.6`          |
 | `image.digest`                         | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`              |
 | `image.pullPolicy`                     | image pull policy                                                                                                                          | `IfNotPresent`    |
 | `image.pullSecrets`                    | image pull secrets                                                                                                                         | `[]`              |
 | `image.debug`                          | Enable image debug mode                                                                                                                    | `false`           |
+| `commonLabels`                         | Labels to add to all deployed objects                                                                                                      | `{}`              |
+| `podLabels`                            | Extra labels for pods                                                                                                                      | `{}`              |
 | `updateStrategy.type`                  | statefulset strategy type                                                                                                                  | `RollingUpdate`   |
 | `replicaCount`                         | Number of replicas to deploy                                                                                                               | `1`               |
 | `resources.limits.cpu`                 | The resources limits for the containers                                                                                                    | `100m`            |

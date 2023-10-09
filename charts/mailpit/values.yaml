@@ -34,7 +34,7 @@ global:
 image:
   registry: docker.io
   repository: axllent/mailpit
-  tag: v1.9.4
+  tag: v1.9.6
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -53,9 +53,14 @@ image:
   ##
   debug: false
 
+## @param commonLabels [object] Labels to add to all deployed objects
+##
 commonLabels:
   app.kubernetes.io/version: "{{ .Values.image.tag }}"
 
+## @param podLabels [object] Extra labels for pods
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+##
 podLabels:
   helm.sh/chart: "{{ .Chart.Name }}"
 
