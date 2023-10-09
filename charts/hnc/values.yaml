@@ -32,7 +32,7 @@ fullnameOverride: ""
 ## @param namespaceOverride String to fully override common.names.namespace
 ##
 namespaceOverride: ""
-## @param commonLabels Labels to add to all deployed objects
+## @param commonLabels [object] Labels to add to all deployed objects
 ##
 commonLabels:
   app.kubernetes.io/version: "{{ .Values.image.tag }}"
@@ -109,7 +109,7 @@ resources:
     cpu: 100m
     memory: 150Mi
 
-## @param podLabels Extra labels for pods
+## @param podLabels [object] Extra labels for pods
 ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 ##
 podLabels:

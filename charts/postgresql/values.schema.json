@@ -1,0 +1,275 @@
+{
+    "title": "Chart Values",
+    "type": "object",
+    "properties": {
+        "clusterDomain": {
+            "type": "string",
+            "description": "Kubernetes cluster domain name",
+            "default": "cluster.local"
+        },
+        "global": {
+            "type": "object",
+            "properties": {
+                "imageRegistry": {
+                    "type": "string",
+                    "description": "Global Docker image registry",
+                    "default": ""
+                },
+                "imagePullSecrets": {
+                    "type": "array",
+                    "description": "Global Docker registry secret names as an array",
+                    "default": [],
+                    "items": {}
+                },
+                "storageClass": {
+                    "type": "string",
+                    "description": "Global StorageClass for Persistent Volume(s)",
+                    "default": ""
+                }
+            }
+        },
+        "replicaCount": {
+            "type": "number",
+            "description": "Number of PostgreSQL replicas",
+            "default": 1
+        },
+        "affinity": {
+            "type": "object",
+            "properties": {
+                "podAntiAffinityType": {
+                    "type": "string",
+                    "description": "Allowed values are: \"preferred\" or \"required\".",
+                    "default": "required"
+                }
+            }
+        },
+        "image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "description": "image registry",
+                    "default": "ghcr.io"
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "image repository",
+                    "default": "cloudnative-pg/postgresql"
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "image tag (immutable tags are recommended)",
+                    "default": "15.4-14"
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended)",
+                    "default": ""
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "image pull policy",
+                    "default": "IfNotPresent"
+                },
+                "pullSecrets": {
+                    "type": "array",
+                    "description": "image pull secrets",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "backup": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable backup",
+                    "default": false
+                },
+                "endpointURL": {
+                    "type": "string",
+                    "description": "Endpoint to be used to upload data to the cloud",
+                    "default": ""
+                },
+                "endpointCASecret": {
+                    "type": "string",
+                    "description": "Secret containing ca for the endpoint",
+                    "default": ""
+                },
+                "s3": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Use s3 for backup storage",
+                            "default": true
+                        },
+                        "bucketName": {
+                            "type": "string",
+                            "description": "Name of the bucket",
+                            "default": ""
+                        },
+                        "existingSecret": {
+                            "type": "string",
+                            "description": "Name of the secret containing the credentials",
+                            "default": ""
+                        },
+                        "objectBucketClaim": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Create the bucket from an ObjectBucketClaim",
+                                    "default": false
+                                },
+                                "storageClassName": {
+                                    "type": "string",
+                                    "description": "StorageClass for the ObjectBucketClaim",
+                                    "default": ""
+                                }
+                            }
+                        }
+                    }
+                },
+                "scheduled": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Enabled creation of a scheduled backup",
+                            "default": false
+                        },
+                        "schedule": {
+                            "type": "string",
+                            "description": "Schedule of the scheduled backup",
+                            "default": "0 0 0 * * *"
+                        }
+                    }
+                },
+                "retentionPolicy": {
+                    "type": "string",
+                    "description": "Retention for backups",
+                    "default": "7d"
+                }
+            }
+        },
+        "persistence": {
+            "type": "object",
+            "properties": {
+                "storageClass": {
+                    "type": "string",
+                    "description": "PVC Storage Class for PostgreSQL Primary data volume",
+                    "default": ""
+                },
+                "size": {
+                    "type": "string",
+                    "description": "PVC Storage Request for PostgreSQL volume",
+                    "default": "8Gi"
+                }
+            }
+        },
+        "networkPolicy": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable network policies",
+                    "default": false
+                },
+                "apiserver": {
+                    "type": "object",
+                    "properties": {
+                        "peer": {
+                            "type": "object",
+                            "description": "networkPolicyPeer of the apiserver",
+                            "default": {}
+                        },
+                        "port": {
+                            "type": "number",
+                            "description": "port of the apiserver",
+                            "default": 6443
+                        }
+                    }
+                },
+                "backup": {
+                    "type": "object",
+                    "properties": {
+                        "peer": {
+                            "type": "object",
+                            "description": "networkPolicyPeer of the object storage (see backup)",
+                            "default": {}
+                        }
+                    }
+                },
+                "cnpg": {
+                    "type": "object",
+                    "properties": {
+                        "peer": {
+                            "type": "object",
+                            "description": "networkPolicyPeer of the operator, matches https://cloudnative-pg.io/documentation/1.20/installation_upgrade/ if not defined",
+                            "default": {}
+                        }
+                    }
+                },
+                "metrics": {
+                    "type": "object",
+                    "properties": {
+                        "peer": {
+                            "type": "object",
+                            "description": "networkPolicyPeer of the metrics scrape",
+                            "default": {}
+                        }
+                    }
+                },
+                "egressRules": {
+                    "type": "array",
+                    "description": "additional egress rules",
+                    "default": [],
+                    "items": {}
+                },
+                "ingressRules": {
+                    "type": "array",
+                    "description": "additional ingress rules",
+                    "default": [],
+                    "items": {}
+                }
+            }
+        },
+        "certificates": {
+            "type": "object",
+            "properties": {
+                "mode": {
+                    "type": "string",
+                    "description": "manage certificates by the operator or cert-manager",
+                    "default": "operator-manager"
+                },
+                "issuerRef": {
+                    "type": "object",
+                    "description": "cert-manager issuer for certificates. selfSigned issuer is created if empty",
+                    "default": {}
+                }
+            }
+        },
+        "metrics": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Start a prometheus exporter",
+                    "default": false
+                },
+                "podMonitor": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Create PodMonitor Resource for scraping metrics using Prometheus Operator",
+                            "default": false
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
