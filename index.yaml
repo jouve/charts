@@ -97,6 +97,41 @@ entries:
           description: Fixed indentation for sidecar containers
     apiVersion: v2
     appVersion: 1.11.1
+    created: "2023-10-09T22:25:43.220281677Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: CoreDNS is a DNS server that chains plugins and provides Kubernetes
+      DNS Services
+    digest: 4e7ac75c5ac0f7cf55095f17ceb097cc0b52cdcba969653e1f280fb285c9bbc7
+    home: https://coredns.io
+    icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
+    keywords:
+    - coredns
+    - dns
+    - kubedns
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    - name: mrueg
+    - name: haad
+    - name: hagaibarel
+    - name: shubham-cmyk
+    name: coredns
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/coredns/coredns
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/coredns-1.29.1/coredns-1.29.1.tgz
+    version: 1.29.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: Fixed indentation for sidecar containers
+    apiVersion: v2
+    appVersion: 1.11.1
     created: "2023-10-04T19:28:22.740136682Z"
     dependencies:
     - name: common
@@ -395,6 +430,28 @@ entries:
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
+    created: "2023-10-09T22:25:43.41732953Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy a list of Kubernetes resources as a release
+    digest: decb3e76ac37a23ec5a3d7f7b28aeef8ca02ad06005f078d9d5b5c83be0dbda5
+    icon: https://raw.githubusercontent.com/KDE/breeze-icons/master/icons/actions/16/list-add.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: extra
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/bitnami/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/extra-0.3.2/extra-0.3.2.tgz
+    version: 0.3.2
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
     created: "2023-10-04T13:40:51.04734723Z"
     dependencies:
     - name: common
@@ -572,6 +629,25 @@ entries:
       artifacthub.io/license: Apache-2.0
     apiVersion: v2
     appVersion: bd942ad8afd316743fbe97a69c5019d349c1a5c1
+    created: "2023-10-09T22:25:43.557126075Z"
+    description: A Helm chart for Kubernetes
+    digest: dcafbb221f9e51d932f03b8a2df4a3f602e5ccf0c89be025f598d6282c937785
+    icon: https://raw.githubusercontent.com/open-policy-agent/gatekeeper-library/master/website/static/img/logo.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: gatekeeper-library
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/open-policy-agent/gatekeeper-library
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/gatekeeper-library-0.1.2/gatekeeper-library-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
+    appVersion: bd942ad8afd316743fbe97a69c5019d349c1a5c1
     created: "2023-10-03T20:18:05.677207214Z"
     description: A Helm chart for Kubernetes
     digest: edc29f690227ee8d233df9d3b995713f9ca710bbd7e93c41e51bd12f8dfd6711
@@ -607,6 +683,30 @@ entries:
     - https://github.com/jouve/charts/releases/download/gatekeeper-library-0.1.0/gatekeeper-library-0.1.0.tgz
     version: 0.1.0
   hnc:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: v1.1.0
+    created: "2023-10-09T22:25:43.677688051Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Hierarchical Namespace Controller (HNC). Policies and delegated creation
+      to Kubernetes namespaces.
+    digest: 4e00c32461b1add6e3e60e1ab706f6b50b7d524caad121cb1d6dc9656a29120f
+    icon: https://raw.githubusercontent.com/KDE/breeze-icons/master/icons/actions/16/view-list-tree.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: hnc
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/hnc-0.6.3/hnc-0.6.3.tgz
+    version: 0.6.3
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
@@ -796,6 +896,29 @@ entries:
     - https://github.com/jouve/charts/releases/download/hnc-0.1.0/hnc-0.1.0.tgz
     version: 0.1.0
   mailpit:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: 1.9.6
+    created: "2023-10-09T22:25:43.831987397Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: 2f29154574bef1c06107c807b4d850028a127070d8aac84b791d7bc65f40db6e
+    icon: https://raw.githubusercontent.com/axllent/mailpit/develop/server/ui/mailpit.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/mailpit-0.7.4/mailpit-0.7.4.tgz
+    version: 0.7.4
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
@@ -1342,6 +1465,37 @@ entries:
         - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
     apiVersion: v2
     appVersion: "15.4"
+    created: "2023-10-09T22:25:43.9485046Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy postgresql using cloudnative-pg operator
+    digest: 026f854500cea5199f780553edfd23f745c6faa7c150c72c2d9097adc030f126
+    icon: https://raw.githubusercontent.com/cloudnative-pg/artwork/main/cloudnativepg-logo.svg
+    keywords:
+    - database
+    - postgresql
+    - cloudnative-pg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: postgresql
+    sources:
+    - https://github.com/jouve/charts
+    - https://cloudnative-pg.io/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/postgresql-0.6.2/postgresql-0.6.2.tgz
+    version: 0.6.2
+  - annotations:
+      artifacthub.io/images: |
+        - name: postgresql
+          image: ghcr.io/cloudnative-pg/postgresql:15.4-12
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
+    apiVersion: v2
+    appVersion: "15.4"
     created: "2023-10-04T13:40:51.603380553Z"
     dependencies:
     - name: common
@@ -1787,6 +1941,27 @@ entries:
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
+    created: "2023-10-09T22:25:44.091350824Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: SubnamespaceAnchor is the Schema for the subnamespace API
+    digest: 6a0edbd238ce44062281fe3743731fd52e928ba6af5e0a52cde79461a5b1870b
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: subnamespace
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-sigs/hierarchical-namespaces
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/subnamespace-0.2.3/subnamespace-0.2.3.tgz
+    version: 0.2.3
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
     created: "2023-10-04T13:40:51.788954059Z"
     dependencies:
     - name: common
@@ -1908,4 +2083,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-10-04T19:28:22.74041859Z"
+generated: "2023-10-09T22:25:44.091688222Z"
