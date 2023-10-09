@@ -8,12 +8,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
 jobs:
   # https://github.com/bridgecrewio/checkov-action#example-usage-for-iac-and-sca
-  checkov-github_actions:
+  checkov:
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
@@ -48,58 +45,6 @@ jobs:
         with:
           sarif_file: results.sarif
 
-  # https://github.com/bridgecrewio/checkov-action#example-usage-for-iac-and-sca
-  checkov-helm:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        chart:
-          - extra
-          - mailpit
-          - postgresql
-          - subnamespace
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so follow-up steps can access it
-      - uses: actions/checkout@v3
-
-      - name: Set up Helm
-        uses: azure/setup-helm@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build
-        run: helm dep build "charts/${{ matrix.chart }}"
-
-      - name: Checkov GitHub Action
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          # This will add both a CLI output to the console and create a results.sarif file
-          output_format: cli,sarif
-          output_file_path: console,results.sarif
-          framework: helm
-          directory: charts/${{ matrix.chart }}
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
-
-        # Results are generated only on a success or failure
-        # this is required since GitHub by default won't run the next step
-        # when the previous one has failed. Security checks that do not pass will 'fail'.
-        # An alternative is to add `continue-on-error: true` to the previous step
-        # Or 'soft_fail: true' to checkov.
-        if: success() || failure()
-        with:
-          sarif_file: results.sarif
-
   # https://github.com/helm/chart-testing-action#example-workflow
   ct-lint:
     runs-on: ubuntu-latest
@@ -121,68 +66,32 @@ jobs:
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2
 
+      - name: Override ct version
+        uses: ./.github/actions/setup-chart-testing
+        with:
+          url: https://github.com/jouve/chart-testing
+          version: 3.10.0
+
+      - name: Setup kube-linter
+        uses: ./.github/actions/setup-kube-linter
+
+      - name: Setup helm unittest
+        uses: ./.github/actions/setup-helm-plugin
+        with:
+          url: https://github.com/helm-unittest/helm-unittest.git
+          version: v0.3.5
+
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+          changed=$(ct --config .ct/ct.yaml list-changed --target-branch ${{ github.event.repository.default_branch }})
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run chart-testing (lint)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct lint --target-branch ${{ github.event.repository.default_branch }}
-
-  kube-linter:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        chart:
-          #- extra
-          - mailpit
-          #- postgresql
-          #- subnamespace
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Helm
-        uses: azure/setup-helm@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build chart
-        run: helm dep build "charts/${{ matrix.chart }}"
-
-      - name: Scan yaml files with kube-linter
-        uses: stackrox/kube-linter-action@v1.0.4
-        id: kube-linter-action-scan
-        with:
-          # Adjust this directory to the location where your kubernetes resources and helm charts are located.
-          directory: charts/${{ matrix.chart }}
-          # The following two settings make kube-linter produce scan analysis in SARIF format which would then be
-          # made available in GitHub UI via upload-sarif action below.
-          format: sarif
-          output-file: kube-linter.sarif
-
-      - name: Upload SARIF report files to GitHub
-        uses: github/codeql-action/upload-sarif@v2
-
-        # Results are generated only on a success or failure
-        # this is required since GitHub by default won't run the next step
-        # when the previous one has failed. Security checks that do not pass will 'fail'.
-        # An alternative is to add `continue-on-error: true` to the previous step
-        # Or 'soft_fail: true' to checkov.
-        if: success() || failure()
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: kube-linter.sarif
+        run: ct --config .ct/ct.yaml lint --target-branch ${{ github.event.repository.default_branch }}
 
   # https://github.com/aquasecurity/trivy-action#scan-ci-pipeline-w-trivy-config
   trivy:
