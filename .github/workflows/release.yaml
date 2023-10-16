@@ -29,9 +29,16 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@ed43eb303604cbc0eeec8390544f7748dc6c790d
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2
+
+      - name: Override ct version
+        uses: ./.github/actions/setup-chart-testing
         with:
-          skip_existing: true
+          url: https://github.com/jouve/chart-testing
+          version: 3.10.0
+
+      - name: Run chart-releaser
+        uses: jouve/chart-releaser-action@ed43eb303604cbc0eeec8390544f7748dc6c790d
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
