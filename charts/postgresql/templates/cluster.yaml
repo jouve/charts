@@ -9,6 +9,7 @@ metadata:
   {{- end }}
 spec:
   imageName: {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+  imagePullPolicy: {{ .Values.image.pullPolicy }}
   instances: {{ .Values.replicaCount }}
   storage:
     size: {{ .Values.persistence.size }}
@@ -27,6 +28,9 @@ spec:
   {{- end }}
   affinity:
     podAntiAffinityType: {{ .Values.affinity.podAntiAffinityType }}
+  {{- with .Values.topologySpreadConstraints }}
+  topologySpreadConstraints:  {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
   {{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
   monitoring:
     enablePodMonitor: true
@@ -51,4 +55,7 @@ spec:
           key: AWS_SECRET_ACCESS_KEY
       {{- end }}
     retentionPolicy: {{ .Values.backup.retentionPolicy | quote }}
+  {{- end }}
+  {{- with .Values.resources }}
+  resources: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
