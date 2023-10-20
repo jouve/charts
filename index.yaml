@@ -925,6 +925,29 @@ entries:
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
+    appVersion: 1.9.9
+    created: "2023-10-20T20:38:28.039618647Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: 4c6e811da052d98803c968fb74d7606ca5e6d82a9795bd4768ebc63339e2fca7
+    icon: https://raw.githubusercontent.com/axllent/mailpit/develop/server/ui/mailpit.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - mailpit-0.7.7.tgz
+    version: 0.7.7
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
     appVersion: 1.9.8
     created: "2023-10-16T18:49:28.71272481Z"
     dependencies:
@@ -2186,4 +2209,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-10-19T20:25:39.922937675Z"
+generated: "2023-10-20T20:38:28.040056751Z"
