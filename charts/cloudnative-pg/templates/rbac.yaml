@@ -135,13 +135,13 @@ rules:
   - update
   - watch
 - apiGroups:
-    - ""
+  - ""
   resources:
-    - secrets/status
+  - secrets/status
   verbs:
-    - get
-    - patch
-    - update
+  - get
+  - patch
+  - update
 - apiGroups:
   - ""
   resources:
@@ -192,17 +192,17 @@ rules:
   - list
   - update
 - apiGroups:
-    - apps
+  - apps
   resources:
-    - deployments
+  - deployments
   verbs:
-    - create
-    - delete
-    - get
-    - list
-    - patch
-    - update
-    - watch
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - batch
   resources:
@@ -288,32 +288,32 @@ rules:
   resources:
   - clusters/status
   verbs:
-    - get
-    - patch
-    - update
-    - watch
+  - get
+  - patch
+  - update
+  - watch
 - apiGroups:
-    - postgresql.cnpg.io
+  - postgresql.cnpg.io
   resources:
-    - poolers
+  - poolers
   verbs:
-    - create
-    - delete
-    - get
-    - list
-    - patch
-    - update
-    - watch
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
-    - postgresql.cnpg.io
+  - postgresql.cnpg.io
   resources:
-    - poolers/finalizers
+  - poolers/finalizers
   verbs:
-    - update
+  - update
 - apiGroups:
-    - postgresql.cnpg.io
+  - postgresql.cnpg.io
   resources:
-    - poolers/status
+  - poolers/status
   verbs:
   - get
   - patch
@@ -390,7 +390,28 @@ subjects:
 - kind: ServiceAccount
   name: {{ include "cloudnative-pg.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
-{{- if .Values.rbac.aggregate }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "cloudnative-pg.fullname" . }}-view
+  labels:
+    {{- include "cloudnative-pg.labels" . | nindent 4 }}
+    {{- if .Values.rbac.aggregateClusterRoles }}
+    rbac.authorization.k8s.io/aggregate-to-view: "true"
+    {{- end }}
+rules:
+- apiGroups:
+  - postgresql.cnpg.io
+  resources:
+  - backups
+  - clusters
+  - poolers
+  - scheduledbackups
+  verbs:
+  - get
+  - list
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -398,12 +419,9 @@ metadata:
   name: {{ include "cloudnative-pg.fullname" . }}-edit
   labels:
     {{- include "cloudnative-pg.labels" . | nindent 4 }}
-    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    {{- if .Values.rbac.aggregateClusterRoles }}
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  {{- with .Values.commonAnnotations.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
 rules:
 - apiGroups:
   - postgresql.cnpg.io
@@ -419,30 +437,4 @@ rules:
   - patch
   - update
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "cloudnative-pg.fullname" . }}-view
-  labels:
-    {{- include "cloudnative-pg.labels" . | nindent 4 }}
-    rbac.authorization.k8s.io/aggregate-to-admin: "true"
-    rbac.authorization.k8s.io/aggregate-to-edit: "true"
-    rbac.authorization.k8s.io/aggregate-to-view: "true"
-  {{- with .Values.commonAnnotations.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-rules:
-- apiGroups:
-  - postgresql.cnpg.io
-  resources:
-  - backups
-  - clusters
-  - poolers
-  - scheduledbackups
-  verbs:
-  - get
-  - list
-  - watch
-{{- end }}
 {{- end }}

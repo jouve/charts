@@ -76,8 +76,9 @@ serviceAccount:
 rbac:
   # -- Specifies whether ClusterRole and ClusterRoleBinding should be created.
   create: true
-  # -- Create a ClusterRole and aggregate it to [user facing roles](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles)
-  aggregate: false
+  # -- Aggregate ClusterRoles to Kubernetes default user-facing roles.
+  # Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
+  aggregateClusterRoles: false
 
 # -- Annotations to be added to all other resources.
 commonAnnotations: {}
@@ -92,6 +93,8 @@ containerSecurityContext:
   readOnlyRootFilesystem: true
   runAsUser: 10001
   runAsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
   capabilities:
     drop:
       - "ALL"
