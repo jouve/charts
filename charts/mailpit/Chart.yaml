@@ -3,8 +3,8 @@ name: mailpit
 description: An email and SMTP testing tool with API for developers
 icon: https://raw.githubusercontent.com/axllent/mailpit/develop/server/ui/mailpit.svg
 type: application
-version: 0.7.7
-appVersion: 1.9.9
+version: 0.7.8
+appVersion: 1.9.10
 dependencies:
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts

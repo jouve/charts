@@ -39,7 +39,7 @@
                 "tag": {
                     "type": "string",
                     "description": "image tag (immutable tags are recommended)",
-                    "default": "v1.9.8"
+                    "default": "v1.9.10"
                 },
                 "digest": {
                     "type": "string",
@@ -61,41 +61,6 @@
                     "type": "boolean",
                     "description": "Enable image debug mode",
                     "default": false
-                }
-            }
-        },
-        "commonLabels": {
-            "type": "object",
-            "properties": {
-                "app": {
-                    "type": "object",
-                    "properties": {
-                        "kubernetes": {
-                            "type": "object",
-                            "properties": {
-                                "io/version": {
-                                    "type": "string",
-                                    "description": "",
-                                    "default": "{{ .Values.image.tag }}"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "podLabels": {
-            "type": "object",
-            "properties": {
-                "helm": {
-                    "type": "object",
-                    "properties": {
-                        "sh/chart": {
-                            "type": "string",
-                            "description": "",
-                            "default": "{{ .Chart.Name }}"
-                        }
-                    }
                 }
             }
         },
