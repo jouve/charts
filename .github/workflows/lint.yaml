@@ -70,7 +70,7 @@ jobs:
         uses: ./.github/actions/setup-chart-testing
         with:
           url: https://github.com/jouve/chart-testing
-          version: 3.10.0
+          version: 3.11.0
 
       - name: Setup kube-linter
         uses: ./.github/actions/setup-kube-linter
@@ -79,7 +79,7 @@ jobs:
         uses: ./.github/actions/setup-helm-plugin
         with:
           url: https://github.com/helm-unittest/helm-unittest.git
-          version: v0.3.5
+          version: v0.3.6
 
       - name: Run chart-testing (list-changed)
         id: list-changed
