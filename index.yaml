@@ -25,7 +25,7 @@ entries:
     - https://github.com/cloudnative-pg/charts
     type: application
     urls:
-    - cloudnative-pg-0.19.0.tgz
+    - https://github.com/jouve/charts/releases/download/cloudnative-pg-0.19.0/cloudnative-pg-0.19.0.tgz
     version: 0.19.0
   - annotations:
       artifacthub.io/license: Apache-2.0
@@ -943,7 +943,7 @@ entries:
     - https://github.com/axllent/mailpit
     type: application
     urls:
-    - mailpit-0.7.8.tgz
+    - https://github.com/jouve/charts/releases/download/mailpit-0.7.8/mailpit-0.7.8.tgz
     version: 0.7.8
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
@@ -966,7 +966,7 @@ entries:
     - https://github.com/axllent/mailpit
     type: application
     urls:
-    - mailpit-0.7.7.tgz
+    - https://github.com/jouve/charts/releases/download/mailpit-0.7.7/mailpit-0.7.7.tgz
     version: 0.7.7
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
@@ -989,7 +989,7 @@ entries:
     - https://github.com/axllent/mailpit
     type: application
     urls:
-    - mailpit-0.7.6.tgz
+    - https://github.com/jouve/charts/releases/download/mailpit-0.7.6/mailpit-0.7.6.tgz
     version: 0.7.6
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
@@ -1012,7 +1012,7 @@ entries:
     - https://github.com/axllent/mailpit
     type: application
     urls:
-    - mailpit-0.7.5.tgz
+    - https://github.com/jouve/charts/releases/download/mailpit-0.7.5/mailpit-0.7.5.tgz
     version: 0.7.5
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
@@ -1604,7 +1604,7 @@ entries:
     - https://cloudnative-pg.io/
     type: application
     urls:
-    - postgresql-0.7.0.tgz
+    - https://github.com/jouve/charts/releases/download/postgresql-0.7.0/postgresql-0.7.0.tgz
     version: 0.7.0
   - annotations:
       artifacthub.io/images: |
