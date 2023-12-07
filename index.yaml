@@ -145,6 +145,41 @@ entries:
   coredns:
   - annotations:
       artifacthub.io/changes: |
+        - kind: added
+          description: Added option to override defaultMode for extraSecrets
+    apiVersion: v2
+    appVersion: 1.11.1
+    created: "2023-12-07T11:55:32.732012157Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: CoreDNS is a DNS server that chains plugins and provides Kubernetes
+      DNS Services
+    digest: f5c9d55eb123b58ace5c9fefc22566285f40fb1d1cc926f8991804f85f7176b7
+    home: https://coredns.io
+    icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
+    keywords:
+    - coredns
+    - dns
+    - kubedns
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    - name: mrueg
+    - name: haad
+    - name: hagaibarel
+    - name: shubham-cmyk
+    name: coredns
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/coredns/coredns
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/coredns-1.29.4/coredns-1.29.4.tgz
+    version: 1.29.4
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: Fixed indentation for sidecar containers
     apiVersion: v2
@@ -2258,4 +2293,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-07T11:53:01.304788512Z"
+generated: "2023-12-07T11:55:32.732240434Z"
