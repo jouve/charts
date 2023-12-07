@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+data:
+  config.yml: |
+    {{- $config :=  include "common.tplvalues.render" (dict "value" .Values.configYml "context" .) | fromYaml }}
+    {{- if hasKey $config "storage" | not | and .Values.persistence.enabled }}
+    {{- $config := merge
+          $config
+          (dict
+            "storage" (dict
+              "filesystem" (dict
+                "rootdirectory" "/var/lib/registry"
+              )
+            )
+          )
+    -}}
+    {{- end }}
+    {{- $config | toYaml | nindent 4 }}

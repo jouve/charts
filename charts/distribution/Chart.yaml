@@ -1,0 +1,18 @@
+apiVersion: v2
+name: distribution
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: 2.8.3
+dependencies:
+- name: common
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 2.x.x
+sources:
+- https://github.com/jouve/charts
+- https://github.com/distribution/distribution/
+maintainers:
+- name: jouve
+  url: https://github.com/jouve
+annotations:
+  artifacthub.io/license: GPL-3.0-or-later
