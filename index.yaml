@@ -737,6 +737,25 @@ entries:
   - annotations:
       artifacthub.io/license: Apache-2.0
     apiVersion: v2
+    appVersion: 0d95b7608c2ca835ba0418bd1199c3d8f6c9c6e1
+    created: "2023-12-07T11:58:40.143407291Z"
+    description: A Helm chart for Kubernetes
+    digest: bbff2f2693760ec55e851cc9b159c7204c77b813da2821145ac425dae1de176a
+    icon: https://raw.githubusercontent.com/open-policy-agent/gatekeeper-library/master/website/static/img/logo.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: gatekeeper-library
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/open-policy-agent/gatekeeper-library
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/gatekeeper-library-0.1.4/gatekeeper-library-0.1.4.tgz
+    version: 0.1.4
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
     appVersion: bd942ad8afd316743fbe97a69c5019d349c1a5c1
     created: "2023-10-09T22:25:43.557126075Z"
     description: A Helm chart for Kubernetes
@@ -2315,4 +2334,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-07T11:57:03.336526839Z"
+generated: "2023-12-07T11:58:40.143555778Z"
