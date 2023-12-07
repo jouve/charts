@@ -517,6 +517,28 @@ entries:
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
+    created: "2023-12-07T11:57:03.336279476Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy a list of Kubernetes resources as a release
+    digest: e62c62a0f1e850f8aee2d4569c72978233ad8cc5d8a68eb30bf30f5a494a43be
+    icon: https://raw.githubusercontent.com/KDE/breeze-icons/master/icons/actions/16/list-add.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: extra
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/bitnami/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/extra-0.3.4/extra-0.3.4.tgz
+    version: 0.3.4
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
     created: "2023-10-09T22:25:43.41732953Z"
     dependencies:
     - name: common
@@ -2293,4 +2315,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-07T11:55:32.732240434Z"
+generated: "2023-12-07T11:57:03.336526839Z"
