@@ -513,6 +513,29 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/coredns-1.26.1/coredns-1.26.1.tgz
     version: 1.26.1
+  distribution:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: 2.8.3
+    created: "2023-12-07T16:44:06.46472322Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: A Helm chart for Kubernetes
+    digest: 8e3398bd1c4fd3318b0b4280b23d17ef7c725a2bc55d0e484092d1fedaee9ea4
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: distribution
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/distribution/distribution/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/distribution-0.1.0/distribution-0.1.0.tgz
+    version: 0.1.0
   extra:
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
@@ -2433,4 +2456,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-07T12:11:00.726112435Z"
+generated: "2023-12-07T16:44:06.46495471Z"
