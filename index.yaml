@@ -4,6 +4,32 @@ entries:
   - annotations:
       artifacthub.io/license: Apache-2.0
     apiVersion: v2
+    appVersion: 1.21.1
+    created: "2023-12-07T11:53:01.304611031Z"
+    description: CloudNativePG Helm Chart
+    digest: ac86a14db21f7732542d46bbd259ff9e431e79cbdfb06242c1e79c42a41a1d3f
+    home: https://cloudnative-pg.io
+    icon: https://raw.githubusercontent.com/cloudnative-pg/artwork/main/cloudnativepg-logo.svg
+    keywords:
+    - postgresql
+    - postgres
+    - database
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    - email: p.scorsolini@gmail.com
+      name: phisco
+    name: cloudnative-pg
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/cloudnative-pg/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/cloudnative-pg-0.19.3/cloudnative-pg-0.19.3.tgz
+    version: 0.19.3
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
     appVersion: 1.21.0
     created: "2023-10-12T12:09:38.425501972Z"
     description: CloudNativePG Helm Chart
@@ -2232,4 +2258,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-05T23:50:57.808486285Z"
+generated: "2023-12-07T11:53:01.304788512Z"
