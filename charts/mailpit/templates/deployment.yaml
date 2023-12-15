@@ -86,10 +86,10 @@ spec:
           {{- end }}
           {{- end }}
           {{- with .Values.args }}
-          {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 10 }}
           {{- end }}
           {{- with .Values.extraEnvVars }}
-          env: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          env: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 10 }}
           {{- end }}
           {{- with .Values.resources }}
           resources: {{- toYaml . | nindent 12 }}
