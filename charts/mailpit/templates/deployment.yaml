@@ -99,6 +99,30 @@ spec:
               containerPort: 8025
             - name: smtp
               containerPort: 1025
+          {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 8025
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8025
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
           volumeMounts:
           - name: data
             mountPath: /var/lib/mailpit
@@ -112,6 +136,14 @@ spec:
         {{- with .Values.sidecars }}
         {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
         {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
       volumes:
         {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.enabled .Values.mailpit.smtp.tls.enabled .Values.mailpit.relay.enabled }}
         - name: etc
