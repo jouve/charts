@@ -4,7 +4,7 @@ metadata:
   annotations:
     description: Controls the allowed `procMount` types for the container. Corresponds to the `allowedProcMountTypes` field in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#allowedprocmounttypes
     metadata.gatekeeper.sh/title: Proc Mount
-    metadata.gatekeeper.sh/version: 1.0.2
+    metadata.gatekeeper.sh/version: 1.0.3
   name: k8spspprocmount
 spec:
   crd:
@@ -78,7 +78,7 @@ spec:
             allowedProcMount == "default"
             lower(c.securityContext.procMount) == "default"
         }
-        input_proc_mount_type_allowed(allowedProcMount, c) {
+        input_proc_mount_type_allowed(allowedProcMount, _) {
             allowedProcMount == "unmasked"
         }
 

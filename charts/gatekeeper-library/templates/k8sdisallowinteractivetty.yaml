@@ -2,22 +2,18 @@ apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
   annotations:
-    description: |-
-      Requires container images to contain a digest.
-      https://kubernetes.io/docs/concepts/containers/images/
-    metadata.gatekeeper.sh/title: Image Digests
-    metadata.gatekeeper.sh/version: 1.0.1
-  name: k8simagedigests
+    description: Requires that objects have the fields `spec.tty` and `spec.stdin` set to false or unset.
+    metadata.gatekeeper.sh/title: Disallow Interactive TTY Containers
+    metadata.gatekeeper.sh/version: 1.0.0
+  name: k8sdisallowinteractivetty
 spec:
   crd:
     spec:
       names:
-        kind: K8sImageDigests
+        kind: K8sDisallowInteractiveTTY
       validation:
         openAPIV3Schema:
-          description: |-
-            Requires container images to contain a digest.
-            https://kubernetes.io/docs/concepts/containers/images/
+          description: Controls use of fields related to gaining an interactive session. Corresponds to the `tty` and `stdin` fields in the Pod `spec.containers`, `spec.ephemeralContainers`, and `spec.initContainers`.
           properties:
             exemptImages:
               description: |-
@@ -50,28 +46,36 @@ spec:
               startswith(img, prefix)
           }
       rego: |
-        package k8simagedigests
+        package k8sdisallowinteractivetty
 
         import data.lib.exempt_container.is_exempt
 
-        violation[{"msg": msg}] {
-          container := input.review.object.spec.containers[_]
-          not is_exempt(container)
-          not regex.match("@[a-z0-9]+([+._-][a-z0-9]+)*:[a-zA-Z0-9=_-]+", container.image)
-          msg := sprintf("container <%v> uses an image without a digest <%v>", [container.name, container.image])
+        violation[{"msg": msg, "details": {}}] {
+            c := input_containers[_]
+            not is_exempt(c)
+            input_allow_interactive_fields(c)
+            msg := sprintf("Containers using tty or stdin (%v) are not allowed running image: %v", [c.name, c.image])
         }
 
-        violation[{"msg": msg}] {
-          container := input.review.object.spec.initContainers[_]
-          not is_exempt(container)
-          not regex.match("@[a-z0-9]+([+._-][a-z0-9]+)*:[a-zA-Z0-9=_-]+", container.image)
-          msg := sprintf("initContainer <%v> uses an image without a digest <%v>", [container.name, container.image])
+        input_allow_interactive_fields(c) {
+            has_field(c, "stdin")
+            not c.stdin == false
         }
-
-        violation[{"msg": msg}] {
-          container := input.review.object.spec.ephemeralContainers[_]
-          not is_exempt(container)
-          not regex.match("@[a-z0-9]+([+._-][a-z0-9]+)*:[a-zA-Z0-9=_-]+", container.image)
-          msg := sprintf("ephemeralContainer <%v> uses an image without a digest <%v>", [container.name, container.image])
+        input_allow_interactive_fields(c) {
+            has_field(c, "tty")
+            not c.tty == false
+        }
+        input_containers[c] {
+            c := input.review.object.spec.containers[_]
+        }
+        input_containers[c] {
+            c := input.review.object.spec.ephemeralContainers[_]
+        }
+        input_containers[c] {
+            c := input.review.object.spec.initContainers[_]
+        }
+        # has_field returns whether an object has a field
+        has_field(object, field) = true {
+            object[field]
         }
       target: admission.k8s.gatekeeper.sh
