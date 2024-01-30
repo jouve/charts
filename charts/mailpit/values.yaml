@@ -34,7 +34,7 @@ global:
 image:
   registry: docker.io
   repository: axllent/mailpit
-  tag: v1.13.0
+  tag: v1.13.1
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -117,6 +117,7 @@ livenessProbe:
   timeoutSeconds: 5
   failureThreshold: 5
   successThreshold: 1
+
 # Enables the readinessProbe for mailpit
 readinessProbe:
   enabled: true
