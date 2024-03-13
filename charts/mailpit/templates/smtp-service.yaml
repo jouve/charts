@@ -9,10 +9,19 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.service.smtp.type }}
+  {{- if or (eq .Values.service.smtp.type "LoadBalancer") (eq .Values.service.smtp.type "NodePort") }}
+  externalTrafficPolicy: {{ .Values.service.smtp.externalTrafficPolicy | quote }}
+  {{- end }}
+  {{- if and (eq .Values.service.smtp.type "LoadBalancer") (not (empty .Values.service.smtp.loadBalancerSourceRanges)) }}
+  loadBalancerSourceRanges: {{ .Values.service.smtp.loadBalancerSourceRanges }}
+  {{- end }}
+  {{- if and (eq .Values.service.smtp.type "LoadBalancer") (not (empty .Values.service.smtp.loadBalancerIP)) }}
+  loadBalancerIP: {{ .Values.service.smtp.loadBalancerIP }}
+  {{- end }}
   ports:
     - name: smtp
       port: 25
-      {{- if and (or (eq .Values.service.smtp.type "NodePort") (eq .Values.service.smtp.type "LoadBalancer")) (not (empty .Values.service.smtp.nodePort)) }}
+      {{- if and (eq .Values.service.smtp.type "NodePort" "LoadBalancer") (gt (.Values.service.smtp.nodePort | int) 0) }}
       nodePort: {{ .Values.service.smtp.nodePort }}
       {{- end }}
       targetPort: smtp
