@@ -1,0 +1,6 @@
+service:
+  http:
+    type: NodePort
+  smtp:
+    type: NodePort
+    nodePort: 25252
