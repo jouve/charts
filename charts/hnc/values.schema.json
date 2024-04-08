@@ -43,26 +43,6 @@
             "description": "String to fully override common.names.namespace",
             "default": ""
         },
-        "commonLabels": {
-            "type": "object",
-            "properties": {
-                "app": {
-                    "type": "object",
-                    "properties": {
-                        "kubernetes": {
-                            "type": "object",
-                            "properties": {
-                                "io/version": {
-                                    "type": "string",
-                                    "description": "",
-                                    "default": "{{ .Values.image.tag }}"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "commonAnnotations": {
             "type": "object",
             "description": "Annotations to add to all deployed objects",
@@ -164,56 +144,6 @@
                     "description": "image pull secrets",
                     "default": [],
                     "items": {}
-                }
-            }
-        },
-        "resources": {
-            "type": "object",
-            "properties": {
-                "limits": {
-                    "type": "object",
-                    "properties": {
-                        "cpu": {
-                            "type": "string",
-                            "description": "",
-                            "default": "100m"
-                        },
-                        "memory": {
-                            "type": "string",
-                            "description": "",
-                            "default": "300Mi"
-                        }
-                    }
-                },
-                "requests": {
-                    "type": "object",
-                    "properties": {
-                        "cpu": {
-                            "type": "string",
-                            "description": "",
-                            "default": "100m"
-                        },
-                        "memory": {
-                            "type": "string",
-                            "description": "",
-                            "default": "150Mi"
-                        }
-                    }
-                }
-            }
-        },
-        "podLabels": {
-            "type": "object",
-            "properties": {
-                "helm": {
-                    "type": "object",
-                    "properties": {
-                        "sh/chart": {
-                            "type": "string",
-                            "description": "",
-                            "default": "{{ .Chart.Name }}"
-                        }
-                    }
                 }
             }
         },

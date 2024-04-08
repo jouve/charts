@@ -34,7 +34,7 @@ global:
 image:
   registry: docker.io
   repository: axllent/mailpit
-  tag: v1.14.4
+  tag: v1.15.1
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -109,7 +109,7 @@ args: []
 ##
 extraEnvVars: []
 
-# Enables the livenessProbe for mailpit
+## @param livenessProbe [object] Enables the livenessProbe for mailpit
 livenessProbe:
   enabled: true
   initialDelaySeconds: 2
@@ -118,7 +118,7 @@ livenessProbe:
   failureThreshold: 5
   successThreshold: 1
 
-# Enables the readinessProbe for mailpit
+## @param readinessProbe [object]  Enables the readinessProbe for mailpit
 readinessProbe:
   enabled: true
   initialDelaySeconds: 2
@@ -127,17 +127,17 @@ readinessProbe:
   failureThreshold: 5
   successThreshold: 1
 
-# Node labels for pod assignment
-# Ref: https://kubernetes.io/docs/user-guide/node-selection/
+## @param nodeSelector Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/user-guide/node-selection/
 nodeSelector: {}
 
-# expects input structure as per specification https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#toleration-v1-core
-# for example:
-#   tolerations:
-#   - key: foo.bar.com/role
-#     operator: Equal
-#     value: master
-#     effect: NoSchedule
+## @param tolerations expects input structure as per specification https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#toleration-v1-core
+## for example:
+##   tolerations:
+##   - key: foo.bar.com/role
+##     operator: Equal
+##     value: master
+##     effect: NoSchedule
 tolerations: []
 
 # https://github.com/axllent/mailpit/wiki/Basic-authentication

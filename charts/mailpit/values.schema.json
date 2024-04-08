@@ -39,7 +39,7 @@
                 "tag": {
                     "type": "string",
                     "description": "image tag (immutable tags are recommended)",
-                    "default": "v1.9.10"
+                    "default": "v1.15.1"
                 },
                 "digest": {
                     "type": "string",
@@ -128,6 +128,17 @@
         "extraEnvVars": {
             "type": "array",
             "description": "Array with extra environment variables to add to nodes",
+            "default": [],
+            "items": {}
+        },
+        "nodeSelector": {
+            "type": "object",
+            "description": "Node labels for pod assignment",
+            "default": {}
+        },
+        "tolerations": {
+            "type": "array",
+            "description": "expects input structure as per specification https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#toleration-v1-core",
             "default": [],
             "items": {}
         },
@@ -254,8 +265,24 @@
                         },
                         "nodePort": {
                             "type": "number",
-                            "description": "nodeport bind for HTTP service",
+                            "description": "Node port for HTTP",
                             "default": 0
+                        },
+                        "loadBalancerIP": {
+                            "type": "string",
+                            "description": "%%MAIN_CONTAINER_NAME%% service Load Balancer IP",
+                            "default": ""
+                        },
+                        "loadBalancerSourceRanges": {
+                            "type": "array",
+                            "description": "%%MAIN_CONTAINER_NAME%% service Load Balancer sources",
+                            "default": [],
+                            "items": {}
+                        },
+                        "externalTrafficPolicy": {
+                            "type": "string",
+                            "description": "%%MAIN_CONTAINER_NAME%% service external traffic policy",
+                            "default": "Cluster"
                         }
                     }
                 },
@@ -269,8 +296,24 @@
                         },
                         "nodePort": {
                             "type": "number",
-                            "description": "nodeport bind for STMP service",
+                            "description": "Node port for HTTP",
                             "default": 0
+                        },
+                        "loadBalancerIP": {
+                            "type": "string",
+                            "description": "%%MAIN_CONTAINER_NAME%% service Load Balancer IP",
+                            "default": ""
+                        },
+                        "loadBalancerSourceRanges": {
+                            "type": "array",
+                            "description": "%%MAIN_CONTAINER_NAME%% service Load Balancer sources",
+                            "default": [],
+                            "items": {}
+                        },
+                        "externalTrafficPolicy": {
+                            "type": "string",
+                            "description": "%%MAIN_CONTAINER_NAME%% service external traffic policy",
+                            "default": "Cluster"
                         }
                     }
                 }
