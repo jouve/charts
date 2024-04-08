@@ -91,6 +91,13 @@ spec:
           {{- with .Values.extraEnvVars }}
           env: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 10 }}
           {{- end }}
+          {{- if .Values.extraEnvVarsSecret }}
+          envFrom:
+            {{- with .Values.extraEnvVarsSecret }}
+            - secretRef:
+                name: {{ template "common.tplvalues.render" (dict "value" . "context" $) }}
+            {{- end }}
+          {{- end }}
           {{- with .Values.resources }}
           resources: {{- toYaml . | nindent 12 }}
           {{- end }}

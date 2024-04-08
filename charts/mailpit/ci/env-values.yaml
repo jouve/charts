@@ -1,0 +1,7 @@
+extraEnvVars:
+  - name: MP_MAX_MESSAGES
+    value: "1000"
+
+## @param extraEnvVarsSecret Name of existing Secret containing extra env vars for containers
+##
+extraEnvVarsSecret: my-secret
