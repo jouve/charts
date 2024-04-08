@@ -109,6 +109,10 @@ args: []
 ##
 extraEnvVars: []
 
+## @param extraEnvVarsSecret Name of existing Secret containing extra env vars for containers
+##
+extraEnvVarsSecret: ""
+
 ## @param livenessProbe [object] Enables the livenessProbe for mailpit
 livenessProbe:
   enabled: true
