@@ -1,4 +1,4 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- github.com/open-policy-agent/gatekeeper-library/library?ref=0b4836a00d7f6ab6a82fa3943e0f48eb07216293
+- github.com/open-policy-agent/gatekeeper-library/library?ref=1d339d75afbd3cd0c618194259448f42916ee551

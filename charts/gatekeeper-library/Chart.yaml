@@ -3,8 +3,8 @@ name: gatekeeper-library
 description: A Helm chart for Kubernetes
 icon: https://raw.githubusercontent.com/open-policy-agent/gatekeeper-library/master/website/static/img/logo.svg
 type: application
-version: 0.2.0
-appVersion: 0b4836a00d7f6ab6a82fa3943e0f48eb07216293
+version: 0.2.1
+appVersion: 1d339d75afbd3cd0c618194259448f42916ee551
 sources:
   - https://github.com/jouve/charts
   - https://github.com/open-policy-agent/gatekeeper-library
