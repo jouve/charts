@@ -59,7 +59,7 @@
                 "tag": {
                     "type": "string",
                     "description": "image tag (immutable tags are recommended)",
-                    "default": "15.4-14"
+                    "default": "16.1-1"
                 },
                 "digest": {
                     "type": "string",
