@@ -1,2 +1,6 @@
 ingress:
   enabled: true
+  hostname: '{{ .Release.Name }}.example.com'
+  annotations:
+    cert-manager.io/issuer: mailpit-issuer
+  tls: true
