@@ -64,13 +64,12 @@ helm install mailpit jouve/mailpit
 | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
 | `service.http.type`                     | service type                                                                                                                     | `ClusterIP`              |
 | `service.http.nodePort`                 | nodeport bind for HTTP service                                                                                                   | `0`                      |
-| `service.http.nodePort`                 | Node port for HTTP                                                                                                               | `0`                      |
 | `service.http.loadBalancerIP`           | %%MAIN_CONTAINER_NAME%% service Load Balancer IP                                                                                 | `""`                     |
 | `service.http.loadBalancerSourceRanges` | %%MAIN_CONTAINER_NAME%% service Load Balancer sources                                                                            | `[]`                     |
 | `service.http.externalTrafficPolicy`    | %%MAIN_CONTAINER_NAME%% service external traffic policy                                                                          | `Cluster`                |
 | `service.smtp.type`                     | service type                                                                                                                     | `ClusterIP`              |
+| `service.smtp.port`                     | port for STMP service                                                                                                            | `25`                     |
 | `service.smtp.nodePort`                 | nodeport bind for STMP service                                                                                                   | `0`                      |
-| `service.smtp.nodePort`                 | Node port for HTTP                                                                                                               | `0`                      |
 | `service.smtp.loadBalancerIP`           | %%MAIN_CONTAINER_NAME%% service Load Balancer IP                                                                                 | `""`                     |
 | `service.smtp.loadBalancerSourceRanges` | %%MAIN_CONTAINER_NAME%% service Load Balancer sources                                                                            | `[]`                     |
 | `service.smtp.externalTrafficPolicy`    | %%MAIN_CONTAINER_NAME%% service external traffic policy                                                                          | `Cluster`                |

@@ -191,11 +191,10 @@ mailpit:
 service:
   http:
     ## @param service.http.type service type
-    ## @param service.http.nodePort nodeport bind for HTTP service
     ##
     type: ClusterIP
     ## Node ports to expose
-    ## @param service.http.nodePort Node port for HTTP
+    ## @param service.http.nodePort nodeport bind for HTTP service
     ##
     nodePort: 0
     ## @param service.http.loadBalancerIP %%MAIN_CONTAINER_NAME%% service Load Balancer IP
@@ -215,11 +214,14 @@ service:
     externalTrafficPolicy: Cluster
   smtp:
     ## @param service.smtp.type service type
-    ## @param service.smtp.nodePort nodeport bind for STMP service
     ##
     type: ClusterIP
+    ## ports to expose
+    ## @param service.smtp.port port for SMTP
+    ##
+    port: 25
     ## Node ports to expose
-    ## @param service.smtp.nodePort Node port for HTTP
+    ## @param service.smtp.nodePort nodeport bind for STMP service
     ##
     nodePort: 0
     ## @param service.smtp.loadBalancerIP %%MAIN_CONTAINER_NAME%% service Load Balancer IP
