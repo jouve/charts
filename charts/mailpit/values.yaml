@@ -34,7 +34,7 @@ global:
 image:
   registry: docker.io
   repository: axllent/mailpit
-  tag: v1.15.1
+  tag: v1.17.1
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -73,10 +73,16 @@ updateStrategy:
   ##
   type: RollingUpdate
 
-## @param podSecurityContext.type [object] SecurityContext for pods
+## @param podSecurityContext [object] SecurityContext for pods
 ## ref: https://kubernetes.io/docs/concepts/security/pod-security-standards/
 ##
 podSecurityContext:
+  fsGroup: 1001
+
+## @param containerSecurityContext [object] SecurityContext for pods
+## ref: https://kubernetes.io/docs/concepts/security/pod-security-standards/
+##
+containerSecurityContext:
   allowPrivilegeEscalation: false
   runAsUser: 1001
   runAsGroup: 1001

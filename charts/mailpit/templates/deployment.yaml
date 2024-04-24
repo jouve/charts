@@ -32,8 +32,9 @@ spec:
       {{- end }}
     spec:
       automountServiceAccountToken: false
-      securityContext:
-        fsGroup: 1001
+      {{- with .Values.podSecurityContext }}
+      securityContext: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
+      {{- end }}
       {{- with .Values.affinity }}
       affinity: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
       {{- end }}
@@ -41,8 +42,9 @@ spec:
         - name: mailpit
           image: {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          securityContext:
-            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          {{- with .Values.containerSecurityContext }}
+          securityContext: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- end }}
           args:
           - --db-file
           - /var/lib/mailpit/mailpit.db
@@ -95,7 +97,7 @@ spec:
             {{- end }}
           {{- end }}
           {{- with .Values.resources }}
-          resources: {{- toYaml . | nindent 12 }}
+          resources: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
           {{- end }}
           ports:
             - name: http
@@ -139,13 +141,11 @@ spec:
         {{- with .Values.sidecars }}
         {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
         {{- end }}
-      {{- if .Values.tolerations }}
-      tolerations:
-{{ toYaml .Values.tolerations | indent 8 }}
+      {{- with .Values.tolerations }}
+      tolerations: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
       {{- end }}
-      {{- if .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
       {{- end }}
       volumes:
         {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.enabled .Values.mailpit.smtp.tls.enabled .Values.mailpit.relay.enabled }}

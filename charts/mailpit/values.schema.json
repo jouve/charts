@@ -39,7 +39,7 @@
                 "tag": {
                     "type": "string",
                     "description": "image tag (immutable tags are recommended)",
-                    "default": "v1.15.1"
+                    "default": "v1.17.1"
                 },
                 "digest": {
                     "type": "string",
@@ -73,9 +73,6 @@
                     "default": "RollingUpdate"
                 }
             }
-        },
-        "podSecurityContext": {
-            "type": "object"
         },
         "replicaCount": {
             "type": "number",
@@ -133,6 +130,11 @@
             "description": "Array with extra environment variables to add to nodes",
             "default": [],
             "items": {}
+        },
+        "extraEnvVarsSecret": {
+            "type": "string",
+            "description": "Name of existing Secret containing extra env vars for containers",
+            "default": ""
         },
         "nodeSelector": {
             "type": "object",
