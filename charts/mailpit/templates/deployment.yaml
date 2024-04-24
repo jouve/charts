@@ -42,11 +42,7 @@ spec:
           image: {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
-            allowPrivilegeEscalation: false
-            runAsUser: 1001
-            runAsGroup: 1001
-            runAsNonRoot: true
-            readOnlyRootFilesystem: true
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
           args:
           - --db-file
           - /var/lib/mailpit/mailpit.db

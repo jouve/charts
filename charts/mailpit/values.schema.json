@@ -74,6 +74,9 @@
                 }
             }
         },
+        "podSecurityContext": {
+            "type": "object"
+        },
         "replicaCount": {
             "type": "number",
             "description": "Number of replicas to deploy",
