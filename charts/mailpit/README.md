@@ -23,7 +23,7 @@ helm install mailpit jouve/mailpit
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `image.registry`                       | image registry                                                                                                                             | `docker.io`       |
 | `image.repository`                     | image repository                                                                                                                           | `axllent/mailpit` |
-| `image.tag`                            | image tag (immutable tags are recommended)                                                                                                 | `v1.15.1`         |
+| `image.tag`                            | image tag (immutable tags are recommended)                                                                                                 | `v1.17.1`         |
 | `image.digest`                         | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`              |
 | `image.pullPolicy`                     | image pull policy                                                                                                                          | `IfNotPresent`    |
 | `image.pullSecrets`                    | image pull secrets                                                                                                                         | `[]`              |
@@ -31,6 +31,8 @@ helm install mailpit jouve/mailpit
 | `commonLabels`                         | Labels to add to all deployed objects                                                                                                      | `{}`              |
 | `podLabels`                            | Extra labels for pods                                                                                                                      | `{}`              |
 | `updateStrategy.type`                  | statefulset strategy type                                                                                                                  | `RollingUpdate`   |
+| `podSecurityContext`                   | SecurityContext for pods                                                                                                                   | `{}`              |
+| `containerSecurityContext`             | SecurityContext for pods                                                                                                                   | `{}`              |
 | `replicaCount`                         | Number of replicas to deploy                                                                                                               | `1`               |
 | `resources.limits.cpu`                 | The resources limits for the containers                                                                                                    | `100m`            |
 | `resources.limits.memory`              | The resources limits for the containers                                                                                                    | `64Mi`            |
@@ -39,6 +41,7 @@ helm install mailpit jouve/mailpit
 | `affinity`                             | Pod affinity                                                                                                                               | `{}`              |
 | `args`                                 | Override default container args (useful when using custom images)                                                                          | `[]`              |
 | `extraEnvVars`                         | Array with extra environment variables to add to nodes                                                                                     | `[]`              |
+| `extraEnvVarsSecret`                   | Name of existing Secret containing extra env vars for containers                                                                           | `""`              |
 | `livenessProbe`                        | Enables the livenessProbe for mailpit                                                                                                      | `{}`              |
 | `readinessProbe`                       | Enables the readinessProbe for mailpit                                                                                                     | `{}`              |
 | `nodeSelector`                         | Node labels for pod assignment                                                                                                             | `{}`              |
