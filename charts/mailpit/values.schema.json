@@ -268,9 +268,14 @@
                             "description": "service type",
                             "default": "ClusterIP"
                         },
+                        "port": {
+                            "type": "number",
+                            "description": "port for http",
+                            "default": 80
+                        },
                         "nodePort": {
                             "type": "number",
-                            "description": "Node port for HTTP",
+                            "description": "nodeport bind for HTTP service",
                             "default": 0
                         },
                         "loadBalancerIP": {
@@ -299,9 +304,14 @@
                             "description": "service type",
                             "default": "ClusterIP"
                         },
+                        "port": {
+                            "type": "number",
+                            "description": "port for SMTP",
+                            "default": 25
+                        },
                         "nodePort": {
                             "type": "number",
-                            "description": "Node port for HTTP",
+                            "description": "nodeport bind for STMP service",
                             "default": 0
                         },
                         "loadBalancerIP": {
