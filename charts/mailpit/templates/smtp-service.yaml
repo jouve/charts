@@ -20,7 +20,7 @@ spec:
   {{- end }}
   ports:
     - name: smtp
-      port: 25
+      port: {{ .Values.service.smtp.port }}
       {{- if and (eq .Values.service.smtp.type "NodePort" "LoadBalancer") (gt (.Values.service.smtp.nodePort | int) 0) }}
       nodePort: {{ .Values.service.smtp.nodePort }}
       {{- end }}
