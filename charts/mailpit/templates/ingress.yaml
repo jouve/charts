@@ -5,8 +5,19 @@ metadata:
   name: {{ template "common.names.fullname" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+  annotations:
+  {{- if .Values.ingress.gce.enabled }}
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.allow-http: "true"
+    kubernetes.io/ssl-redirect: "true"
+    {{- if .Values.ingress.gce.gcp_managed_certificate.enabled }}
+    networking.gke.io/managed-certificates: {{ template "common.names.fullname" . }}
+    {{- end }}
+  {{- else }}
+    kubernetes.io/ingress.class: nginx
+  {{- end }}
   {{- with include "common.tplvalues.merge" ( dict "values" (list .Values.ingress.annotations .Values.commonAnnotations) "context" . ) | fromYaml }}
-  annotations: {{- . | toYaml | nindent 4 }}
+    {{- . | toYaml | nindent 4 }}
   {{- end }}
 spec:
   {{- if and .Values.ingress.ingressClassName (eq "true" (include "common.ingress.supportsIngressClassname" .)) }}

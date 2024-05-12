@@ -1,0 +1,11 @@
+{{- if .Values.ingress.gce.gcp_managed_certificate.enabled }}
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+spec:
+  domains:
+    - {{ .Values.ingress.gce.gcp_managed_certificate.domain }}
+{{- end }}
