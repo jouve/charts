@@ -84,10 +84,15 @@ podSecurityContext:
 ##
 containerSecurityContext:
   allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
   runAsUser: 1001
   runAsGroup: 1001
   runAsNonRoot: true
   readOnlyRootFilesystem: true
+  seccompProfile:
+    type: RuntimeDefault
 
 ## @param replicaCount Number of replicas to deploy
 ##
