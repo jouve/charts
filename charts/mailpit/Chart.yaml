@@ -3,7 +3,7 @@ name: mailpit
 description: An email and SMTP testing tool with API for developers
 icon: https://raw.githubusercontent.com/axllent/mailpit/develop/server/ui/mailpit.svg
 type: application
-version: 0.17.2
+version: 0.17.3
 appVersion: 1.17.2
 dependencies:
 - name: common
