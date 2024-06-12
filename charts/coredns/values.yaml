@@ -370,6 +370,7 @@ autoscaler:
   #   imagePullPolicy: Always
 
 deployment:
+  skipConfig: false
   enabled: true
   name: ""
   ## Annotations for the coredns deployment
