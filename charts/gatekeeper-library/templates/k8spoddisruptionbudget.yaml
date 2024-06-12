@@ -16,7 +16,7 @@ metadata:
         ]
       ]"
     metadata.gatekeeper.sh/title: Pod Disruption Budget
-    metadata.gatekeeper.sh/version: 1.0.3
+    metadata.gatekeeper.sh/version: 1.0.4
   name: k8spoddisruptionbudget
 spec:
   crd:
