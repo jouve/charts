@@ -32,6 +32,7 @@ spec:
       {{- end }}
     spec:
       automountServiceAccountToken: false
+      {{- include "common.images.renderPullSecrets" (dict "images" (list .Values.image) "context" $) | nindent 6 }}
       {{- with .Values.podSecurityContext }}
       securityContext: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
       {{- end }}
