@@ -4,7 +4,7 @@ metadata:
   annotations:
     description: Controls the ability of any container to enable privileged mode. Corresponds to the `privileged` field in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#privileged
     metadata.gatekeeper.sh/title: Privileged Container
-    metadata.gatekeeper.sh/version: 1.1.0
+    metadata.gatekeeper.sh/version: 1.1.1
   name: k8spspprivilegedcontainer
 spec:
   crd:
@@ -28,7 +28,7 @@ spec:
         - engine: K8sNativeValidation
           source:
             validations:
-              - expression: (has(request.operation) && request.operation == "UPDATE") || size(variables.badContainers) == 0
+              - expression: variables.isUpdate || size(variables.badContainers) == 0
                 messageExpression: variables.badContainers.join("\n")
             variables:
               - expression: 'has(variables.anyObject.spec.containers) ? variables.anyObject.spec.containers : []'
@@ -46,7 +46,8 @@ spec:
               - expression: |
                   (variables.containers + variables.initContainers + variables.ephemeralContainers).filter(container,
                     container.image in variables.exemptImageExplicit ||
-                    variables.exemptImagePrefixes.exists(exemption, string(container.image).startsWith(exemption)))
+                    variables.exemptImagePrefixes.exists(exemption, string(container.image).startsWith(exemption))
+                  ).map(container, container.image)
                 name: exemptImages
               - expression: |
                   (variables.containers + variables.initContainers + variables.ephemeralContainers).filter(container,
@@ -54,6 +55,8 @@ spec:
                     (has(container.securityContext) && has(container.securityContext.privileged) && container.securityContext.privileged == true)
                   ).map(container, "Privileged container is not allowed: " + container.name +", securityContext: " + container.securityContext)
                 name: badContainers
+              - expression: has(request.operation) && request.operation == "UPDATE"
+                name: isUpdate
         - engine: Rego
           source:
             libs:
