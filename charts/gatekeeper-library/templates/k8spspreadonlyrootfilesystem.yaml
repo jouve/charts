@@ -4,7 +4,7 @@ metadata:
   annotations:
     description: Requires the use of a read-only root file system by pod containers. Corresponds to the `readOnlyRootFilesystem` field in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#volumes-and-file-systems
     metadata.gatekeeper.sh/title: Read Only Root Filesystem
-    metadata.gatekeeper.sh/version: 1.1.0
+    metadata.gatekeeper.sh/version: 1.1.1
   name: k8spspreadonlyrootfilesystem
 spec:
   crd:
@@ -46,7 +46,7 @@ spec:
               - expression: |
                   (variables.containers + variables.initContainers + variables.ephemeralContainers).filter(container,
                     container.image in variables.exemptImageExplicit ||
-                    variables.exemptImagePrefixes.exists(exemption, string(container.image).startsWith(exemption)))
+                    variables.exemptImagePrefixes.exists(exemption, string(container.image).startsWith(exemption))).map(container, container.image)
                 name: exemptImages
               - expression: "(variables.containers + variables.initContainers + variables.ephemeralContainers).filter(container,\n  !(container.image in variables.exemptImages) && \n  (!has(container.securityContext) ||\n  !has(container.securityContext.readOnlyRootFilesystem) ||\n  container.securityContext.readOnlyRootFilesystem != true)\n).map(container, container.name)\n"
                 name: badContainers

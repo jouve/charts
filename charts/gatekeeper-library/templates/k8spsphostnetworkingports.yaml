@@ -2,9 +2,9 @@ apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
   annotations:
-    description: Controls usage of host network namespace by pod containers. Specific ports must be specified. Corresponds to the `hostNetwork` and `hostPorts` fields in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces
+    description: Controls usage of host network namespace by pod containers. HostNetwork verification happens without exception for exemptImages. Specific ports must be specified. Corresponds to the `hostNetwork` and `hostPorts` fields in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces
     metadata.gatekeeper.sh/title: Host Networking Ports
-    metadata.gatekeeper.sh/version: 1.1.0
+    metadata.gatekeeper.sh/version: 1.1.4
   name: k8spsphostnetworkingports
 spec:
   crd:
@@ -13,7 +13,7 @@ spec:
         kind: K8sPSPHostNetworkingPorts
       validation:
         openAPIV3Schema:
-          description: Controls usage of host network namespace by pod containers. Specific ports must be specified. Corresponds to the `hostNetwork` and `hostPorts` fields in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces
+          description: Controls usage of host network namespace by pod containers. HostNetwork verification happens without exception for exemptImages. Specific ports must be specified. Corresponds to the `hostNetwork` and `hostPorts` fields in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces
           properties:
             exemptImages:
               description: |-
@@ -37,8 +37,10 @@ spec:
         - engine: K8sNativeValidation
           source:
             validations:
-              - expression: (has(request.operation) && request.operation == "UPDATE") || size(variables.badContainers) == 0
-                messageExpression: '"The specified hostNetwork and hostPort are not allowed, pod: " + variables.anyObject.metadata.name + ". Allowed values: " + variables.params'
+              - expression: variables.isUpdate || size(variables.badContainers) == 0
+                messageExpression: '"The specified hostNetwork and hostPort are not allowed, pod: " + variables.anyObject.metadata.name'
+              - expression: variables.isUpdate || !variables.hostNetworkViolation
+                messageExpression: '"The specified hostNetwork and hostPort are not allowed, pod: " + variables.anyObject.metadata.name'
             variables:
               - expression: 'has(variables.anyObject.spec.containers) ? variables.anyObject.spec.containers : []'
                 name: containers
@@ -55,18 +57,26 @@ spec:
               - expression: |
                   (variables.containers + variables.initContainers + variables.ephemeralContainers).filter(container,
                     container.image in variables.exemptImageExplicit ||
-                    variables.exemptImagePrefixes.exists(exemption, string(container.image).startsWith(exemption)))
+                    variables.exemptImagePrefixes.exists(exemption, string(container.image).startsWith(exemption))
+                  ).map(container, container.image)
                 name: exemptImages
               - expression: |
                   (variables.containers + variables.initContainers + variables.ephemeralContainers).filter(container,
-                    !(container.image in variables.exemptImages) &&
+                    !(container.image in variables.exemptImages) && has(container.ports) &&
                     (
-                      (!has(variables.params.hostNetwork) || !variables.params.hostNetwork ? (has(variables.anyObject.spec.hostNetwork) && variables.anyObject.spec.hostNetwork) : false) ||
                       (container.ports.all(port, has(port.hostPort) && has(variables.params.min) && port.hostPort < variables.params.min)) ||
                       (container.ports.all(port, has(port.hostPort) && has(variables.params.max) && port.hostPort > variables.params.max))
                     )
                   )
                 name: badContainers
+              - expression: has(request.operation) && request.operation == "UPDATE"
+                name: isUpdate
+              - expression: has(variables.params.hostNetwork) && variables.params.hostNetwork
+                name: hostNetworkAllowed
+              - expression: has(variables.anyObject.spec.hostNetwork) && variables.anyObject.spec.hostNetwork
+                name: hostNetworkEnabled
+              - expression: variables.hostNetworkEnabled && !variables.hostNetworkAllowed
+                name: hostNetworkViolation
         - engine: Rego
           source:
             libs:

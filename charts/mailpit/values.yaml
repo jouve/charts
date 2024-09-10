@@ -34,7 +34,7 @@ global:
 image:
   registry: docker.io
   repository: axllent/mailpit
-  tag: v1.18.7
+  tag: v1.20.4
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -77,12 +77,14 @@ updateStrategy:
 ## ref: https://kubernetes.io/docs/concepts/security/pod-security-standards/
 ##
 podSecurityContext:
+  enabled: true
   fsGroup: 1001
 
 ## @param containerSecurityContext [object] SecurityContext for pods
 ## ref: https://kubernetes.io/docs/concepts/security/pod-security-standards/
 ##
 containerSecurityContext:
+  enabled: true
   allowPrivilegeEscalation: false
   capabilities:
     drop:
@@ -99,19 +101,15 @@ containerSecurityContext:
 replicaCount: 1
 
 ## resource requests and limits
-## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-## @param resources.limits.cpu The resources limits for the containers
-## @param resources.limits.memory The resources limits for the containers
-## @param resources.requests.cpu The requested resources for the containers
-## @param resources.requests.memory The requested resources for the containers
+## ref: http://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+## @param resourcesPreset Set container resources according to one common preset (allowed values: none, nano, small, medium, large, xlarge, 2xlarge). This is ignored if resources is set (resources is recommended for production).
+## More information: https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
 ##
-resources:
-  limits:
-    cpu: 100m
-    memory: 64Mi
-  requests:
-    cpu: 5m
-    memory: 4Mi
+resourcesPreset: "nano"
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources [object] The resources for the containers
+##
+resources: {}
 
 ## @param affinity Pod affinity
 ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity

@@ -4,7 +4,7 @@ metadata:
   annotations:
     description: Controls the allowed `procMount` types for the container. Corresponds to the `allowedProcMountTypes` field in a PodSecurityPolicy. For more information, see https://kubernetes.io/docs/concepts/policy/pod-security-policy/#allowedprocmounttypes
     metadata.gatekeeper.sh/title: Proc Mount
-    metadata.gatekeeper.sh/version: 1.1.0
+    metadata.gatekeeper.sh/version: 1.1.1
   name: k8spspprocmount
 spec:
   crd:
@@ -50,9 +50,14 @@ spec:
               - expression: "!has(variables.params.exemptImages) ? [] : \n  variables.params.exemptImages.filter(image, !image.endsWith(\"*\"))\n"
                 name: exemptImageExplicit
               - expression: |
-                  (variables.containers + variables.initContainers + variables.ephemeralContainers).filter(container,
+                  (variables.containers + variables.initContainers + variables.ephemeralContainers).filter(
+                    container,
                     container.image in variables.exemptImageExplicit ||
-                    variables.exemptImagePrefixes.exists(exemption, string(container.image).startsWith(exemption)))
+                      variables.exemptImagePrefixes.exists(
+                        exemption,
+                        string(container.image).startsWith(exemption)
+                      )
+                  ).map(container, container.image)
                 name: exemptImages
               - expression: "!has(variables.params) ? \"default\" : \n  !has(variables.params.procMount) ? \"default\" : \n    (variables.params.procMount.lowerAscii() == \"default\" || variables.params.procMount.lowerAscii() == \"unmasked\") ? variables.params.procMount.lowerAscii() : \"default\"\n"
                 name: allowedProcMount
