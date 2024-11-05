@@ -54,9 +54,11 @@ service:
 # clusterIP: ""
 # clusterIPs: []
 # loadBalancerIP: ""
+# loadBalancerClass: ""
 # externalIPs: []
 # externalTrafficPolicy: ""
 # ipFamilyPolicy: ""
+# trafficDistribution: PreferClose
   # The name of the Service
   # If not set, a name is generated using the fullname template
   name: ""
@@ -77,6 +79,11 @@ rbac:
   # The name of the ServiceAccount to use.
   # If not set and create is true, a name is generated using the fullname template
   # name:
+
+clusterRole:
+  # By default a name is generated using the fullname template.
+  # Override here if desired:
+  nameOverride: ""
 
 # isClusterService specifies whether chart should be deployed as cluster-service or normal k8s app.
 isClusterService: true
@@ -100,6 +107,8 @@ servers:
 - zones:
   - zone: .
   port: 53
+  # -- expose the service on a different port
+  # servicePort: 5353
   # If serviceType is nodePort you can specify nodePort here
   # nodePort: 30053
   # hostPort: 53
@@ -252,6 +261,17 @@ extraSecrets: []
 # - name: some-fancy-secret
 #   mountPath: /etc/wherever
 #   defaultMode: 440
+
+# optional array of environment variables for coredns container
+# possible usecase: provides username and password for etcd user authentications
+env: []
+# - name: WHATEVER_ENV
+#   value: whatever
+# - name: SOME_SECRET_ENV
+#   valueFrom:
+#     secretKeyRef:
+#       name: some-secret-name
+#       key: secret-key
 
 # To support legacy deployments using CoreDNS with the "k8s-app: kube-dns" label selectors.
 # See https://github.com/coredns/helm/blob/master/charts/coredns/README.md#adopting-existing-coredns-resources
