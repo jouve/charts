@@ -1,6 +1,6 @@
 apiVersion: v2
 name: coredns
-version: 1.32.0
+version: 1.36.1
 appVersion: 1.11.3
 home: https://coredns.io
 icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
@@ -26,5 +26,5 @@ dependencies:
   version: 2.x.x
 annotations:
   artifacthub.io/changes: |
-    - kind: changed
-      description: Upgrade CoreDNS to 1.11.3
+    - kind: fix
+      description: Add default values to chart to fix cluster role name templating issue

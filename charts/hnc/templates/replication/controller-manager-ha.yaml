@@ -30,6 +30,7 @@ spec:
         {{- end }}
       {{- end }}
     spec:
+      {{- include "common.images.renderPullSecrets" (dict "images" (list .Values.image) "context" $) | nindent 6 }}
       {{- with .Values.affinity }}
       affinity: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
       {{- else }}
