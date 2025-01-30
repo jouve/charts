@@ -157,6 +157,10 @@ nodeSelector: {}
 ## @section Traffic Exposure Parameters
 ##
 
+## @param hostNetwork Specify if host network should be enabled
+##
+hostNetwork: false
+
 ## service parameters
 ##
 service:

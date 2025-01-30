@@ -65,6 +65,7 @@ helm repo add jouve https://jouve.github.io/charts/
 
 | Name                             | Description                                                                                            | Value   |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------ | ------- |
+| `hostNetwork`                    | Specify if host network should be enabled                                                              | `false` |
 | `service.annotations`            | Additional custom annotations for service                                                              | `{}`    |
 | `metrics.enabled`                | Enable the export of Prometheus metrics                                                                | `true`  |
 | `metrics.serviceMonitor.enabled` | if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`) | `false` |
