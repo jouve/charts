@@ -30,6 +30,7 @@ spec:
       {{- end }}
     spec:
       {{- include "common.images.renderPullSecrets" (dict "images" (list .Values.image) "context" $) | nindent 6 }}
+      hostNetwork: {{ .Values.hostNetwork }}
       containers:
         - args:
             - --webhook-server-port=9443
