@@ -4,7 +4,7 @@ kind: ServiceMonitor
 metadata:
   name: {{ template "common.names.fullname" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
-  labels: {{- include "common.tplvalues.merge" (dict "values" .Values.metrics.serviceMonitor.labels .Values.commonLabels "context" .) | nindent 4 }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" (include "common.tplvalues.merge" (dict "values" (list .Values.metrics.serviceMonitor.labels .Values.commonLabels) "context" $) | fromYaml) "context" $ ) | nindent 4 }}
   {{- with include "common.tplvalues.merge" (dict "values" (list .Values.metrics.serviceMonitor.annotations .Values.commonAnnotations) "context" .) | fromYaml }}
   annotations: {{- . | toYaml | nindent 4 }}
   {{- end }}
