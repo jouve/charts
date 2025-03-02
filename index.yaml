@@ -870,6 +870,28 @@ entries:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
     appVersion: 2.8.3
+    created: "2025-03-02T19:12:38.425428356Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: A Helm chart for Kubernetes
+    digest: 7e7a95421c4a8a2b35ae073424e2046832804b16523191cc130a5eb3896393ca
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: distribution
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/distribution/distribution/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/distribution-0.1.7/distribution-0.1.7.tgz
+    version: 0.1.7
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: 2.8.3
     created: "2024-12-19T17:51:24.348595806Z"
     dependencies:
     - name: common
@@ -4355,4 +4377,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-10T23:22:11.991626654Z"
+generated: "2025-03-02T19:12:38.425724059Z"
