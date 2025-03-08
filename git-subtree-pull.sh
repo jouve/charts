@@ -14,4 +14,4 @@ git_subtree_pull () {
 }
 
 git_subtree_pull https://github.com/cloudnative-pg/charts cloudnative-pg-v0.23.2 charts/cloudnative-pg charts/cloudnative-pg
-git_subtree_pull https://github.com/coredns/helm          coredns-1.37.0         charts/coredns        charts/coredns
+git_subtree_pull https://github.com/coredns/helm          coredns-1.39.1         charts/coredns        charts/coredns

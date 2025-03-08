@@ -6,7 +6,7 @@ metadata:
   name: {{ default (include "coredns.fullname" .) .Values.deployment.name }}
   namespace: {{ .Release.Namespace }}
   labels: {{- include "coredns.labels" . | nindent 4 }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/version: {{ .Values.image.tag | default .Chart.AppVersion | replace ":" "-" | replace "@" "_" | trunc 63 | trimSuffix "-" | quote }}
     {{- with .Values.customLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -82,7 +82,7 @@ spec:
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       {{- end }}
-      {{- if not (empty .Values.image.pullSecrets) }}
+      {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.image.pullSecrets | indent 8 }}
       {{- end }}
