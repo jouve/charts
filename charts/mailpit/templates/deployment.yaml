@@ -9,6 +9,7 @@ metadata:
   {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   {{- if and .Values.persistence.enabled (eq (index .Values.persistence.accessModes 0) "ReadWriteOnce") }}
   strategy:
     type: Recreate
