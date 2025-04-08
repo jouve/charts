@@ -33,6 +33,7 @@ spec:
       {{- end }}
     spec:
       automountServiceAccountToken: false
+      enableServiceLinks: {{ .Values.enableServiceLinks }}
       {{- include "common.images.renderPullSecrets" (dict "images" (list .Values.image) "context" $) | nindent 6 }}
       {{- if .Values.podSecurityContext.enabled }}
       securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.podSecurityContext "context" $) | nindent 8 }}

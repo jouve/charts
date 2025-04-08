@@ -167,6 +167,9 @@ nodeSelector: {}
 ##     effect: NoSchedule
 tolerations: []
 
+## @param enableServiceLinks enabled by default https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26
+enableServiceLinks: true
+
 # https://github.com/axllent/mailpit/wiki/Basic-authentication
 # https://github.com/axllent/mailpit/wiki/HTTPS
 mailpit:
