@@ -7,7 +7,7 @@ keywords:
 - database
 - postgresql
 - cloudnative-pg
-version: 0.8.9
+version: 0.8.10
 appVersion: "17.4"
 dependencies:
 - name: common
