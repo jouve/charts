@@ -18,9 +18,7 @@ spec:
       http:
         paths:
           - path: {{ .Values.ingress.path }}
-            {{- if eq "true" (include "common.ingress.supportsPathType" .) }}
             pathType: {{ .Values.ingress.pathType }}
-            {{- end }}
             backend: {{- include "common.ingress.backend" (dict "serviceName" (printf "%s-http" (include "common.names.fullname" .)) "servicePort" "http" "context" $)  | nindent 14 }}
     {{- end }}
     {{- range .Values.ingress.extraHosts }}
@@ -28,9 +26,7 @@ spec:
       http:
         paths:
           - path: {{ default $.Values.ingress.path .path }}
-            {{- if eq "true" (include "common.ingress.supportsPathType" $) }}
             pathType: {{ default $.Values.ingress.pathType .pathType }}
-            {{- end }}
             backend: {{- include "common.ingress.backend" (dict "serviceName" (printf "%s-http" (include "common.names.fullname" $)) "servicePort" "http" "context" $)  | nindent 14 }}
     {{- end }}
   {{- if or (and .Values.ingress.tls (include "common.ingress.certManagerRequest" ( dict "annotations" .Values.ingress.annotations ))) .Values.ingress.extraTls }}
