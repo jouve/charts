@@ -19,8 +19,7 @@ data:
     {{ $name }}{{ if $conf.parameters }} {{ $conf.parameters }}{{ end }}
     {{- end }}
     {{ range .Values.servers }}
-    {{- range $idx, $zone := .zones }}{{ if $idx }} {{ end }}{{ default "" $zone.scheme }}{{ default "." $zone.zone }}{{ else }}.{{ end -}}
-    {{- if .port }}:{{ .port }} {{ end }} {
+    {{- range $idx, $zone := .zones }}{{ if $idx }} {{ end }}{{ default "" $zone.scheme }}{{ default "." $zone.zone }}{{ else }}.{{ end -}}{{ if .port }}:{{ .port }}{{ end }} {
       {{- range .plugins }}
         {{ .name }}{{ with .parameters }} {{ include "common.tplvalues.render" (dict "value" . "context" $) }}{{ end }}{{ with .configBlock }} {
           {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 10 }}
@@ -29,8 +28,8 @@ data:
       {{- end }}
     }
     {{ end }}
-  {{- with .Values.zoneFiles }}
-  {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 2 -}}
+  {{- range .Values.zoneFiles }}
+  {{ .filename }}: {{- include "common.tplvalues.render" (dict "value" .contents "context" $) | nindent 4 }}
   {{- end }}
 {{- end }}
 {{- end }}

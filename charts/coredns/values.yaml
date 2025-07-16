@@ -51,14 +51,14 @@ prometheus:
     selector: {}
 
 service:
-# clusterIP: ""
-# clusterIPs: []
-# loadBalancerIP: ""
-# loadBalancerClass: ""
-# externalIPs: []
-# externalTrafficPolicy: ""
-# ipFamilyPolicy: ""
-# trafficDistribution: PreferClose
+  # clusterIP: ""
+  # clusterIPs: []
+  # loadBalancerIP: ""
+  # loadBalancerClass: ""
+  # externalIPs: []
+  # externalTrafficPolicy: ""
+  # ipFamilyPolicy: ""
+  # trafficDistribution: PreferClose
   # The name of the Service
   # If not set, a name is generated using the fullname template
   name: ""
@@ -108,39 +108,40 @@ securityContext:
 # Default zone is what Kubernetes recommends:
 # https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options
 servers:
-- zones:
-  - zone: .
-  port: 53
-  # -- expose the service on a different port
-  # servicePort: 5353
-  # If serviceType is nodePort you can specify nodePort here
-  # nodePort: 30053
-  # hostPort: 53
-  plugins:
-  - name: errors
-  # Serves a /health endpoint on :8080, required for livenessProbe
-  - name: health
-    configBlock: |-
-      lameduck 10s
-  # Serves a /ready endpoint on :8181, required for readinessProbe
-  - name: ready
-  # Required to query kubernetes API for data
-  - name: kubernetes
-    parameters: cluster.local in-addr.arpa ip6.arpa
-    configBlock: |-
-      pods insecure
-      fallthrough in-addr.arpa ip6.arpa
-      ttl 30
-  # Serves a /metrics endpoint on :9153, required for serviceMonitor
-  - name: prometheus
-    parameters: 0.0.0.0:9153
-  - name: forward
-    parameters: . /etc/resolv.conf
-  - name: cache
-    parameters: 30
-  - name: loop
-  - name: reload
-  - name: loadbalance
+  - zones:
+      - zone: .
+        use_tcp: true
+    port: 53
+    # -- expose the service on a different port
+    # servicePort: 5353
+    # If serviceType is nodePort you can specify nodePort here
+    # nodePort: 30053
+    # hostPort: 53
+    plugins:
+      - name: errors
+      # Serves a /health endpoint on :8080, required for livenessProbe
+      - name: health
+        configBlock: |-
+          lameduck 10s
+      # Serves a /ready endpoint on :8181, required for readinessProbe
+      - name: ready
+      # Required to query kubernetes API for data
+      - name: kubernetes
+        parameters: cluster.local in-addr.arpa ip6.arpa
+        configBlock: |-
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+          ttl 30
+      # Serves a /metrics endpoint on :9153, required for serviceMonitor
+      - name: prometheus
+        parameters: 0.0.0.0:9153
+      - name: forward
+        parameters: . /etc/resolv.conf
+      - name: cache
+        parameters: 30
+      - name: loop
+      - name: reload
+      - name: loadbalance
 
 # Complete example with all the options:
 # - zones:                 # the `zones` block can be left out entirely, defaults to "."
@@ -344,7 +345,7 @@ autoscaler:
 
   image:
     repository: registry.k8s.io/cpa/cluster-proportional-autoscaler
-    tag: "1.8.5"
+    tag: "v1.9.0"
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -405,6 +406,9 @@ deployment:
   annotations: {}
   ## Pod selector
   selector: {}
+
+# Configures initcontainers for the coredns deployment.
+initContainers: []
 
 networkPolicy:
   enabled: false
