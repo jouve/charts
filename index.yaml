@@ -4,6 +4,34 @@ entries:
   - annotations:
       artifacthub.io/license: Apache-2.0
     apiVersion: v2
+    appVersion: 1.26.0
+    created: "2025-07-17T18:44:04.480961968Z"
+    description: CloudNativePG Operator Helm Chart
+    digest: e34eb9733a90c96f5951f816e4b7d32df5a325885bbed1f733a3dff8d2baa156
+    home: https://cloudnative-pg.io
+    icon: https://raw.githubusercontent.com/cloudnative-pg/artwork/main/cloudnativepg-logo.svg
+    keywords:
+    - operator
+    - controller
+    - postgresql
+    - postgres
+    - database
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    - email: p.scorsolini@gmail.com
+      name: phisco
+    name: cloudnative-pg
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/cloudnative-pg/charts
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/cloudnative-pg-0.24.0/cloudnative-pg-0.24.0.tgz
+    version: 0.24.0
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
     appVersion: 1.25.1
     created: "2025-03-08T14:49:57.7451069Z"
     description: CloudNativePG Operator Helm Chart
@@ -309,6 +337,41 @@ entries:
     - https://github.com/jouve/charts/releases/download/cloudnative-pg-0.18.1/cloudnative-pg-0.18.1.tgz
     version: 0.18.1
   coredns:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: Added support for initContainers in the deployment.
+    apiVersion: v2
+    appVersion: 1.12.2
+    created: "2025-07-17T18:44:04.630838111Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: CoreDNS is a DNS server that chains plugins and provides Kubernetes
+      DNS Services
+    digest: aa9b7fccd2e795a000dff29dfcae0b8fff56cce9be409c48f60d7a49695a5e26
+    home: https://coredns.io
+    icon: https://coredns.io/images/CoreDNS_Colour_Horizontal.png
+    keywords:
+    - coredns
+    - dns
+    - kubedns
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    - name: mrueg
+    - name: haad
+    - name: hagaibarel
+    - name: shubham-cmyk
+    name: coredns
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/coredns/coredns
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/coredns-1.43.0/coredns-1.43.0.tgz
+    version: 1.43.0
   - annotations:
       artifacthub.io/changes: |
         - kind: fixed
@@ -1003,6 +1066,28 @@ entries:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
     appVersion: 2.8.3
+    created: "2025-07-17T18:44:04.733979605Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: A Helm chart for Kubernetes
+    digest: 845ffbfbc0d51fa28b8445ca0f5e1d3a9e3a94e6f5559e808d59e79139944f9b
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: distribution
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/distribution/distribution/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/distribution-0.1.10/distribution-0.1.10.tgz
+    version: 0.1.10
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: 2.8.3
     created: "2025-07-16T22:42:56.993763175Z"
     dependencies:
     - name: common
@@ -1616,6 +1701,25 @@ entries:
     - https://github.com/jouve/charts/releases/download/extra-0.1.0/extra-0.1.0.tgz
     version: 0.1.0
   gatekeeper-library:
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
+    appVersion: 59a0c82364ef1748900444719b4ce69333819b63
+    created: "2025-07-17T18:44:04.863039459Z"
+    description: A Helm chart for Kubernetes
+    digest: 50d74d52cefe8910cd70355db2981cb3995ae922ebe4edfd9e92d0155f6f05f5
+    icon: https://raw.githubusercontent.com/open-policy-agent/gatekeeper-library/master/website/static/img/logo.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: gatekeeper-library
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/open-policy-agent/gatekeeper-library
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/gatekeeper-library-0.2.8/gatekeeper-library-0.2.8.tgz
+    version: 0.2.8
   - annotations:
       artifacthub.io/license: Apache-2.0
     apiVersion: v2
@@ -2322,6 +2426,29 @@ entries:
     - https://github.com/jouve/charts/releases/download/hnc-0.1.0/hnc-0.1.0.tgz
     version: 0.1.0
   mailpit:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: 1.27.1
+    created: "2025-07-17T18:44:04.98643664Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: ae6d9a1c04c26c9896c60c37f1147db3b827b4e23a1ddc40215ba9204120b51b
+    icon: https://raw.githubusercontent.com/axllent/mailpit/develop/server/ui/mailpit.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/mailpit-0.27.0/mailpit-0.27.0.tgz
+    version: 0.27.0
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
@@ -5026,4 +5153,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-16T22:42:57.088145217Z"
+generated: "2025-07-17T18:44:04.987002431Z"
