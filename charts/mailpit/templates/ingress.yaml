@@ -9,8 +9,8 @@ metadata:
   annotations: {{- . | toYaml | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.ingress.ingressClassName (eq "true" (include "common.ingress.supportsIngressClassname" .)) }}
-  ingressClassName: {{ .Values.ingress.ingressClassName | quote }}
+  {{- with .Values.ingress.ingressClassName }}
+  ingressClassName: {{ . | quote }}
   {{- end }}
   rules:
     {{- if .Values.ingress.hostname }}
