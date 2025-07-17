@@ -20,6 +20,7 @@
 .idea/
 *.tmproj
 OWNERS
+*.tests
 .helmignore
 .kube-linter.yaml
 ci/
