@@ -19,7 +19,7 @@ spec:
         paths:
           - path: {{ .Values.ingress.path }}
             pathType: {{ .Values.ingress.pathType }}
-            backend: {{- include "common.ingress.backend" (dict "serviceName" (printf "%s-http" (include "common.names.fullname" .)) "servicePort" "http" "context" $)  | nindent 14 }}
+            backend: {{- include "common.ingress.backend" (dict "serviceName" (printf "%s" (.Values.service.http.name | default ( printf "%s-http" (include "common.names.fullname" .)))) "servicePort" "http" "context" $)  | nindent 14 }}
     {{- end }}
     {{- range .Values.ingress.extraHosts }}
     - host: {{ .name | quote }}
@@ -27,7 +27,7 @@ spec:
         paths:
           - path: {{ default $.Values.ingress.path .path }}
             pathType: {{ default $.Values.ingress.pathType .pathType }}
-            backend: {{- include "common.ingress.backend" (dict "serviceName" (printf "%s-http" (include "common.names.fullname" $)) "servicePort" "http" "context" $)  | nindent 14 }}
+            backend: {{- include "common.ingress.backend" (dict "serviceName" (printf "%s" (.Values.service.http.name | default ( printf "%s-http" (include "common.names.fullname" $)))) "servicePort" "http" "context" $)  | nindent 14 }}
     {{- end }}
   {{- if or (and .Values.ingress.tls (include "common.ingress.certManagerRequest" ( dict "annotations" .Values.ingress.annotations ))) .Values.ingress.extraTls }}
   tls:
