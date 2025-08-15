@@ -215,6 +215,9 @@ mailpit:
 ##
 service:
   http:
+    ## @param service.http.name service name, default to ${common.names.fullname}-http, e.g. mailpit-http
+    ##
+    name: ""
     ## @param service.http.type service type
     ##
     type: ClusterIP
@@ -240,6 +243,9 @@ service:
     ##
     externalTrafficPolicy: Cluster
   smtp:
+    ## @param service.smtp.name service name, default to ${common.names.fullname}-smtp, e.g. mailpit-smtp
+    ##
+    name: ""
     ## @param service.smtp.type service type
     ##
     type: ClusterIP

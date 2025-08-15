@@ -39,7 +39,7 @@
                 "tag": {
                     "type": "string",
                     "description": "image tag (immutable tags are recommended)",
-                    "default": "v1.17.1"
+                    "default": "v1.27.1"
                 },
                 "digest": {
                     "type": "string",
@@ -79,40 +79,15 @@
             "description": "Number of replicas to deploy",
             "default": 1
         },
-        "resources": {
-            "type": "object",
-            "properties": {
-                "limits": {
-                    "type": "object",
-                    "properties": {
-                        "cpu": {
-                            "type": "string",
-                            "description": "The resources limits for the containers",
-                            "default": "100m"
-                        },
-                        "memory": {
-                            "type": "string",
-                            "description": "The resources limits for the containers",
-                            "default": "64Mi"
-                        }
-                    }
-                },
-                "requests": {
-                    "type": "object",
-                    "properties": {
-                        "cpu": {
-                            "type": "string",
-                            "description": "The requested resources for the containers",
-                            "default": "5m"
-                        },
-                        "memory": {
-                            "type": "string",
-                            "description": "The requested resources for the containers",
-                            "default": "4Mi"
-                        }
-                    }
-                }
-            }
+        "revisionHistoryLimit": {
+            "type": "number",
+            "description": "The number of old history to retain to allow rollback",
+            "default": 10
+        },
+        "resourcesPreset": {
+            "type": "string",
+            "description": "Set container resources according to one common preset (allowed values: none, nano, small, medium, large, xlarge, 2xlarge). This is ignored if resources is set (resources is recommended for production).",
+            "default": "nano"
         },
         "affinity": {
             "type": "object",
@@ -149,7 +124,7 @@
         },
         "enableServiceLinks": {
             "type": "boolean",
-            "description": "enableServiceLinks enabled by default https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26",
+            "description": "enabled by default https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26",
             "default": true
         },
         "mailpit": {
@@ -268,6 +243,11 @@
                 "http": {
                     "type": "object",
                     "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "service name, default to ${common.names.fullname}-http, e.g. mailpit-http",
+                            "default": ""
+                        },
                         "type": {
                             "type": "string",
                             "description": "service type",
@@ -304,6 +284,11 @@
                 "smtp": {
                     "type": "object",
                     "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "service name, default to ${common.names.fullname}-smtp, e.g. mailpit-smtp",
+                            "default": ""
+                        },
                         "type": {
                             "type": "string",
                             "description": "service type",
