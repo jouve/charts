@@ -1304,6 +1304,25 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/distribution-0.1.0/distribution-0.1.0.tgz
     version: 0.1.0
+  external-snapshotter:
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
+    appVersion: v8.3.0
+    created: "2025-09-21T16:45:54.115939903Z"
+    description: A Helm chart for Kubernetes
+    digest: 7a922d7c9bf43d05bfeeaaafc9c675172698d00610f3124ec49ff827e7c49b71
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: external-snapshotter
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/kubernetes-csi/external-snapshotter
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/external-snapshotter-8.3.0/external-snapshotter-8.3.0.tgz
+    version: 8.3.0
   extra:
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
@@ -1701,6 +1720,25 @@ entries:
     - https://github.com/jouve/charts/releases/download/extra-0.1.0/extra-0.1.0.tgz
     version: 0.1.0
   gatekeeper-library:
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
+    appVersion: 156151c6bc32270cee8bca98f6b147f930c3f9db
+    created: "2025-09-21T16:45:54.235009882Z"
+    description: A Helm chart for Kubernetes
+    digest: c1916f7cb224794df249ddfa3ccfe6df459f8b11d610d95cf6a3be7d9164b522
+    icon: https://raw.githubusercontent.com/open-policy-agent/gatekeeper-library/master/website/static/img/logo.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: gatekeeper-library
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/open-policy-agent/gatekeeper-library
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/gatekeeper-library-0.2.9/gatekeeper-library-0.2.9.tgz
+    version: 0.2.9
   - annotations:
       artifacthub.io/license: Apache-2.0
     apiVersion: v2
@@ -5176,4 +5214,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-16T13:19:14.560491677Z"
+generated: "2025-09-21T16:45:54.235410065Z"
