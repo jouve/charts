@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    kubevirt.io: ""
+  name: kubevirt-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubevirt-operator
+subjects:
+  - kind: ServiceAccount
+    name: kubevirt-operator
+    namespace: kubevirt
