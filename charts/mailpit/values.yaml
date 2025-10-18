@@ -109,6 +109,13 @@ revisionHistoryLimit: 10
 ## More information: https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
 ##
 resourcesPreset: "nano"
+
+# Name of the priorityClass to apply to the Cluster Agent
+## @param priorityClassName Name of the priority class to assign to the pods
+## Ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
+##
+priorityClassName: ""
+
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ## @param resources [object] The resources for the containers
 ##

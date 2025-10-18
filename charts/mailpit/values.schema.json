@@ -89,6 +89,11 @@
             "description": "Set container resources according to one common preset (allowed values: none, nano, small, medium, large, xlarge, 2xlarge). This is ignored if resources is set (resources is recommended for production).",
             "default": "nano"
         },
+        "priorityClassName": {
+            "type": "string",
+            "description": "Name of the priorityClass to apply to the Cluster Agent",
+            "default": ""
+        },
         "affinity": {
             "type": "object",
             "description": "Pod affinity",
