@@ -137,7 +137,7 @@ spec:
             mountPath: /etc/mailpit
           {{- end }}
           {{- with .Values.extraVolumeMounts }}
-          {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+            {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 10 }}
           {{- end }}
         {{- with .Values.sidecars }}
         {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
@@ -152,6 +152,9 @@ spec:
       nodeSelector: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
       {{- end }}
       volumes:
+        {{- with .Values.extraVolumes }}
+          {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
+        {{- end }}
         {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.enabled .Values.mailpit.smtp.tls.enabled .Values.mailpit.relay.enabled }}
         - name: etc
           projected:
