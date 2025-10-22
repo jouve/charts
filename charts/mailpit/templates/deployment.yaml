@@ -137,7 +137,7 @@ spec:
             mountPath: /etc/mailpit
           {{- end }}
           {{- with .Values.extraVolumeMounts }}
-            {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 10 }}
+          {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 10 }}
           {{- end }}
         {{- with .Values.sidecars }}
         {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
