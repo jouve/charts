@@ -433,6 +433,11 @@
                     "type": "object",
                     "description": "Custom PVC data source",
                     "default": {}
+                },
+                "volumeName": {
+                    "type": "string",
+                    "description": "Custom PVC volumeName",
+                    "default": ""
                 }
             }
         }

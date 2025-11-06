@@ -376,3 +376,6 @@ persistence:
   ## @param persistence.dataSource Custom PVC data source
   ##
   dataSource: {}
+  ## @param persistence.volumeName Custom PVC volumeName
+  ##
+  volumeName: ""

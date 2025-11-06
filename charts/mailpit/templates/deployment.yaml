@@ -132,6 +132,9 @@ spec:
           volumeMounts:
           - name: data
             mountPath: /var/lib/mailpit
+            {{- if .Values.volumeSubPath }}
+            subPath: {{ .Values.volumeSubPath  }}
+            {{- end }}
           {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.secretName .Values.mailpit.smtp.tls.secretName .Values.mailpit.relay.enabled }}
           - name: etc
             mountPath: /etc/mailpit
