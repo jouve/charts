@@ -1,0 +1,7 @@
+autodiscovery:
+  crawlers:
+    github/action:
+      credentials:
+        github.com:
+          kind: github
+          token: '{{ requiredEnv "GITHUB_TOKEN" }}'

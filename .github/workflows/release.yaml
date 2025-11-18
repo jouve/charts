@@ -1,11 +1,10 @@
 name: Release Charts
-
 on:
   workflow_run:
-    workflows: lint
+    workflows:
+      - lint
     branches: main
     types: completed
-
 jobs:
   release:
     # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
@@ -15,27 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5.0.1
         with:
           fetch-depth: 0
-
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
       - name: Install Helm
-        uses: azure/setup-helm@v4
-
+        uses: azure/setup-helm@v4.3.1
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2
-
-      - name: Override ct version
-        uses: ./.github/actions/setup-chart-testing
-        with:
-          url: https://github.com/jouve/chart-testing
-          version: 3.11.0
-
+        uses: helm/chart-testing-action@v2.8.0
       - name: Run chart-releaser
         uses: jouve/chart-releaser-action@8e87a9d9bbe7c5029fe24bb75b05ff55ab887479
         env:
