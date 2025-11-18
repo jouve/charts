@@ -1,13 +1,13 @@
 name: lint
-
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
-
+    branches:
+      - main
 jobs:
   # https://github.com/bridgecrewio/checkov-action#example-usage-for-iac-and-sca
   checkov:
@@ -15,27 +15,22 @@ jobs:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so follow-up steps can access it
-      - uses: actions/checkout@v4
-
+      - uses: actions/checkout@v5.0.1
       - name: Checkov GitHub Action
-        uses: bridgecrewio/checkov-action@v12
+        uses: bridgecrewio/checkov-action@v12.3074.0
         with:
           # This will add both a CLI output to the console and create a results.sarif file
           output_format: cli,sarif
           output_file_path: console,results.sarif
           framework: github_actions
           directory: .github
-
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
-
+        uses: github/codeql-action/upload-sarif@v4.31.4
         # Results are generated only on a success or failure
         # this is required since GitHub by default won't run the next step
         # when the previous one has failed. Security checks that do not pass will 'fail'.
@@ -44,41 +39,26 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: results.sarif
-
   # https://github.com/helm/chart-testing-action#example-workflow
   ct-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
+        uses: actions/checkout@v5.0.1
       - name: Set up Helm
-        uses: azure/setup-helm@v4
-
-      - uses: actions/setup-python@v5
+        uses: azure/setup-helm@v4.3.1
+      - uses: actions/setup-python@v6.0.0
         with:
           python-version: 3.x
-
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2
-
-      - name: Override ct version
-        uses: ./.github/actions/setup-chart-testing
-        with:
-          url: https://github.com/jouve/chart-testing
-          version: 3.11.0
-
+        uses: helm/chart-testing-action@v2.8.0
       - name: Setup kube-linter
         uses: ./.github/actions/setup-kube-linter
-
       - name: Setup helm unittest
         uses: ./.github/actions/setup-helm-plugin
         with:
           url: https://github.com/helm-unittest/helm-unittest.git
           version: v0.3.6
-
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
@@ -86,21 +66,18 @@ jobs:
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
-
       - name: Run chart-testing (lint)
         if: steps.list-changed.outputs.changed == 'true'
         run: ct --config .ct/ct.yaml lint --target-branch ${{ github.event.repository.default_branch }}
-
   # https://github.com/aquasecurity/trivy-action#scan-ci-pipeline-w-trivy-config
   trivy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Run Trivy vulnerability scanner in fs mode
-      uses: aquasecurity/trivy-action@0.28.0
-      with:
-        scan-type: 'fs'
-        scan-ref: '.'
-        trivy-config: trivy.yaml
+      - name: Checkout code
+        uses: actions/checkout@v5.0.1
+      - name: Run Trivy vulnerability scanner in fs mode
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          trivy-config: trivy.yaml

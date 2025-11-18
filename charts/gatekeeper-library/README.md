@@ -1,3 +1,0 @@
-## gatekeeper-library
-
-## Parameters
