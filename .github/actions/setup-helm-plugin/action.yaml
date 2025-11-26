@@ -12,4 +12,4 @@ runs:
   steps:
     - name: Download plugin
       shell: bash
-      run: helm plugin install ${{ inputs.url }} --version ${{ inputs.version }}
+      run: helm plugin install --verify=false ${{ inputs.url }} --version ${{ inputs.version }}
