@@ -20,7 +20,7 @@ helm install mailpit jouve/mailpit
 ### Common
 
 | Name                                   | Description                                                                                                                                                                                                | Value             |
-| -------------------------------------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+|----------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 | `image.registry`                       | image registry                                                                                                                                                                                             | `docker.io`       |
 | `image.repository`                     | image repository                                                                                                                                                                                           | `axllent/mailpit` |
 | `image.tag`                            | image tag (immutable tags are recommended)                                                                                                                                                                 | `v1.27.1`         |
@@ -37,6 +37,7 @@ helm install mailpit jouve/mailpit
 | `revisionHistoryLimit`                 | The number of old history to retain to allow rollback                                                                                                                                                      | `10`              |
 | `resourcesPreset`                      | Set container resources according to one common preset (allowed values: none, nano, small, medium, large, xlarge, 2xlarge). This is ignored if resources is set (resources is recommended for production). | `nano`            |
 | `priorityClassName`                    | Name of the priorityClass to apply to the Cluster Agent                                                                                                                                                    | `""`              |
+| `volumeSubPath`                        | Subpath for the data volume                                                                                                                                                                                | `""`              |
 | `resources`                            | The resources for the containers                                                                                                                                                                           | `{}`              |
 | `affinity`                             | Pod affinity                                                                                                                                                                                               | `{}`              |
 | `args`                                 | Override default container args (useful when using custom images)                                                                                                                                          | `[]`              |
@@ -103,6 +104,7 @@ helm install mailpit jouve/mailpit
 | `persistence.existingClaim` | The name of an existing PVC to use for persistence                     | `""`                |
 | `persistence.selector`      | Selector to match an existing Persistent Volume for WordPress data PVC | `{}`                |
 | `persistence.dataSource`    | Custom PVC data source                                                 | `{}`                |
+| `persistence.volumeName`    | Custom PVC data volumeName                                             | `""`                |
 
 ## tips
 

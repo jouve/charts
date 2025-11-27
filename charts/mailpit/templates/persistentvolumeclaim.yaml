@@ -10,6 +10,9 @@ metadata:
   {{- end }}
 spec:
   accessModes: {{ .Values.persistence.accessModes | toYaml | nindent 4 }}
+  {{- with .Values.persistence.volumeName }}
+  volumeName: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
   resources:
     requests:
       storage: {{ .Values.persistence.size | quote }}
