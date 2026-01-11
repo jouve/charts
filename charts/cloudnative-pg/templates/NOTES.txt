@@ -18,4 +18,3 @@ spec:
 EOF
 
 kubectl get -A cluster
-

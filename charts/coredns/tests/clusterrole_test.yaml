@@ -10,7 +10,7 @@ set:
   rbac:
     create: true
     pspEnable: true
-    
+
 
 tests:
   - it: should render ClusterRole with correct name and rules
