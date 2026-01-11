@@ -13,5 +13,5 @@ git_subtree_pull () {
     git subtree pull "--prefix=$tgt_dir" "$tmp" "$ref"
 }
 
-git_subtree_pull https://github.com/cloudnative-pg/charts cloudnative-pg-v0.24.0 charts/cloudnative-pg charts/cloudnative-pg
+git_subtree_pull https://github.com/cloudnative-pg/charts cloudnative-pg-v0.27.0 charts/cloudnative-pg charts/cloudnative-pg
 git_subtree_pull https://github.com/coredns/helm          coredns-1.43.0         charts/coredns        charts/coredns
