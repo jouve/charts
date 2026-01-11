@@ -27,7 +27,7 @@ global:
 image:
   registry: docker.io
   repository: distribution/distribution
-  tag: 2.8.3
+  tag: 3.0.0
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
