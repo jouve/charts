@@ -20,9 +20,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so follow-up steps can access it
-      - uses: actions/checkout@v5.0.1
+      - uses: actions/checkout@v6.0.1
       - name: Checkov GitHub Action
-        uses: bridgecrewio/checkov-action@v12.3074.0
+        uses: bridgecrewio/checkov-action@v12.3077.0
         with:
           # This will add both a CLI output to the console and create a results.sarif file
           output_format: cli,sarif
@@ -30,7 +30,7 @@ jobs:
           framework: github_actions
           directory: .github
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v4.31.4
+        uses: github/codeql-action/upload-sarif@v4.31.9
         # Results are generated only on a success or failure
         # this is required since GitHub by default won't run the next step
         # when the previous one has failed. Security checks that do not pass will 'fail'.
@@ -44,14 +44,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
       - name: Set up Helm
         uses: azure/setup-helm@v4.3.1
         with:
           version: v4.0.1
-      - uses: actions/setup-python@v6.0.0
+      - uses: actions/setup-python@v6.1.0
         with:
           python-version: 3.x
       - name: Set up chart-testing
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.2
       - name: Run Trivy vulnerability scanner in fs mode
         uses: aquasecurity/trivy-action@0.33.1
         with:
