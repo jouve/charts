@@ -19,7 +19,7 @@ spec:
   loadBalancerIP: {{ .Values.service.smtp.loadBalancerIP }}
   {{- end }}
   ports:
-    - name: smtp
+    - name: tcp-smtp
       port: {{ .Values.service.smtp.port }}
       {{- if and (eq .Values.service.smtp.type "NodePort" "LoadBalancer") (gt (.Values.service.smtp.nodePort | int) 0) }}
       nodePort: {{ .Values.service.smtp.nodePort }}
