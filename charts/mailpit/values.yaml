@@ -379,3 +379,25 @@ persistence:
   ## @param persistence.volumeName Custom PVC volumeName
   ##
   volumeName: ""
+
+## extraObjects could be utilized to add dynamic manifests via values
+extraObjects: []
+# Examples:
+# extraObjects:
+# - apiVersion: networking.istio.io/v1alpha3
+#   kind: VirtualService
+#   metadata:
+#     name: mailpit-http
+#     namespace: mailpit
+#   spec:
+#     gateways:
+#     - default/gtw-priv-http
+#     hosts:
+#     - mailpit.yourhost.com
+#     http:
+#     - name: main
+#       route:
+#       - destination:
+#           host: mailpit-http
+#           port:
+#             number: 80
