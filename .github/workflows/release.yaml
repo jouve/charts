@@ -39,4 +39,4 @@ jobs:
       - name: Push Charts to GHCR
         run: |
           test -d .cr-release-packages || { echo '.cr-release-packages does not exists'; exit 0; }
-          find .cr-release-packages -type f -print0 | xargs -r -I{} helm push {} oci://ghcr.io/${{ env.REPOSITORY_OWNER }}/${{ env.REPOSITORY }}
+          find .cr-release-packages -type f -print0 | xargs -0 -r -I{} helm push {} oci://ghcr.io/${{ env.REPOSITORY_OWNER }}/${{ env.REPOSITORY }}

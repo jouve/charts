@@ -4,21 +4,21 @@ description: Deploy postgresql using cloudnative-pg operator
 icon: https://raw.githubusercontent.com/cloudnative-pg/artwork/main/cloudnativepg-logo.svg
 type: application
 keywords:
-- database
-- postgresql
-- cloudnative-pg
-version: 0.8.11
+  - database
+  - postgresql
+  - cloudnative-pg
+version: 0.8.12
 appVersion: "17.4"
 dependencies:
-- name: common
-  repository: oci://registry-1.docker.io/bitnamicharts
-  version: 2.x.x
+  - name: common
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 2.x.x
 sources:
-- https://github.com/jouve/charts
-- https://cloudnative-pg.io/
+  - https://github.com/jouve/charts
+  - https://cloudnative-pg.io/
 maintainers:
-- name: jouve
-  url: https://github.com/jouve
+  - name: jouve
+    url: https://github.com/jouve
 annotations:
   artifacthub.io/images: |
     - name: postgresql
