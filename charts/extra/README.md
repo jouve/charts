@@ -7,8 +7,15 @@ and includes [bitnami/common](https://github.com/bitnami/charts/tree/main/bitnam
 
 ## usage
 
+Prefered using oci:
+```console
+helm install mailpit oci://ghcr.io/jouve/charts/extra
+```
+
+Or legacy repo:
 ```console
 helm repo add jouve https://jouve.github.io/charts/
+helm install mailpit jouve/extra
 ```
 
 ## Parameters

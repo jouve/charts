@@ -387,11 +387,9 @@ persistence:
   ##
   volumeName: ""
 
-## extraDeploy could be utilized to add dynamic manifests via values
+## @param extraDeploy Array of extra objects to deploy with the release
+##
 extraDeploy: []
-
-# Examples:
-# extraDeploy:
 # - apiVersion: networking.istio.io/v1alpha3
 #   kind: VirtualService
 #   metadata:

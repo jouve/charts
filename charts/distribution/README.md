@@ -2,6 +2,12 @@
 
 ## usage
 
+Prefered using oci:
+```console
+helm install mailpit oci://ghcr.io/jouve/charts/distribution
+```
+
+Or legacy repo:
 ```console
 helm repo add jouve https://jouve.github.io/charts/
 helm install mailpit jouve/distribution
@@ -23,7 +29,7 @@ helm install mailpit jouve/distribution
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------- |
 | `image.registry`                                  | image registry                                                                                                                             | `docker.io`                 |
 | `image.repository`                                | image repository                                                                                                                           | `distribution/distribution` |
-| `image.tag`                                       | image tag (immutable tags are recommended)                                                                                                 | `2.8.3`                     |
+| `image.tag`                                       | image tag (immutable tags are recommended)                                                                                                 | `3.1.0`                     |
 | `image.digest`                                    | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`                        |
 | `image.pullPolicy`                                | image pull policy                                                                                                                          | `IfNotPresent`              |
 | `image.pullSecrets`                               | image pull secrets                                                                                                                         | `[]`                        |
