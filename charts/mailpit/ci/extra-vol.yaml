@@ -1,0 +1,21 @@
+extraEnvVars:
+  - name: MP_TAGS_CONFIG
+    value: /config/tags-config.yaml
+
+extraVolumes:
+  - name: config
+    configMap:
+      name: config
+
+extraVolumeMounts:
+  - name: config
+    mountPath: /config
+
+extraDeploy:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: config
+    data:
+      tags-config.yaml: ...
+

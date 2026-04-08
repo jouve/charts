@@ -33,7 +33,7 @@ global:
 image:
   registry: docker.io
   repository: axllent/mailpit
-  tag: v1.28.2
+  tag: v1.29.6
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -141,6 +141,13 @@ extraEnvVars: []
 ## @param extraEnvVarsSecret Name of existing Secret containing extra env vars for containers
 ##
 extraEnvVarsSecret: ""
+
+## @param extraVolumes Optionally specify extra list of additional volumes for the pods
+##
+extraVolumes: []
+## @param extraVolumeMounts Optionally specify extra list of additional volumeMounts for the containers
+##
+extraVolumeMounts: []
 
 ## @param livenessProbe [object] Enables the livenessProbe for mailpit
 livenessProbe:
@@ -382,6 +389,7 @@ persistence:
 
 ## extraDeploy could be utilized to add dynamic manifests via values
 extraDeploy: []
+
 # Examples:
 # extraDeploy:
 # - apiVersion: networking.istio.io/v1alpha3
