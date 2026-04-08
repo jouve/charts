@@ -29,3 +29,13 @@ jobs:
         uses: jouve/chart-releaser-action@8e87a9d9bbe7c5029fe24bb75b05ff55ab887479
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push Charts to GHCR
+        run: |
+          test -d .cr-release-packages || { echo '.cr-release-packages does not exists'; exit 0; }
+          find .cr-release-packages -type f -print0 | xargs -r -I{} helm push {} oci://ghcr.io/${{ env.REPOSITORY_OWNER }}/${{ env.REPOSITORY }}
