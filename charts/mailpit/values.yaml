@@ -338,6 +338,29 @@ ingress:
   ##
   extraTls: []
 
+## Gateway API route parameters
+## ref: https://gateway-api.sigs.k8s.io/api-types/httproute/
+##
+route:
+  http:
+    ## @param route.http.enabled Enable HTTPRoute generation for the HTTP service
+    ##
+    enabled: false
+    ## @param route.http.parentRefs References to the Gateways the HTTPRoute attaches to
+    ##
+    parentRefs: []
+    ## @param route.http.hostnames Hostnames matched against the HTTP Host header
+    ##
+    hostnames: []
+    ## @param route.http.matches Rule matches (paths, headers, query params, method)
+    matches: []
+    ## @param route.http.filters Filters applied to requests matched by the rule
+    ##
+    filters: []
+    ## @param route.http.timeouts Per-rule timeouts (request, backendRequest)
+    ##
+    timeouts: {}
+
 ## @section Persistence Parameters
 ##
 
