@@ -7,12 +7,12 @@ keywords:
   - database
   - postgresql
   - cloudnative-pg
-version: 0.8.14
+version: 0.9.0
 appVersion: "17.4"
 dependencies:
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 2.x.x
+    version: 2.38.0
 sources:
   - https://github.com/jouve/charts
   - https://cloudnative-pg.io/
@@ -22,6 +22,6 @@ maintainers:
 annotations:
   artifacthub.io/images: |
     - name: postgresql
-      image: ghcr.io/cloudnative-pg/postgresql:16.3-1
+      image: ghcr.io/cloudnative-pg/postgresql:17.5-3
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg

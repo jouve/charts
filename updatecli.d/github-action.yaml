@@ -1,7 +1,8 @@
 autodiscovery:
   crawlers:
     github/action:
+      digest: false
       credentials:
         github.com:
           kind: github
-          token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+          token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'

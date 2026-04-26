@@ -1,5 +1,3 @@
 autodiscovery:
   crawlers:
     precommit:
-      only:
-        - path: .pre-commit-config.yaml

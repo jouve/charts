@@ -39,7 +39,7 @@ affinity:
 image:
   registry: ghcr.io
   repository: cloudnative-pg/postgresql
-  tag: 17.4-3
+  tag: 17.5-3
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'

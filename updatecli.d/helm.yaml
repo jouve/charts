@@ -1,0 +1,4 @@
+autodiscovery:
+  crawlers:
+    helm:
+      digest: false

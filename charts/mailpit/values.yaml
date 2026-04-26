@@ -31,9 +31,9 @@ global:
 ## @param image.debug Enable image debug mode
 ##
 image:
-  registry: docker.io
+  registry: ghcr.io
   repository: axllent/mailpit
-  tag: v1.29.6
+  tag: v1.29.7
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
