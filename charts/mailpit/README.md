@@ -97,6 +97,12 @@ helm install mailpit jouve/mailpit
 | `ingress.extraHosts`                    | The list of additional hostnames to be covered with this ingress record.                                                         | `[]`                     |
 | `ingress.tls`                           | Enable TLS configuration for the host defined at `ingress.hostname` parameter                                                    | `false`                  |
 | `ingress.extraTls`                      | The tls configuration for additional hostnames to be covered with this ingress record.                                           | `[]`                     |
+| `route.http.enabled`                    | Enable HTTPRoute generation for the HTTP service                                                                                 | `false`                  |
+| `route.http.parentRefs`                 | References to the Gateways the HTTPRoute attaches to                                                                             | `[]`                     |
+| `route.http.hostnames`                  | Hostnames matched against the HTTP Host header                                                                                   | `[]`                     |
+| `route.http.matches`                    | Rule matches (paths, headers, query params, method)                                                                              | `[]`                     |
+| `route.http.filters`                    | Filters applied to requests matched by the rule                                                                                  | `[]`                     |
+| `route.http.timeouts`                   | Per-rule timeouts (request, backendRequest)                                                                                      | `{}`                     |
 
 ### Persistence Parameters
 
