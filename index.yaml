@@ -1129,6 +1129,28 @@ entries:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
     appVersion: 3.1.0
+    created: "2026-05-14T11:55:09.055504671Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: A Helm chart for Kubernetes
+    digest: 611736b92768c9c22e52b7f5d1a5d0c4850d01bcfa2b1ea068bd2c9a7df3d1cb
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: distribution
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/distribution/distribution/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/distribution-0.2.0/distribution-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: 3.1.0
     created: "2026-04-08T11:58:33.580455805Z"
     dependencies:
     - name: common
@@ -2835,6 +2857,29 @@ entries:
     - https://github.com/jouve/charts/releases/download/hnc-0.1.0/hnc-0.1.0.tgz
     version: 0.1.0
   mailpit:
+  - annotations:
+      artifacthub.io/license: GPL-3.0-or-later
+    apiVersion: v2
+    appVersion: 1.29.6
+    created: "2026-05-14T11:55:09.305563221Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: An email and SMTP testing tool with API for developers
+    digest: ff8caf118a22fc390c7ede4b11e31e8beb748bd4d054881bc071f2f72e238255
+    icon: https://raw.githubusercontent.com/axllent/mailpit/develop/server/ui/mailpit.svg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: mailpit
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/axllent/mailpit
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/mailpit-0.34.0/mailpit-0.34.0.tgz
+    version: 0.34.0
   - annotations:
       artifacthub.io/license: GPL-3.0-or-later
     apiVersion: v2
@@ -4761,6 +4806,37 @@ entries:
         - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
     apiVersion: v2
     appVersion: "17.4"
+    created: "2026-05-14T11:55:09.519209339Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Deploy postgresql using cloudnative-pg operator
+    digest: 7b61d5355e307664708202505f13b479bcc03546082d9ea4da839555398111d4
+    icon: https://raw.githubusercontent.com/cloudnative-pg/artwork/main/cloudnativepg-logo.svg
+    keywords:
+    - database
+    - postgresql
+    - cloudnative-pg
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: postgresql
+    sources:
+    - https://github.com/jouve/charts
+    - https://cloudnative-pg.io/
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/postgresql-0.9.0/postgresql-0.9.0.tgz
+    version: 0.9.0
+  - annotations:
+      artifacthub.io/images: |
+        - name: postgresql
+          image: ghcr.io/cloudnative-pg/postgresql:16.3-1
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
+    apiVersion: v2
+    appVersion: "17.4"
     created: "2026-04-08T11:58:33.988514541Z"
     dependencies:
     - name: common
@@ -6054,4 +6130,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2026-05-14T11:45:50.512211583Z"
+generated: "2026-05-14T11:55:09.519925585Z"
