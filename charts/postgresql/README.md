@@ -7,6 +7,13 @@ Prefered using oci:
 helm install mailpit oci://ghcr.io/jouve/charts/postgresql
 ```
 
+Charts pushed to `oci://` are signed keyless via [cosign](https://docs.sigstore.dev/cosign/) and GitHub Actions OIDC. Verify with:
+```console
+cosign verify ghcr.io/jouve/charts/postgresql:<version> \
+  --certificate-identity-regexp 'https://github.com/jouve/charts/\.github/workflows/release\.yaml@.*' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
 Or legacy repo:
 ```console
 helm repo add jouve https://jouve.github.io/charts/
