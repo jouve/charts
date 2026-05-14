@@ -1,0 +1,5 @@
+autodiscovery:
+  crawlers:
+    helm:
+      digest: false
+      ignorechartdependency: true

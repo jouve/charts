@@ -20,9 +20,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so follow-up steps can access it
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
       - name: Checkov GitHub Action
-        uses: bridgecrewio/checkov-action@v12.3077.0
+        uses: bridgecrewio/checkov-action@v12.3102.0
         with:
           # This will add both a CLI output to the console and create a results.sarif file
           output_format: cli,sarif
@@ -30,7 +30,7 @@ jobs:
           framework: github_actions
           directory: .github
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v4.31.9
+        uses: github/codeql-action/upload-sarif@v4.35.4
         # Results are generated only on a success or failure
         # this is required since GitHub by default won't run the next step
         # when the previous one has failed. Security checks that do not pass will 'fail'.
@@ -72,8 +72,7 @@ jobs:
           fi
       - name: Run chart-testing (lint)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct --config .ct/ct.yaml lint --target-branch ${{
-          github.event.repository.default_branch }}
+        run: ct --config .ct/ct.yaml lint --target-branch ${{ github.event.repository.default_branch }}
   # https://github.com/aquasecurity/trivy-action#scan-ci-pipeline-w-trivy-config
   trivy:
     runs-on: ubuntu-latest
@@ -81,7 +80,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6.0.2
       - name: Run Trivy vulnerability scanner in fs mode
-        uses: aquasecurity/trivy-action@v0.35.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: "fs"
           scan-ref: "."
