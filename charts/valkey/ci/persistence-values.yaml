@@ -1,0 +1,7 @@
+shards: 3
+replicas: 1
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClass: topolvm
+  reclaimPolicy: Delete

@@ -1,0 +1,22 @@
+apiVersion: v2
+name: valkey
+description: Deploy a Valkey cluster using valkey-operator (ValkeyCluster CR)
+type: application
+version: 0.1.0
+appVersion: "8.0.0"
+dependencies:
+  - name: common
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 2.x.x
+sources:
+  - https://github.com/jouve/charts
+  - https://github.com/valkey-io/valkey-operator
+maintainers:
+  - name: jouve
+    url: https://github.com/jouve
+annotations:
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/valkey/valkey-operator
+  artifacthub.io/images: |
+    - name: valkey
+      image: valkey/valkey:9.0.2

@@ -25,9 +25,12 @@ replicaCount: 1
 
 affinity:
   ## @param affinity.podAntiAffinityType Allowed values are: "preferred" or "required".
-  ## ref: https://cloudnative-pg.io/documentation/1.16/api_reference/#AffinityConfiguration
+  ## ref: https://cloudnative-pg.io/documentation/current/api_reference/#AffinityConfiguration
   ##
   podAntiAffinityType: required
+  ## @param affinity.topologyKey Node label key used by CNPG-rendered pod anti-affinity. CNPG defaults to topology.kubernetes.io/zone, which is a no-op on bare-metal clusters without zone labels — pick kubernetes.io/hostname to spread across nodes.
+  ##
+  topologyKey: kubernetes.io/hostname
 
 ## @param image.registry image registry
 ## @param image.repository image repository
@@ -39,7 +42,7 @@ affinity:
 image:
   registry: ghcr.io
   repository: cloudnative-pg/postgresql
-  tag: 17.5-3
+  tag: 17.5-22
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -55,8 +58,11 @@ image:
   ##
   pullSecrets: []
 
-# https://cloudnative-pg.io/documentation/current/backup_recovery/
+# https://cloudnative-pg.io/documentation/current/backup/
+# Backup goes through the plugin-barman-cloud CNPG plugin (https://github.com/cloudnative-pg/plugin-barman-cloud).
+# The chart renders a barmancloud.cnpg.io/v1 ObjectStore resource and wires it on the Cluster via spec.plugins[].
 ## @param backup.enabled Enable backup
+## @param backup.pluginName Name of the registered CNPG plugin handling backups
 ## @param backup.endpointURL Endpoint to be used to upload data to the cloud
 ## @param backup.endpointCASecret Secret containing ca for the endpoint
 ## @param backup.s3.enabled Use s3 for backup storage
@@ -66,16 +72,15 @@ image:
 ## @param backup.s3.objectBucketClaim.storageClassName StorageClass for the ObjectBucketClaim
 ## @param backup.scheduled.enabled Enabled creation of a scheduled backup
 ## @param backup.scheduled.schedule Schedule of the scheduled backup
-## @param backup.retentionPolicy Retention for backups
+## @param backup.retentionPolicy Retention for backups (used by the plugin to drive barman cleanup)
 backup:
   enabled: false
+  pluginName: barman-cloud.cloudnative-pg.io
   endpointURL: ""
   endpointCASecret: ""
   s3:
     enabled: true
     bucketName: ""
-    # ServiceAccount {{ template "common.names.fullname" . }} must be allowed to read this secret
-    # see templates/backup/role.yaml for example
     existingSecret: ""
     objectBucketClaim:
       enabled: false

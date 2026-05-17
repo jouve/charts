@@ -1,0 +1,5 @@
+exporter:
+  enabled: true
+metrics:
+  podMonitor:
+    enabled: true
