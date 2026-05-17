@@ -92,10 +92,15 @@ spec:
           {{- with .Values.extraEnvVars }}
           env: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 10 }}
           {{- end }}
-          {{- with .Values.extraEnvVarsSecret }}
+          {{- if or .Values.extraEnvVarsSecret .Values.extraEnvFrom }}
           envFrom:
+            {{- with .Values.extraEnvVarsSecret }}
             - secretRef:
                 name: {{ template "common.tplvalues.render" (dict "value" . "context" $) }}
+            {{- end }}
+            {{- with .Values.extraEnvFrom }}
+            {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+            {{- end }}
           {{- end }}
           {{- with .Values.resources }}
           resources: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}

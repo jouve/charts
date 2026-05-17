@@ -1,0 +1,89 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: {{ include "common.capabilities.networkPolicy.apiVersion" . }}
+kind: NetworkPolicy
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  podSelector:
+    matchLabels:
+      strimzi.io/cluster: {{ template "common.names.fullname" . }}
+  ingress:
+    # Intra-cluster Kafka traffic (replication + controller quorum + clients in this pool)
+    - from:
+        - podSelector:
+            matchLabels:
+              strimzi.io/cluster: {{ template "common.names.fullname" . }}
+      ports:
+        - protocol: TCP
+          port: 9090
+        - protocol: TCP
+          port: 9091
+        {{- range .Values.kafka.listeners }}
+        - protocol: TCP
+          port: {{ .port }}
+        {{- end }}
+    # Application clients
+    - from:
+        {{- with .Values.networkPolicy.clients.peer }}
+        - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
+        {{- else }}
+        - podSelector: {}
+        {{- end }}
+      ports:
+        {{- range .Values.kafka.listeners }}
+        - protocol: TCP
+          port: {{ .port }}
+        {{- end }}
+    {{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
+    - from:
+        {{- with .Values.networkPolicy.metrics.peer }}
+        - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
+        {{- else }}
+        - namespaceSelector: {}
+        {{- end }}
+      ports:
+        - protocol: TCP
+          port: 9404
+    {{- end }}
+    {{- with .Values.networkPolicy.ingressRules }}
+    {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+    {{- end }}
+  egress:
+    # Intra-cluster Kafka traffic
+    - to:
+        - podSelector:
+            matchLabels:
+              strimzi.io/cluster: {{ template "common.names.fullname" . }}
+      ports:
+        - protocol: TCP
+          port: 9090
+        - protocol: TCP
+          port: 9091
+        {{- range .Values.kafka.listeners }}
+        - protocol: TCP
+          port: {{ .port }}
+        {{- end }}
+    # Strimzi cluster operator (manages Kafka pods)
+    - to:
+        {{- with .Values.networkPolicy.strimzi.peer }}
+        - {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 10 }}
+        {{- else }}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: strimzi-system
+          podSelector:
+            matchLabels:
+              strimzi.io/kind: cluster-operator
+        {{- end }}
+    {{- with .Values.networkPolicy.egressRules }}
+    {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+    {{- end }}
+  policyTypes:
+    - Ingress
+    - Egress
+{{- end }}

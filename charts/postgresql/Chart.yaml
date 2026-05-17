@@ -7,7 +7,7 @@ keywords:
   - database
   - postgresql
   - cloudnative-pg
-version: 0.9.1
+version: 0.10.0
 appVersion: "17.5"
 dependencies:
   - name: common
@@ -22,6 +22,6 @@ maintainers:
 annotations:
   artifacthub.io/images: |
     - name: postgresql
-      image: ghcr.io/cloudnative-pg/postgresql:17.5-3
+      image: ghcr.io/cloudnative-pg/postgresql:17.5-22
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg

@@ -1,0 +1,29 @@
+{{- if and .Values.exporter.enabled .Values.metrics.podMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+    {{- with .Values.metrics.podMonitor.labels }}
+    {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      valkey.io/cluster: {{ template "common.names.fullname" . }}
+  podMetricsEndpoints:
+    - port: metrics
+      interval: {{ .Values.metrics.podMonitor.interval }}
+      scrapeTimeout: {{ .Values.metrics.podMonitor.scrapeTimeout }}
+      {{- with .Values.metrics.podMonitor.relabelings }}
+      relabelings: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 8 }}
+      {{- end }}
+      {{- with .Values.metrics.podMonitor.metricRelabelings }}
+      metricRelabelings: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 8 }}
+      {{- end }}
+{{- end }}
