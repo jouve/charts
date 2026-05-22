@@ -1,0 +1,159 @@
+## @param clusterDomain Kubernetes cluster domain name
+##
+clusterDomain: cluster.local
+
+## @section Global parameters
+## Please, note that this will override the parameters, including dependencies, configured to use the global value
+##
+global:
+  ## @param global.imageRegistry Global Docker image registry
+  ##
+  imageRegistry: ""
+  ## @param global.imagePullSecrets Global Docker registry secret names as an array
+  ## e.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  ## @param global.storageClass Global StorageClass for Persistent Volume(s)
+  ##
+  storageClass: ""
+
+## @param shards Number of shard groups (primaries)
+##
+shards: 1
+## @param replicas Number of replica ValkeyNodes per shard
+##
+replicas: 0
+
+## @param resourcesPreset Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). Ignored if resources is set.
+##
+resourcesPreset: "none"
+
+## @param image.registry Valkey image registry
+## @param image.repository Valkey image repository
+## @param image.tag Valkey image tag. Empty -> operator default.
+## @param image.digest Valkey image digest. Overrides image.tag if set.
+## @param image.pullPolicy Image pull policy
+## @param image.pullSecrets Image pull secrets
+##
+image:
+  registry: "docker.io"
+  repository: valkey/valkey
+  tag: 9.0.2
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+
+## @param resources [object] Resource requests/limits for the valkey container. Empty -> operator default.
+## resources:
+##   requests:
+##     cpu: 50m
+##     memory: 64Mi
+##   limits:
+##     cpu: 200m
+##     memory: 256Mi
+resources: {}
+
+## Persistence configuration for ValkeyNodes.
+## CRD enforces:
+##   - persistence cannot be added/removed after creation
+##   - persistence.size may only be expanded
+##   - persistence.storageClassName is immutable
+##   - persistence requires workloadType: StatefulSet
+## @param persistence.enabled Enable durable storage (PVC) per ValkeyNode
+## @param persistence.size Requested PVC size
+## @param persistence.storageClass StorageClass for the PVC. Empty -> cluster default.
+## @param persistence.reclaimPolicy Reclaim policy for the managed PVC. Retain | Delete.
+##
+persistence:
+  enabled: false
+  size: 1Gi
+  storageClass: ""
+  reclaimPolicy: Retain
+
+## @section Exporter (metrics sidecar)
+## @param exporter.enabled Enable the exporter sidecar container in each ValkeyNode
+## @param exporter.image.registry image registry
+## @param exporter.image.repository image repository
+## @param exporter.image.tag image tag (immutable tags are recommended)
+## @param exporter.image.digest image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended)
+## @param exporter.image.pullPolicy image pull policy
+## @param exporter.image.pullSecrets image pull secrets
+## @param exporter.resources Resource requests/limits for the exporter container
+##
+exporter:
+  enabled: true
+  image:
+    registry: "docker.io"
+    repository: oliver006/redis_exporter
+    tag: v1.80.0
+    digest: ""
+    ## Specify a imagePullPolicy
+    ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+    ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+    ##
+    pullPolicy: IfNotPresent
+    ## Optionally specify an array of imagePullSecrets.
+    ## Secrets must be manually created in the namespace.
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+    ## e.g:
+    ## pullSecrets:
+    ##   - myRegistryKeySecretName
+    ##
+    pullSecrets: []
+
+  resources: {}
+
+## @param users [array] Users
+users: []
+
+## @param config [objectE  Valkey config
+config: {}
+
+## @param nodeSelector NodeSelector to apply to the ValkeyNode pods
+nodeSelector: {}
+
+## @param tolerations Tolerations to apply to the ValkeyNode pods
+tolerations: []
+
+## @param affinity Affinity rules. Overrides the operator's default soft anti-affinity if set.
+affinity: {}
+
+## @section Metrics Parameters
+##
+metrics:
+  ## Prometheus Operator PodMonitor configuration
+  podMonitor:
+    ## @param metrics.podMonitor.enabled Create a PodMonitor scraping the exporter sidecar (requires exporter.enabled)
+    enabled: false
+    ## @param metrics.podMonitor.interval Scrape interval
+    interval: 30s
+    ## @param metrics.podMonitor.scrapeTimeout Scrape timeout
+    scrapeTimeout: 10s
+    ## @param metrics.podMonitor.labels Extra labels for the PodMonitor
+    labels: {}
+    ## @param metrics.podMonitor.relabelings RelabelConfigs to apply to samples before scraping
+    relabelings: []
+    ## @param metrics.podMonitor.metricRelabelings MetricRelabelConfigs to apply before ingestion
+    metricRelabelings: []
+
+## @param extraDeploy Array of extra objects to deploy with the release
+extraDeploy: []
+
+## @param commonLabels Add labels to all the deployed resources
+commonLabels: {}
+
+## @param commonAnnotations Add annotations to all the deployed resources
+commonAnnotations: {}

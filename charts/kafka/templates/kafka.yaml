@@ -1,0 +1,47 @@
+apiVersion: kafka.strimzi.io/v1
+kind: Kafka
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  kafka:
+    version: {{ .Values.kafka.version | quote }}
+    metadataVersion: {{ .Values.kafka.metadataVersion | quote }}
+    {{- with .Values.kafka.listeners }}
+    listeners: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 6 }}
+    {{- end }}
+    {{- with .Values.kafka.config }}
+    config: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 6 }}
+    {{- end }}
+    {{- if .Values.metrics.enabled }}
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: {{ template "common.names.fullname" . }}-metrics
+          key: kafka-metrics-config.yml
+    {{- end }}
+  {{- if or .Values.entityOperator.topicOperator.enabled .Values.entityOperator.userOperator.enabled }}
+  entityOperator:
+    {{- if .Values.entityOperator.topicOperator.enabled }}
+    topicOperator: {}
+    {{- end }}
+    {{- if .Values.entityOperator.userOperator.enabled }}
+    userOperator: {}
+    {{- end }}
+    template:
+      pod:
+        securityContext: {{- include "common.tplvalues.render" ( dict "value" .Values.entityOperator.podSecurityContext "context" $ ) | nindent 10 }}
+      {{- if .Values.entityOperator.topicOperator.enabled }}
+      topicOperatorContainer:
+        securityContext: {{- include "common.tplvalues.render" ( dict "value" .Values.entityOperator.topicOperator.containerSecurityContext "context" $ ) | nindent 10 }}
+      {{- end }}
+      {{- if .Values.entityOperator.userOperator.enabled }}
+      userOperatorContainer:
+        securityContext: {{- include "common.tplvalues.render" ( dict "value" .Values.entityOperator.userOperator.containerSecurityContext "context" $ ) | nindent 10 }}
+      {{- end }}
+  {{- end }}

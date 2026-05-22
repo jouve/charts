@@ -1,0 +1,28 @@
+{{- if and .Values.backup.enabled .Values.backup.s3.enabled }}
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: {{ template "common.names.fullname" . }}-backup
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  configuration:
+    destinationPath: s3://{{ with .Values.backup.s3.bucketName }}{{ . }}{{ else }}{{ include "common.names.namespace" . }}-{{ template "common.names.fullname" . }}-backup{{ end }}/
+    endpointURL: {{ .Values.backup.endpointURL | required "backup.endpointURL required when backup.s3 is enabled" }}
+    {{- with .Values.backup.endpointCASecret }}
+    endpointCA:
+      name: {{ . }}
+      key: ca.crt
+    {{- end }}
+    s3Credentials:
+      accessKeyId:
+        name: {{ if .Values.backup.s3.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.s3.existingSecret | required "backup.s3.existingSecret required when backup.s3.bucketName and backup.s3.objectBucketClaim is not enabled" }}{{ end }}
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: {{ if .Values.backup.s3.objectBucketClaim.enabled }}{{ template "common.names.fullname" . }}-backup{{ else }}{{ .Values.backup.s3.existingSecret | required "backup.s3.existingSecret required when backup.s3.bucketName and backup.s3.objectBucketClaim is not enabled" }}{{ end }}
+        key: AWS_SECRET_ACCESS_KEY
+  retentionPolicy: {{ .Values.backup.retentionPolicy | quote }}
+{{- end }}

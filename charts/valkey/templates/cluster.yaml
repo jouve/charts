@@ -1,0 +1,51 @@
+apiVersion: valkey.io/v1alpha1
+kind: ValkeyCluster
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  shards: {{ .Values.shards }}
+  replicas: {{ .Values.replicas }}
+  image: {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) | quote }}
+  {{- if .Values.resources }}
+  resources: {{- include "common.tplvalues.render" (dict "value" .Values.resources "context" $) | nindent 4 }}
+  {{- else if ne .Values.resourcesPreset "none" }}
+  resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 4 }}
+  {{- end }}
+  {{- if .Values.persistence.enabled }}
+  persistence:
+    size: {{ .Values.persistence.size }}
+    reclaimPolicy: {{ .Values.persistence.reclaimPolicy }}
+    {{- with include "common.storage.class" (dict "persistence" .Values.persistence "global" .Values.global) }}
+    storageClassName: {{ index (. | fromYaml) "storageClassName" }}
+    {{- end }}
+  {{- end }}
+  exporter:
+    enabled: {{ .Values.exporter.enabled }}
+    {{- if .Values.exporter.enabled }}
+    image: {{ include "common.images.image" (dict "imageRoot" .Values.exporter.image "global" .Values.global) | quote }}
+    {{- if .Values.exporter.resources }}
+    resources: {{- include "common.tplvalues.render" (dict "value" .Values.exporter.resources "context" $) | nindent 6 }}
+    {{- else if ne .Values.resourcesPreset "none" }}
+    resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 6 }}
+    {{- end }}
+    {{- end }}
+  {{- with .Values.users }}
+  users: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+  {{- with .Values.config }}
+  config: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+  {{- with .Values.nodeSelector }}
+  nodeSelector: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+  tolerations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+  {{- with .Values.affinity }}
+  affinity: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
