@@ -122,9 +122,11 @@ spec:
           {{- end }}
           volumeMounts:
             - name: etc
-              mountPath: /etc/docker/registry
+              mountPath: /etc/distribution
+            {{- if .Values.persistence.enabled }}
             - name: registry
               mountPath: {{ .Values.persistence.mountPath }}
+            {{- end }}
             {{- with .Values.extraVolumeMounts }}
             {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
             {{- end }}
@@ -135,9 +137,11 @@ spec:
         - name: etc
           configMap:
             name: {{ template "common.names.fullname" . }}
+        {{- if .Values.persistence.enabled }}
         - name: registry
           persistentVolumeClaim:
             claimName: {{ with .Values.persistence.existingClaim }}{{ . }}{{ else }}{{ template "common.names.fullname" . }}{{ end }}
+        {{- end }}
         {{- with .Values.extraVolumes }}
         {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
         {{- end }}
