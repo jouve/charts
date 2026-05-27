@@ -33,10 +33,10 @@ helm install mailpit jouve/distribution
 ### Distribution parameters
 
 | Name                                              | Description                                                                                                                                | Value                       |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------- |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |-----------------------------|
 | `image.registry`                                  | image registry                                                                                                                             | `docker.io`                 |
 | `image.repository`                                | image repository                                                                                                                           | `distribution/distribution` |
-| `image.tag`                                       | image tag (immutable tags are recommended)                                                                                                 | `3.1.0`                     |
+| `image.tag`                                       | image tag (immutable tags are recommended)                                                                                                 | `3.1.1`                     |
 | `image.digest`                                    | image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag image tag (immutable tags are recommended) | `""`                        |
 | `image.pullPolicy`                                | image pull policy                                                                                                                          | `IfNotPresent`              |
 | `image.pullSecrets`                               | image pull secrets                                                                                                                         | `[]`                        |
