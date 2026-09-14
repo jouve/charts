@@ -1,0 +1,27 @@
+{{- if .Values.listenerSet.enabled }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: ListenerSet
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" .) | nindent 4 }}
+  {{- with include "common.tplvalues.merge" (dict "values" (list .Values.ingress.annotations .Values.commonAnnotations) "context" .) | fromYaml }}
+  annotations: {{- . | toYaml | nindent 4 }}
+  {{- end }}
+spec:
+  listeners:
+  - allowedRoutes:
+      namespaces:
+        from: Same
+    hostname: {{ .Values.ingress.hostname | quote }}
+    name: https
+    port: 443
+    protocol: HTTPS
+    tls:
+      certificateRefs:
+      - group: ""
+        kind: Secret
+        name: {{ printf "%s-tls" .Values.ingress.hostname | quote }}
+      mode: Terminate
+  parentRef: {{- include "common.tplvalues.render" (dict "value" .Values.httpRoute.parentRefs "context" .) | nindent 4 }}
+{{- end }}

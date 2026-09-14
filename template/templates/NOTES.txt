@@ -1,0 +1,35 @@
+1. Get the application URL by running these commands:
+{{- if .Values.httpRoute.enabled }}
+{{- if .Values.httpRoute.hostnames }}
+    export APP_HOSTNAME={{ .Values.httpRoute.hostnames | first }}
+{{- else }}
+{{- with first .Values.httpRoute.parentRefs }}
+    export APP_HOSTNAME=$(kubectl get --namespace {{ .namespace | default $.Release.Namespace }} gateway/{{ .name }} -o jsonpath="{.spec.listeners[0].hostname}")
+{{- end }}
+{{- end }}
+{{- if and .Values.httpRoute.rules (first .Values.httpRoute.rules).matches (first (first .Values.httpRoute.rules).matches).path.value }}
+    echo "Visit http://$APP_HOSTNAME{{ (first (first .Values.httpRoute.rules).matches).path.value }} to use your application"
+
+    NOTE: Your HTTPRoute depends on the listener configuration of your gateway and your HTTPRoute rules.
+    The rules can be set for path, method, header and query parameters.
+{{- with first .Values.httpRoute.parentRefs }}
+    You can check the gateway configuration with 'kubectl get --namespace {{ .namespace | default $.Release.Namespace }} gateway/{{ .name }} -o yaml'
+{{- end }}
+{{- end }}
+{{- else if .Values.ingress.enabled }}
+  http{{ if .Values.ingress.tls }}s{{ end }}://{{ .Values.ingress.hostname }}{{ .Values.ingress.path }}
+{{- else if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ include "common.names.namespace" . }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "common.names.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ include "common.names.namespace" . }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if contains "LoadBalancer" .Values.service.type }}
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch its status by running 'kubectl get --namespace {{ include "common.names.namespace" . }} svc -w {{ include "common.names.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ include "common.names.namespace" . }} {{ include "common.names.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.service.ports.http }}
+{{- else if contains "ClusterIP" .Values.service.type }}
+  export POD_NAME=$(kubectl get pods --namespace {{ include "common.names.namespace" . }} -l "app.kubernetes.io/name={{ include "common.names.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace {{ include "common.names.namespace" . }} $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace {{ include "common.names.namespace" . }} port-forward $POD_NAME 8080:$CONTAINER_PORT
+{{- end }}

@@ -1,0 +1,15 @@
+persistence:
+  enabled: true
+  storageClass: fast
+  annotations:
+    helm.sh/resource-policy: keep
+  accessModes:
+    - ReadWriteMany
+  size: 20Gi
+  dataSource:
+    apiGroup: snapshot.storage.k8s.io
+    kind: VolumeSnapshot
+    name: template-snapshot
+  selector:
+    matchLabels:
+      app: template

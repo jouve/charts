@@ -1,0 +1,53 @@
+extraContainerPorts:
+  - name: metrics
+    containerPort: 9090
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: monitoring
+    annotations:
+      foo: bar
+    labels:
+      release: kube-prometheus
+    jobLabel: app.kubernetes.io/name
+    honorLabels: true
+    interval: 30s
+    scrapeTimeout: 10s
+    metricRelabelings:
+      - action: drop
+        regex: go_.*
+        sourceLabels:
+          - __name__
+    relabelings:
+      - action: replace
+        sourceLabels:
+          - __meta_kubernetes_pod_node_name
+        targetLabel: node
+    selector:
+      prometheus: kube-prometheus
+  podMonitor:
+    enabled: true
+    annotations:
+      foo: bar
+    labels:
+      release: kube-prometheus
+    honorLabels: true
+    tlsConfig:
+      insecureSkipVerify: true
+    interval: 30s
+    scrapeTimeout: 10s
+    metricRelabelings:
+      - action: drop
+        regex: go_.*
+        sourceLabels:
+          - __name__
+    relabelings:
+      - action: replace
+        sourceLabels:
+          - __meta_kubernetes_pod_node_name
+        targetLabel: node
+    podTargetLabels:
+      - app.kubernetes.io/instance
+    sampleLimit: 1000
+    targetLimit: 10

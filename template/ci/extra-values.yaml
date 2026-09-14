@@ -1,0 +1,149 @@
+global:
+  imageRegistry: registry.example.com
+  imagePullSecrets:
+    - global-regcred
+image:
+  pullSecrets:
+    - regcred
+replicaCount: 3
+commonLabels:
+  team: platform
+commonAnnotations:
+  owner: platform
+podLabels:
+  tier: web
+podAnnotations:
+  prometheus.io/scrape: "true"
+command:
+  - /bin/app
+args:
+  - --port
+  - "80"
+extraEnvVars:
+  - name: LOG_LEVEL
+    value: debug
+extraEnvVarsCM: template-env
+extraEnvVarsSecret: template-env-secret
+extraContainerPorts:
+  - name: admin
+    containerPort: 8081
+customLivenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+customReadinessProbe:
+  httpGet:
+    path: /ready
+    port: http
+customStartupProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  failureThreshold: 30
+lifecycleHooks:
+  preStop:
+    exec:
+      command:
+        - /bin/sh
+        - -c
+        - sleep 5
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+hostAliases:
+  - ip: 127.0.0.1
+    hostnames:
+      - template.local
+nodeSelector:
+  kubernetes.io/os: linux
+tolerations:
+  - key: dedicated
+    operator: Equal
+    value: web
+    effect: NoSchedule
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: template
+podAffinityPreset: soft
+podAntiAffinityPreset: hard
+nodeAffinityPreset:
+  type: soft
+  key: node.kubernetes.io/instance-type
+  values:
+    - m5.large
+priorityClassName: system-cluster-critical
+schedulerName: default-scheduler
+terminationGracePeriodSeconds: 30
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+podManagementPolicy: Parallel
+extraVolumes:
+  - name: config
+    configMap:
+      name: template-config
+extraVolumeMounts:
+  - name: config
+    mountPath: /config
+    readOnly: true
+initContainers:
+  - name: wait-for-db
+    image: docker.io/library/busybox:1.36
+    command:
+      - sh
+      - -c
+      - until nc -z db 5432; do sleep 1; done
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1001
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+    resources:
+      requests:
+        cpu: 10m
+        memory: 16Mi
+      limits:
+        cpu: 50m
+        memory: 32Mi
+sidecars:
+  - name: log-shipper
+    image: docker.io/library/busybox:1.36
+    command:
+      - sh
+      - -c
+      - tail -F /var/log/app.log
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1001
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+    resources:
+      requests:
+        cpu: 10m
+        memory: 16Mi
+      limits:
+        cpu: 50m
+        memory: 32Mi
+extraDeploy:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: template-config
+    data:
+      config.yaml: |
+        foo: bar

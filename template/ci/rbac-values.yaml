@@ -1,0 +1,18 @@
+rbac:
+  create: true
+  rules:
+    - apiGroups:
+        - ""
+      resources:
+        - configmaps
+      verbs:
+        - get
+        - list
+        - watch
+serviceAccount:
+  create: true
+  name: template-sa
+  annotations:
+    foo: bar
+  automountServiceAccountToken: false
+automountServiceAccountToken: true

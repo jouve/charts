@@ -1,0 +1,19 @@
+ingress:
+  hostname: template.example.com
+httpRoute:
+  enabled: true
+  hostnames:
+    - template.example.com
+  parentRefs:
+    - name: envoy
+      namespace: envoy-gateway
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      backendRefs:
+        - name: api
+          port: 8080
+listenerSet:
+  enabled: true

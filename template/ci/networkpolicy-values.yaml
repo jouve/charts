@@ -1,0 +1,25 @@
+networkPolicy:
+  enabled: true
+  allowExternal: false
+  allowExternalEgress: false
+  addExternalClientAccess: true
+  ingressPodMatchLabels:
+    app.kubernetes.io/name: frontend
+  ingressNSMatchLabels:
+    kubernetes.io/metadata.name: frontend
+  ingressNSPodMatchLabels:
+    app.kubernetes.io/name: frontend
+  extraIngress:
+    - ports:
+        - port: 9090
+      from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: monitoring
+  extraEgress:
+    - ports:
+        - port: 5432
+      to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: postgresql

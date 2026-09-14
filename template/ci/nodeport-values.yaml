@@ -1,0 +1,10 @@
+service:
+  type: NodePort
+  nodePorts:
+    http: 30080
+    https: 30443
+  externalTrafficPolicy: Local
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 300

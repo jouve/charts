@@ -1,0 +1,11 @@
+service:
+  type: LoadBalancer
+  loadBalancerIP: 1.2.3.4
+  loadBalancerSourceRanges:
+    - 10.0.0.0/8
+  annotations:
+    foo: bar
+  extraPorts:
+    - name: metrics
+      port: 9090
+      targetPort: metrics

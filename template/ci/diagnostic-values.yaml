@@ -1,0 +1,4 @@
+diagnosticMode:
+  enabled: true
+image:
+  debug: true

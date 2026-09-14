@@ -1,0 +1,48 @@
+{{- if and .Values.metrics.enabled .Values.metrics.podMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.tplvalues.merge" (dict "values" .Values.metrics.podMonitor.labels .Values.commonLabels "context" .) | nindent 4 }}
+  {{- with include "common.tplvalues.merge" (dict "values" (list .Values.metrics.podMonitor.annotations .Values.commonAnnotations) "context" .) | fromYaml }}
+  annotations: {{- . | toYaml | nindent 4 }}
+  {{- end }}
+spec:
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      {{- with .Values.metrics.podMonitor.tlsConfig }}
+      scheme: https
+      tlsConfig: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
+      {{- end }}
+      {{- with .Values.metrics.podMonitor.interval }}
+      interval: {{ . }}
+      {{- end }}
+      {{- with .Values.metrics.podMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ . }}
+      {{- end }}
+      {{- with .Values.metrics.podMonitor.honorLabels }}
+      honorLabels: {{ . }}
+      {{- end }}
+      {{- with .Values.metrics.podMonitor.metricRelabelings }}
+      metricRelabelings: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
+      {{- end }}
+      {{- with concat .Values.metrics.podMonitor.relabelings }}
+      relabelings: {{- include "common.tplvalues.render" ( dict "value" . "context" $) | nindent 8 }}
+      {{- end }}
+  {{- with .Values.metrics.podMonitor.podTargetLabels }}
+  podTargetLabels: {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.metrics.podMonitor.sampleLimit }}
+  sampleLimit: {{ . }}
+  {{- end }}
+  {{- with .Values.metrics.podMonitor.targetLimit }}
+  targetLimit: {{ . }}
+  {{- end }}
+  namespaceSelector:
+    matchNames:
+      - {{ include "common.names.namespace" . | quote }}
+  selector:
+    matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 6 }}
+{{- end }}

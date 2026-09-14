@@ -1,0 +1,35 @@
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hostname: template.example.com
+  path: /
+  pathType: Prefix
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  tls: true
+  extraHosts:
+    - name: alias.example.com
+      path: /
+  extraPaths:
+    - path: /static
+      pathType: Prefix
+      backend:
+        service:
+          name: static
+          port:
+            name: http
+  extraTls:
+    - hosts:
+        - alias.example.com
+      secretName: alias-tls
+  extraRules:
+    - host: other.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: other
+                port:
+                  name: http
