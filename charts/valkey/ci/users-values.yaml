@@ -1,0 +1,14 @@
+users:
+  - name: app
+    passwordSecret:
+      name: my-app-passwords
+      keys:
+        - app
+    commands:
+      allow:
+        - "+@all"
+      deny:
+        - "-@dangerous"
+    keys:
+      readWrite:
+        - "~*"

@@ -13,4 +13,7 @@ spec:
   backupOwnerReference: self
   cluster:
     name: {{ template "common.names.fullname" . }}
+  method: plugin
+  pluginConfiguration:
+    name: {{ .Values.backup.pluginName | quote }}
 {{- end }}

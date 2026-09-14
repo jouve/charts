@@ -1,0 +1,171 @@
+## @param clusterDomain Kubernetes cluster domain name
+##
+clusterDomain: cluster.local
+
+## @section Global parameters
+## Please, note that this will override the parameters, including dependencies, configured to use the global value
+##
+global:
+  ## @param global.imageRegistry Global Docker image registry
+  ##
+  imageRegistry: ""
+  ## @param global.imagePullSecrets Global Docker registry secret names as an array
+  ## e.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  ## @param global.storageClass Global StorageClass for Persistent Volume(s)
+  ##
+  storageClass: ""
+
+## @param replicaCount Number of Kafka combined (controller+broker) nodes
+##
+replicaCount: 3
+
+## @section Kafka Cluster
+##
+kafka:
+  ## @param kafka.version Apache Kafka version
+  ##
+  version: "4.2.0"
+  ## @param kafka.metadataVersion KRaft metadata version (must be compatible with kafka.version)
+  ##
+  metadataVersion: "4.2-IV1"
+  ## @param kafka.config Extra broker configuration (merged into spec.kafka.config)
+  ## ref: https://strimzi.io/docs/operators/latest/configuring.html#type-KafkaClusterSpec-reference
+  ##
+  config: {}
+  ## @param kafka.listeners [array] Listener configuration (defaults: plain 9092, tls 9093)
+  ## ref: https://strimzi.io/docs/operators/latest/configuring.html#type-GenericKafkaListener-reference
+  ##
+  listeners:
+    - name: plain
+      port: 9092
+      type: internal
+      tls: false
+    - name: tls
+      port: 9093
+      type: internal
+      tls: true
+
+## @section Node pool (combined controller+broker, one pool by default)
+##
+nodePool:
+  ## @param nodePool.name Name of the KafkaNodePool
+  ##
+  name: combined
+  ## @param nodePool.roles Roles assigned to the pool. Valid values: controller, broker
+  ##
+  roles:
+    - controller
+    - broker
+  ## @param nodePool.resourcesPreset Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if nodePool.resources is set.
+  ##
+  resourcesPreset: "none"
+  ## @param nodePool.resources Resource requests/limits for the kafka container
+  ##
+  resources: {}
+
+  ## Storage configuration (Strimzi JBOD with a single persistent-claim volume).
+  ## @param nodePool.persistence.storageClass StorageClass for Kafka data volume
+  ## @param nodePool.persistence.size PVC Storage Request for Kafka data volume
+  ## @param nodePool.persistence.deleteClaim Whether to delete the PVC when the node pool is removed
+  ##
+  persistence:
+    storageClass: ""
+    size: 20Gi
+    deleteClaim: false
+
+## @section EntityOperator (TopicOperator + UserOperator)
+## ref: https://strimzi.io/docs/operators/latest/configuring.html#type-EntityOperatorSpec-reference
+##
+entityOperator:
+  ## @param entityOperator.topicOperator.enabled Enable the TopicOperator
+  ## @param entityOperator.topicOperator.containerSecurityContext [object] Container security context
+  ##
+  topicOperator:
+    enabled: true
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+
+  ## @param entityOperator.userOperator.enabled Enable the UserOperator
+  ## @param entityOperator.userOperator.containerSecurityContext [object] Container security context
+  ##
+  userOperator:
+    enabled: true
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+
+  ## @param entityOperator.podSecurityContext [object] Pod security context
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+## @param podSecurityContext [object] Pod security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+  runAsGroup: 1001
+  fsGroup: 1001
+  seccompProfile:
+    type: RuntimeDefault
+
+## @param containerSecurityContext [object] Container security context
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  capabilities:
+    drop:
+      - ALL
+
+## @param networkPolicy.enabled Enable network policies
+## @param networkPolicy.strimzi.peer networkPolicyPeer of the Strimzi cluster operator, matches strimzi-cluster-operator pods if not defined
+## @param networkPolicy.metrics.peer networkPolicyPeer of the metrics scrape
+## @param networkPolicy.clients.peer networkPolicyPeer of the Kafka clients (defaults to same-namespace)
+## @param networkPolicy.egressRules additional egress rules
+## @param networkPolicy.ingressRules additional ingress rules
+##
+networkPolicy:
+  enabled: false
+  strimzi:
+    peer: {}
+  metrics:
+    peer: {}
+  clients:
+    peer: {}
+  egressRules: []
+  ingressRules: []
+
+## @section Metrics Parameters
+## Strimzi consumes a JMX-exporter config from a ConfigMap referenced via `spec.kafka.metricsConfig`.
+## We embed Strimzi's recommended jmx-exporter config inline when metrics.enabled=true.
+##
+metrics:
+  ## @param metrics.enabled Expose JMX metrics via the Strimzi-bundled exporter
+  ##
+  enabled: false
+  ## Prometheus Operator PodMonitor configuration
+  ##
+  podMonitor:
+    ## @param metrics.podMonitor.enabled Create PodMonitor Resource for scraping metrics using Prometheus Operator
+    ##
+    enabled: false
+
+## @param commonLabels Labels to add to all deployed resources
+##
+commonLabels: {}
+## @param commonAnnotations Annotations to add to all deployed resources
+##
+commonAnnotations: {}
+
+## @param extraDeploy Array of extra objects to deploy with the release (e.g. KafkaTopic, KafkaUser)
+##
+extraDeploy: []

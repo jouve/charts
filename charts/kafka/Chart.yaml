@@ -1,0 +1,22 @@
+apiVersion: v2
+name: kafka
+description: Deploy Apache Kafka in KRaft mode using the Strimzi operator
+type: application
+version: 0.1.0
+appVersion: "4.2.0"
+dependencies:
+  - name: common
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 2.x.x
+sources:
+  - https://github.com/jouve/charts
+  - https://strimzi.io/
+maintainers:
+  - name: jouve
+    url: https://github.com/jouve
+annotations:
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+  artifacthub.io/images: |
+    - name: kafka
+      image: quay.io/strimzi/kafka:1.0.0-kafka-4.2.0

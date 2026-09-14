@@ -9,6 +9,6 @@ metadata:
   annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
   {{- end }}
 spec:
-  bucketName: {{ if .Values.backup.bucketName }}{{ tpl .Values.backup.bucketName $ }}{{ else }}{{ include "common.names.namespace" . }}-{{ template "common.names.fullname" . }}-backup{{ end }}
+  bucketName: {{ if .Values.backup.s3.bucketName }}{{ tpl .Values.backup.s3.bucketName $ }}{{ else }}{{ include "common.names.namespace" . }}-{{ template "common.names.fullname" . }}-backup{{ end }}
   storageClassName: {{ .Values.backup.s3.objectBucketClaim.storageClassName }}
 {{- end }}

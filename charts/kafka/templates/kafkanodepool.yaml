@@ -1,0 +1,39 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaNodePool
+metadata:
+  name: {{ .Values.nodePool.name }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+    strimzi.io/cluster: {{ template "common.names.fullname" . }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" . "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  roles: {{- toYaml .Values.nodePool.roles | nindent 4 }}
+  storage:
+    type: jbod
+    volumes:
+      - id: 0
+        type: persistent-claim
+        size: {{ .Values.nodePool.persistence.size }}
+        {{- with include "common.storage.class" (dict "persistence" .Values.nodePool.persistence "global" .Values.global) }}
+        class: {{ index (. | fromYaml) "storageClassName" }}
+        {{- end }}
+        deleteClaim: {{ .Values.nodePool.persistence.deleteClaim }}
+        kraftMetadata: shared
+  {{- with .Values.nodePool.resources }}
+  resources: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- else }}
+  {{- if ne .Values.nodePool.resourcesPreset "none" }}
+  resources: {{- include "common.resources.preset" (dict "type" .Values.nodePool.resourcesPreset) | nindent 4 }}
+  {{- end }}
+  {{- end }}
+  template:
+    pod:
+      securityContext: {{- include "common.tplvalues.render" ( dict "value" .Values.podSecurityContext "context" $ ) | nindent 8 }}
+    kafkaContainer:
+      securityContext: {{- include "common.tplvalues.render" ( dict "value" .Values.containerSecurityContext "context" $ ) | nindent 8 }}
+    initContainer:
+      securityContext: {{- include "common.tplvalues.render" ( dict "value" .Values.containerSecurityContext "context" $ ) | nindent 8 }}

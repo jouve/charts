@@ -81,21 +81,16 @@ spec:
           {{- else if .Values.args }}
           args: {{- include "common.tplvalues.render" (dict "value" .Values.args "context" $) | nindent 12 }}
           {{- end }}
-          env:
-            {{- with .Values.extraEnvVars }}
-            {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
-            {{- end }}
-          envFrom:
-            {{- with .Values.extraEnvVarsCM }}
-            - configMapRef:
-                name: {{ template "common.tplvalues.render" (dict "value" . "context" $) }}
-            {{- end }}
-            {{- with .Values.extraEnvVarsSecret }}
-            - secretRef:
-                name: {{ template "common.tplvalues.render" (dict "value" . "context" $) }}
-            {{- end }}
-          {{- with .Values.resources }}
+          {{- with .Values.extraEnvVars }}
+          env: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- end }}
+          {{- with .Values.extraEnvFrom }}
+          envFrom: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.resources }}
           resources: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- else if ne .Values.resourcesPreset "none" }}
+          resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 12 }}
           {{- end }}
           ports:
             - name: http
