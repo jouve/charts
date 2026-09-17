@@ -1,0 +1,9 @@
+skip-check:
+  - CKV_K8S_8 # A finite CronJob does not expose a liveness endpoint
+  - CKV_K8S_9 # A finite CronJob does not expose a readiness endpoint
+  - CKV_K8S_15 # Image pull policy should be Always
+  - CKV_K8S_19 # Host networking is required to reach a colocated etcd member
+  - CKV_K8S_21 # The namespace is selected at Helm installation time
+  - CKV_K8S_23 # The root-owned kubeadm client key requires UID 0
+  - CKV_K8S_40 # The root-owned kubeadm client key requires UID 0
+  - CKV_K8S_43 # Users can pin image.digest without making that architecture-specific by default

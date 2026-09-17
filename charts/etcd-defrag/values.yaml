@@ -1,0 +1,182 @@
+## @section Global parameters
+
+## @param global.imageRegistry Global container image registry
+## @param global.imagePullSecrets Global container registry secret names as an array
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+
+## @section Common parameters
+
+## @param nameOverride String to partially override common.names.name
+## @param fullnameOverride String to fully override common.names.fullname
+## @param namespaceOverride String to fully override common.names.namespace
+## @param commonLabels [object] Labels to add to all deployed objects
+## @param commonAnnotations [object] Annotations to add to all deployed objects
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+## @section Image parameters
+
+## @param image.registry etcd-defrag image registry
+## @param image.repository etcd-defrag image repository
+## @param image.tag etcd-defrag image tag
+## @param image.digest etcd-defrag image digest; overrides the image tag when set
+## @param image.pullPolicy etcd-defrag image pull policy
+## @param image.pullSecrets etcd-defrag image pull secrets
+image:
+  registry: ghcr.io
+  repository: ahrtr/etcd-defrag
+  tag: v0.45.0
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+## @section CronJob parameters
+
+## @param schedule Cron schedule
+## @param timeZone Time zone for the CronJob schedule
+## @param suspend Suspend subsequent executions
+## @param concurrencyPolicy Concurrent execution policy
+## @param startingDeadlineSeconds Deadline in seconds for starting a missed execution
+## @param successfulJobsHistoryLimit Number of successful Jobs to retain
+## @param failedJobsHistoryLimit Number of failed Jobs to retain
+## @param activeDeadlineSeconds Maximum duration of one Job in seconds
+## @param backoffLimit Number of retries before a Job is considered failed
+## @param restartPolicy Pod restart policy
+schedule: "17 3 * * *"
+timeZone: Etc/UTC
+suspend: false
+concurrencyPolicy: Forbid
+startingDeadlineSeconds: 300
+successfulJobsHistoryLimit: 3
+failedJobsHistoryLimit: 3
+activeDeadlineSeconds: 600
+backoffLimit: 0
+restartPolicy: Never
+
+## @section etcd-defrag parameters
+
+## @param config.endpoints etcd endpoint URLs
+## @param config.cluster Discover and defragment every member of the cluster
+## @param config.compaction Compact etcd before defragmenting it
+## @param config.continueOnError Continue with other endpoints after one endpoint fails
+## @param config.moveLeader Move leadership before defragmenting the leader
+## @param config.waitBetweenDefrags Delay between consecutive defragmentation operations
+## @param config.commandTimeout Command timeout, excluding the dial timeout
+## @param config.dialTimeout Client connection timeout
+## @param config.etcdStorageQuotaBytes etcd backend quota in bytes
+## @param config.defragRule Boolean expression that selects members to defragment
+## @param config.autoDisalarm Automatically clear NOSPACE alarms after successful defragmentation
+## @param config.disalarmThreshold DB-to-quota ratio below which NOSPACE alarms can be cleared
+config:
+  endpoints:
+    - https://127.0.0.1:2379
+  cluster: true
+  compaction: true
+  continueOnError: false
+  moveLeader: true
+  waitBetweenDefrags: 60s
+  commandTimeout: 30s
+  dialTimeout: 2s
+  etcdStorageQuotaBytes: "2147483648"
+  defragRule: "dbSizeFree / dbSize >= 0.2"
+  autoDisalarm: false
+  disalarmThreshold: 0.9
+
+## @param extraArgs Extra arguments passed to etcd-defrag
+extraArgs: []
+
+## @section TLS parameters
+
+## TLS files are mounted individually so the container cannot read unrelated PKI material.
+## @param tls.type TLS layout (`kubeadm`, `kubespray`, `rke2` or `custom`)
+## @param tls.custom.caCert Host path of the etcd CA certificate when `tls.type` is `custom`
+## @param tls.custom.clientCert Host path of the etcd client certificate when `tls.type` is `custom`
+## @param tls.custom.clientKey Host path of the etcd client key when `tls.type` is `custom`
+tls:
+  type: kubeadm
+  custom:
+    caCert: ""
+    clientCert: ""
+    clientKey: ""
+
+## @section Pod parameters
+
+## @param hostNetwork Use the host network to reach a local etcd endpoint
+## @param dnsPolicy Pod DNS policy
+## @param podAnnotations [object] Extra annotations for Pods
+## @param podLabels [object] Extra labels for Pods
+## @param podSecurityContext [object] Pod security context
+hostNetwork: true
+dnsPolicy: ClusterFirstWithHostNet
+podAnnotations: {}
+podLabels: {}
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
+
+## The upstream image runs as UID 65532, but kubeadm commonly creates the client key as 0600 root.
+## @param containerSecurityContext [object] etcd-defrag container security context
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: false
+  runAsUser: 0
+
+## @param resourcesPreset Set container resources according to a common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge); ignored when resources is set
+## @param resources [object] Set container resource requests and limits
+resourcesPreset: nano
+resources: {}
+
+## @param priorityClassName Priority class assigned to the Pod
+## @param nodeSelector [object] Node labels for Pod assignment
+## @param affinity [object] Affinity rules for Pod assignment
+priorityClassName: ""
+nodeSelector: {}
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+tolerations:
+  ## @param tolerations[0].effect Taint effect tolerated on control-plane nodes
+  ## @param tolerations[0].key Control-plane taint key
+  ## @param tolerations[0].operator Toleration operator for the control-plane taint
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/control-plane
+    operator: Exists
+
+## @param extraEnvVars Extra environment variables for the container
+## @param initContainers Add additional init containers to the Pod
+## @param extraVolumes Extra volumes for the Pod
+## @param extraVolumeMounts Extra volume mounts for the container
+extraEnvVars: []
+initContainers: []
+extraVolumes: []
+extraVolumeMounts: []
+
+## @section ServiceAccount parameters
+
+## @param serviceAccount.create Create a ServiceAccount
+## @param serviceAccount.name ServiceAccount name; generated when empty and creation is enabled
+## @param serviceAccount.annotations [object] Additional ServiceAccount annotations
+## @param serviceAccount.automountServiceAccountToken Automount the ServiceAccount token
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+  automountServiceAccountToken: false
+
+## @section Extra deployment parameters
+
+## @param extraDeploy Extra Kubernetes objects to deploy with the release
+extraDeploy: []
