@@ -1,0 +1,21 @@
+apiVersion: v2
+name: etcd-defrag
+description: Run safe, scheduled etcd defragmentation in Kubernetes
+type: application
+version: 0.1.0
+appVersion: 0.45.0
+dependencies:
+  - name: common
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 2.x.x
+sources:
+  - https://github.com/jouve/charts
+  - https://github.com/ahrtr/etcd-defrag
+maintainers:
+  - name: jouve
+    url: https://github.com/jouve
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/images: |
+    - name: etcd-defrag
+      image: ghcr.io/ahrtr/etcd-defrag:v0.45.0

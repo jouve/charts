@@ -1,0 +1,151 @@
+{{- $caCert := "" -}}
+{{- $clientCert := "" -}}
+{{- $clientKey := "" -}}
+{{- if eq .Values.tls.type "kubeadm" -}}
+  {{- $caCert = "/etc/kubernetes/pki/etcd/ca.crt" -}}
+  {{- $clientCert = "/etc/kubernetes/pki/apiserver-etcd-client.crt" -}}
+  {{- $clientKey = "/etc/kubernetes/pki/apiserver-etcd-client.key" -}}
+{{- else if eq .Values.tls.type "kubespray" -}}
+  {{- $caCert = "/etc/kubernetes/ssl/etcd/ca.crt" -}}
+  {{- $clientCert = "/etc/kubernetes/ssl/apiserver-etcd-client.crt" -}}
+  {{- $clientKey = "/etc/kubernetes/ssl/apiserver-etcd-client.key" -}}
+{{- else if eq .Values.tls.type "rke2" -}}
+  {{- $caCert = "/var/lib/rancher/rke2/server/tls/etcd/server-ca.crt" -}}
+  {{- $clientCert = "/var/lib/rancher/rke2/server/tls/etcd/client.crt" -}}
+  {{- $clientKey = "/var/lib/rancher/rke2/server/tls/etcd/client.key" -}}
+{{- else if eq .Values.tls.type "custom" -}}
+  {{- $caCert = required "tls.custom.caCert is required when tls.type is custom" .Values.tls.custom.caCert -}}
+  {{- $clientCert = required "tls.custom.clientCert is required when tls.type is custom" .Values.tls.custom.clientCert -}}
+  {{- $clientKey = required "tls.custom.clientKey is required when tls.type is custom" .Values.tls.custom.clientKey -}}
+{{- else -}}
+  {{- fail "tls.type must be one of: kubeadm, kubespray, rke2, custom" -}}
+{{- end -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" (dict "customLabels" .Values.commonLabels "context" $) | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  timeZone: {{ .Values.timeZone | quote }}
+  suspend: {{ .Values.suspend }}
+  concurrencyPolicy: {{ .Values.concurrencyPolicy }}
+  startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
+  successfulJobsHistoryLimit: {{ .Values.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.failedJobsHistoryLimit }}
+  jobTemplate:
+    metadata:
+      labels: {{- include "common.labels.standard" (dict "customLabels" .Values.commonLabels "context" $) | nindent 8 }}
+    spec:
+      activeDeadlineSeconds: {{ .Values.activeDeadlineSeconds }}
+      backoffLimit: {{ .Values.backoffLimit }}
+      template:
+        metadata:
+          labels:
+            {{- $podLabels := include "common.tplvalues.merge" (dict "values" (list .Values.podLabels .Values.commonLabels) "context" .) | fromYaml }}
+            {{- include "common.labels.standard" (dict "customLabels" $podLabels "context" $) | nindent 12 }}
+          {{- with .Values.podAnnotations }}
+          annotations: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- end }}
+        spec:
+          restartPolicy: {{ .Values.restartPolicy }}
+          hostNetwork: {{ .Values.hostNetwork }}
+          dnsPolicy: {{ .Values.dnsPolicy }}
+          serviceAccountName: {{ template "common.names.serviceAccountName" (dict "serviceAccountRoot" .Values.serviceAccount "context" .) }}
+          automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+          {{- include "common.images.renderPullSecrets" (dict "images" (list .Values.image) "context" $) | nindent 10 }}
+          {{- with .Values.podSecurityContext }}
+          securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" . "context" $) | nindent 12 }}
+          {{- end }}
+          {{- with .Values.priorityClassName }}
+          priorityClassName: {{ . | quote }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- end }}
+          {{- with .Values.initContainers }}
+          initContainers: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+          {{- end }}
+          containers:
+            - name: etcd-defrag
+              image: {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.containerSecurityContext "context" $) | nindent 16 }}
+              args:
+                - {{ printf "--endpoints=%s" (join "," .Values.config.endpoints) | quote }}
+                - --cacert=/ca.crt
+                - --cert=/client.crt
+                - --key=/client.key
+                {{- if .Values.config.cluster }}
+                - --cluster
+                {{- end }}
+                - --compaction={{ .Values.config.compaction }}
+                - --continue-on-error={{ .Values.config.continueOnError }}
+                - --move-leader={{ .Values.config.moveLeader }}
+                - --wait-between-defrags={{ .Values.config.waitBetweenDefrags }}
+                {{- with .Values.config.commandTimeout }}
+                - --command-timeout={{ . }}
+                {{- end }}
+                {{- with .Values.config.dialTimeout }}
+                - --dial-timeout={{ . }}
+                {{- end }}
+                {{- with .Values.config.etcdStorageQuotaBytes }}
+                - {{ printf "--etcd-storage-quota-bytes=%s" . | quote }}
+                {{- end }}
+                {{- with .Values.config.defragRule }}
+                - {{ printf "--defrag-rule=%s" . | quote }}
+                {{- end }}
+                {{- if .Values.config.autoDisalarm }}
+                - --auto-disalarm
+                - --disalarm-threshold={{ .Values.config.disalarmThreshold }}
+                {{- end }}
+                {{- with .Values.extraArgs }}
+                {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 16 }}
+                {{- end }}
+              {{- with .Values.extraEnvVars }}
+              env: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 16 }}
+              {{- end }}
+              {{- if .Values.resources }}
+              resources: {{- include "common.tplvalues.render" (dict "value" .Values.resources "context" $) | nindent 16 }}
+              {{- else if ne .Values.resourcesPreset "none" }}
+              resources: {{- include "common.resources.preset" (dict "type" .Values.resourcesPreset) | nindent 16 }}
+              {{- end }}
+              volumeMounts:
+                - name: ca-crt
+                  mountPath: /ca.crt
+                  readOnly: true
+                - name: client-crt
+                  mountPath: /client.crt
+                  readOnly: true
+                - name: client-key
+                  mountPath: /client.key
+                  readOnly: true
+                {{- with .Values.extraVolumeMounts }}
+                {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 16 }}
+                {{- end }}
+          volumes:
+            - name: ca-crt
+              hostPath:
+                path: {{ $caCert }}
+                type: File
+            - name: client-crt
+              hostPath:
+                path: {{ $clientCert }}
+                type: File
+            - name: client-key
+              hostPath:
+                path: {{ $clientKey }}
+                type: File
+            {{- with .Values.extraVolumes }}
+            {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 12 }}
+            {{- end }}
