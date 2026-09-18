@@ -1,0 +1,19 @@
+{{- if and .Values.mailpit.smtp.tls.enabled (eq .Values.mailpit.smtp.tls.method "cert-manager") }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" (dict "customLabels" .Values.commonLabels "context" .) | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ include "mailpit.smtp.tls.certManager.secretName" . }}
+  usages:
+    - server auth
+  dnsNames: {{- include "mailpit.smtp.tls.dnsNames" (dict "dnsNames" .Values.mailpit.smtp.tls.certManager.dnsNames "context" $) | nindent 4 }}
+  {{- with .Values.mailpit.smtp.tls.certManager.issuerRef }}
+  issuerRef: {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
+{{- end }}

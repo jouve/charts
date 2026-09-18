@@ -1,0 +1,8 @@
+mailpit:
+  smtp:
+    tls:
+      enabled: true
+      method: auto
+      auto:
+        dnsNames:
+          - smtp.example.com
