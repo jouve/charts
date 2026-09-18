@@ -71,10 +71,19 @@ spec:
           {{- end }}
           {{- end }}
           {{- if .Values.mailpit.smtp.tls.enabled }}
+          {{- $autoDNSNames := include "mailpit.smtp.tls.dnsNames" (dict "dnsNames" .Values.mailpit.smtp.tls.auto.dnsNames "context" $) | fromYamlArray }}
           - --smtp-tls-cert
+          {{- if eq .Values.mailpit.smtp.tls.method "auto" }}
+          - {{ printf "sans:%s" (join "," $autoDNSNames) | quote }}
+          {{- else }}
           - /etc/mailpit/smtp.crt
+          {{- end }}
           - --smtp-tls-key
+          {{- if eq .Values.mailpit.smtp.tls.method "auto" }}
+          - {{ printf "sans:%s" (join "," $autoDNSNames) | quote }}
+          {{- else }}
           - /etc/mailpit/smtp.key
+          {{- end }}
           {{- end }}
           {{- if .Values.image.debug }}
           - --verbose
@@ -130,12 +139,14 @@ spec:
             {{- end }}
           {{- end }}
           volumeMounts:
+          - name: tmp
+            mountPath: /tmp
           - name: data
             mountPath: /var/lib/mailpit
             {{- if .Values.volumeSubPath }}
             subPath: {{ .Values.volumeSubPath  }}
             {{- end }}
-          {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.secretName .Values.mailpit.smtp.tls.secretName .Values.mailpit.relay.enabled }}
+          {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.secretName (and .Values.mailpit.smtp.tls.enabled (ne .Values.mailpit.smtp.tls.method "auto")) .Values.mailpit.relay.enabled }}
           - name: etc
             mountPath: /etc/mailpit
           {{- end }}
@@ -158,7 +169,7 @@ spec:
         {{- with .Values.extraVolumes }}
           {{- include "common.tplvalues.render" (dict "value" . "context" $) | nindent 8 }}
         {{- end }}
-        {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.enabled .Values.mailpit.smtp.tls.enabled .Values.mailpit.relay.enabled }}
+        {{- if or .Values.mailpit.ui.authFile.enabled .Values.mailpit.smtp.authFile.enabled .Values.mailpit.ui.tls.enabled (and .Values.mailpit.smtp.tls.enabled (ne .Values.mailpit.smtp.tls.method "auto")) .Values.mailpit.relay.enabled }}
         - name: etc
           projected:
             sources:
@@ -189,9 +200,13 @@ spec:
                 - key: tls.key
                   path: ui.key
             {{- end }}
-            {{- if .Values.mailpit.smtp.tls.enabled }}
+            {{- if and .Values.mailpit.smtp.tls.enabled (ne .Values.mailpit.smtp.tls.method "auto") }}
             - secret:
+                {{- if eq .Values.mailpit.smtp.tls.method "cert-manager" }}
+                name: {{ include "mailpit.smtp.tls.certManager.secretName" . }}
+                {{- else }}
                 name: {{ .Values.mailpit.smtp.tls.secretName | required "mailpit.smtp.tls.secretName required when tls is enabled" }}
+                {{- end }}
                 items:
                 - key: tls.crt
                   path: smtp.crt
@@ -206,3 +221,5 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
+        - name: tmp
+          emptyDir: {}
