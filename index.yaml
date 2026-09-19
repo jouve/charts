@@ -1609,6 +1609,32 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/distribution-0.1.0/distribution-0.1.0.tgz
     version: 0.1.0
+  etcd-defrag:
+  - annotations:
+      artifacthub.io/images: |
+        - name: etcd-defrag
+          image: ghcr.io/ahrtr/etcd-defrag:v0.45.0
+      artifacthub.io/license: Apache-2.0
+    apiVersion: v2
+    appVersion: 0.45.0
+    created: "2026-09-19T12:44:55.839349049Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.x.x
+    description: Run safe, scheduled etcd defragmentation in Kubernetes
+    digest: b2b4c40b709bad2096647b31d0118ccb3d7442d14d3d4adb2f20a58b17970218
+    maintainers:
+    - name: jouve
+      url: https://github.com/jouve
+    name: etcd-defrag
+    sources:
+    - https://github.com/jouve/charts
+    - https://github.com/ahrtr/etcd-defrag
+    type: application
+    urls:
+    - https://github.com/jouve/charts/releases/download/etcd-defrag-0.1.1/etcd-defrag-0.1.1.tgz
+    version: 0.1.1
   external-snapshotter:
   - annotations:
       artifacthub.io/license: Apache-2.0
@@ -6395,4 +6421,4 @@ entries:
     urls:
     - https://github.com/jouve/charts/releases/download/subnamespace-0.1.0/subnamespace-0.1.0.tgz
     version: 0.1.0
-generated: "2026-09-18T15:13:15.747789155Z"
+generated: "2026-09-19T12:44:55.839757132Z"
