@@ -1,0 +1,13 @@
+commonLabels:
+  shared-label: common
+  common-only: common
+service:
+  http:
+    labels:
+      shared-label: http
+      http-only: http
+      example.com/service-type: http
+  smtp:
+    labels:
+      shared-label: smtp
+      smtp-only: smtp

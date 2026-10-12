@@ -87,6 +87,7 @@ helm install mailpit jouve/mailpit
 | Name                                    | Description                                                                                                                      | Value                    |
 | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
 | `service.http.name`                     | service name, default to ${common.names.fullname}-http, e.g. mailpit-http                                                        | `""`                     |
+| `service.http.labels`                   | Extra HTTP Service metadata labels, overriding commonLabels without changing pod labels or selectors                              | `{}`                     |
 | `service.http.type`                     | service type                                                                                                                     | `ClusterIP`              |
 | `service.http.port`                     | port for http                                                                                                                    | `80`                     |
 | `service.http.nodePort`                 | nodeport bind for HTTP service                                                                                                   | `0`                      |
@@ -94,6 +95,7 @@ helm install mailpit jouve/mailpit
 | `service.http.loadBalancerSourceRanges` | %%MAIN_CONTAINER_NAME%% service Load Balancer sources                                                                            | `[]`                     |
 | `service.http.externalTrafficPolicy`    | %%MAIN_CONTAINER_NAME%% service external traffic policy                                                                          | `Cluster`                |
 | `service.smtp.name`                     | service name, default to ${common.names.fullname}-smtp, e.g. mailpit-smtp                                                        | `""`                     |
+| `service.smtp.labels`                   | Extra SMTP Service metadata labels, overriding commonLabels without changing pod labels or selectors                              | `{}`                     |
 | `service.smtp.type`                     | service type                                                                                                                     | `ClusterIP`              |
 | `service.smtp.port`                     | port for SMTP                                                                                                                    | `25`                     |
 | `service.smtp.nodePort`                 | nodeport bind for STMP service                                                                                                   | `0`                      |
