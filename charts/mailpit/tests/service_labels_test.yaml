@@ -1,0 +1,230 @@
+suite: test service labels
+templates:
+  - http-service.yaml
+  - smtp-service.yaml
+  - deployment.yaml
+release:
+  name: mailpit-test
+tests:
+  - it: should preserve standard labels and selectors by default
+    asserts:
+      - isSubset:
+          path: metadata.labels
+          content:
+            app.kubernetes.io/name: mailpit
+            app.kubernetes.io/instance: mailpit-test
+            app.kubernetes.io/managed-by: Helm
+        template: http-service.yaml
+      - isSubset:
+          path: metadata.labels
+          content:
+            app.kubernetes.io/name: mailpit
+            app.kubernetes.io/instance: mailpit-test
+            app.kubernetes.io/managed-by: Helm
+        template: smtp-service.yaml
+      - matchRegex:
+          path: metadata.labels["helm.sh/chart"]
+          pattern: ^mailpit-
+        template: http-service.yaml
+      - matchRegex:
+          path: metadata.labels["helm.sh/chart"]
+          pattern: ^mailpit-
+        template: smtp-service.yaml
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/name: mailpit
+            app.kubernetes.io/instance: mailpit-test
+        template: http-service.yaml
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/name: mailpit
+            app.kubernetes.io/instance: mailpit-test
+        template: smtp-service.yaml
+      - equal:
+          path: spec.selector.matchLabels
+          value:
+            app.kubernetes.io/name: mailpit
+            app.kubernetes.io/instance: mailpit-test
+        template: deployment.yaml
+
+  - it: should retain common labels when service label maps are empty
+    set:
+      commonLabels:
+        common-only: common
+    asserts:
+      - equal:
+          path: metadata.labels.common-only
+          value: common
+        template: http-service.yaml
+      - equal:
+          path: metadata.labels.common-only
+          value: common
+        template: smtp-service.yaml
+      - equal:
+          path: spec.template.metadata.labels.common-only
+          value: common
+        template: deployment.yaml
+
+  - it: should prefer service labels and keep HTTP and SMTP labels separate
+    values:
+      - ../ci/service-labels-values.yaml
+    asserts:
+      - isSubset:
+          path: metadata.labels
+          content:
+            shared-label: http
+            common-only: common
+            http-only: http
+            example.com/service-type: http
+        template: http-service.yaml
+      - notExists:
+          path: metadata.labels.smtp-only
+        template: http-service.yaml
+      - isSubset:
+          path: metadata.labels
+          content:
+            shared-label: smtp
+            common-only: common
+            smtp-only: smtp
+        template: smtp-service.yaml
+      - notExists:
+          path: metadata.labels.http-only
+        template: smtp-service.yaml
+      - notExists:
+          path: metadata.labels["example.com/service-type"]
+        template: smtp-service.yaml
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/name: mailpit
+            app.kubernetes.io/instance: mailpit-test
+        template: http-service.yaml
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/name: mailpit
+            app.kubernetes.io/instance: mailpit-test
+        template: smtp-service.yaml
+      - isSubset:
+          path: spec.template.metadata.labels
+          content:
+            shared-label: common
+            common-only: common
+        template: deployment.yaml
+      - notExists:
+          path: spec.template.metadata.labels.http-only
+        template: deployment.yaml
+      - notExists:
+          path: spec.template.metadata.labels.smtp-only
+        template: deployment.yaml
+      - notExists:
+          path: spec.template.metadata.labels["example.com/service-type"]
+        template: deployment.yaml
+      - notExists:
+          path: metadata.labels.http-only
+        template: deployment.yaml
+      - notExists:
+          path: metadata.labels.smtp-only
+        template: deployment.yaml
+
+  - it: should apply custom labels only to the HTTP service
+    set:
+      service.http.labels:
+        example.com/service-type: http
+    asserts:
+      - equal:
+          path: metadata.labels["example.com/service-type"]
+          value: http
+        template: http-service.yaml
+      - notExists:
+          path: metadata.labels["example.com/service-type"]
+        template: smtp-service.yaml
+      - notExists:
+          path: spec.template.metadata.labels["example.com/service-type"]
+        template: deployment.yaml
+
+  - it: should apply SMTP labels without adding them to HTTP or pods
+    set:
+      service.smtp.labels:
+        smtp-only: smtp
+    asserts:
+      - equal:
+          path: metadata.labels.smtp-only
+          value: smtp
+        template: smtp-service.yaml
+      - notExists:
+          path: metadata.labels.smtp-only
+        template: http-service.yaml
+      - notExists:
+          path: spec.template.metadata.labels.smtp-only
+        template: deployment.yaml
+
+  - it: should keep selectors based on pod labels when service identity labels differ
+    set:
+      commonLabels:
+        app.kubernetes.io/name: common-name
+        app.kubernetes.io/instance: common-instance
+      podLabels:
+        app.kubernetes.io/name: pod-name
+        app.kubernetes.io/instance: pod-instance
+      service.http.labels:
+        app.kubernetes.io/name: http-name
+        app.kubernetes.io/instance: http-instance
+      service.smtp.labels:
+        app.kubernetes.io/name: smtp-name
+        app.kubernetes.io/instance: smtp-instance
+    asserts:
+      - isSubset:
+          path: metadata.labels
+          content:
+            app.kubernetes.io/name: http-name
+            app.kubernetes.io/instance: http-instance
+        template: http-service.yaml
+      - isSubset:
+          path: metadata.labels
+          content:
+            app.kubernetes.io/name: smtp-name
+            app.kubernetes.io/instance: smtp-instance
+        template: smtp-service.yaml
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/name: pod-name
+            app.kubernetes.io/instance: pod-instance
+        template: http-service.yaml
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/name: pod-name
+            app.kubernetes.io/instance: pod-instance
+        template: smtp-service.yaml
+      - equal:
+          path: spec.selector.matchLabels
+          value:
+            app.kubernetes.io/name: pod-name
+            app.kubernetes.io/instance: pod-instance
+        template: deployment.yaml
+      - isSubset:
+          path: spec.template.metadata.labels
+          content:
+            app.kubernetes.io/name: pod-name
+            app.kubernetes.io/instance: pod-instance
+        template: deployment.yaml
+
+  - it: should render template expressions in service labels
+    set:
+      service.http.labels:
+        release: '{{ .Release.Name }}-http'
+      service.smtp.labels:
+        release: '{{ .Release.Name }}-smtp'
+    asserts:
+      - equal:
+          path: metadata.labels.release
+          value: mailpit-test-http
+        template: http-service.yaml
+      - equal:
+          path: metadata.labels.release
+          value: mailpit-test-smtp
+        template: smtp-service.yaml

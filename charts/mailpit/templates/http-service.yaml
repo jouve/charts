@@ -3,7 +3,8 @@ kind: Service
 metadata:
   name: {{ .Values.service.http.name | default ( printf "%s-http" (include "common.names.fullname" .)) }}
   namespace: {{ include "common.names.namespace" . | quote }}
-  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+  {{- $serviceLabels := include "common.tplvalues.merge" ( dict "values" (list .Values.service.http.labels .Values.commonLabels) "context" . ) | fromYaml }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" $serviceLabels "context" $ ) | nindent 4 }}
   {{- with include "common.tplvalues.merge" ( dict "values" (list .Values.service.http.annotations .Values.commonAnnotations) "context" . ) | fromYaml }}
   annotations: {{- . | toYaml | nindent 4 }}
   {{- end }}
