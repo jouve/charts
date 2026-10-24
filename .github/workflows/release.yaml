@@ -30,13 +30,13 @@ jobs:
       - name: Install cosign
         uses: sigstore/cosign-installer@v4.1.2
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.8.0
+        uses: helm/chart-testing-action@v2.9.0
       - name: Run chart-releaser
         uses: jouve/chart-releaser-action@8e87a9d9bbe7c5029fe24bb75b05ff55ab887479
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4.6.0
+        uses: docker/login-action@v4.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
