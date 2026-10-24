@@ -22,7 +22,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so follow-up steps can access it
       - uses: actions/checkout@v7.0.1
       - name: Checkov GitHub Action
-        uses: bridgecrewio/checkov-action@v12.3123.0
+        uses: bridgecrewio/checkov-action@v12.3135.0
         with:
           # This will add both a CLI output to the console and create a results.sarif file
           output_format: cli,sarif
@@ -30,7 +30,7 @@ jobs:
           framework: github_actions
           directory: .github
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v4.38.0
+        uses: github/codeql-action/upload-sarif@v4.39.1
         # Results are generated only on a success or failure
         # this is required since GitHub by default won't run the next step
         # when the previous one has failed. Security checks that do not pass will 'fail'.
@@ -51,11 +51,11 @@ jobs:
         uses: azure/setup-helm@v5.0.1
         with:
           version: v4.0.1
-      - uses: actions/setup-python@v7.0.0
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: 3.x
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.8.0
+        uses: helm/chart-testing-action@v2.9.0
       - name: Setup kube-linter
         uses: ./.github/actions/setup-kube-linter
       - name: Setup helm unittest

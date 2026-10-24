@@ -70,7 +70,7 @@ tls:
 | ------------------- | ---------------------------------------------------------- | ------------------- |
 | `image.registry`    | etcd-defrag image registry                                 | `ghcr.io`           |
 | `image.repository`  | etcd-defrag image repository                               | `ahrtr/etcd-defrag` |
-| `image.tag`         | etcd-defrag image tag                                      | `v0.45.0`           |
+| `image.tag`         | etcd-defrag image tag                                      | `v0.47.0`           |
 | `image.digest`      | etcd-defrag image digest; overrides the image tag when set | `""`                |
 | `image.pullPolicy`  | etcd-defrag image pull policy                              | `IfNotPresent`      |
 | `image.pullSecrets` | etcd-defrag image pull secrets                             | `[]`                |

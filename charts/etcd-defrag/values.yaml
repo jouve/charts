@@ -30,7 +30,7 @@ commonAnnotations: {}
 image:
   registry: ghcr.io
   repository: ahrtr/etcd-defrag
-  tag: v0.45.0
+  tag: v0.47.0
   digest: ""
   pullPolicy: IfNotPresent
   pullSecrets: []
